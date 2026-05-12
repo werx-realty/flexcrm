@@ -288,7 +288,9 @@ input,select,textarea{font-family:var(--font)}
 .badge-warm{background:rgba(245,166,35,0.15);color:var(--warm)}
 .badge-cold{background:rgba(90,180,255,0.15);color:var(--cold)}
 .badge-closed{background:rgba(34,197,94,0.15);color:#22c55e}
+.badge-active{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3);font-weight:700}
 .badge-escrow{background:rgba(167,139,250,0.15);color:#a78bfa}
+.badge-openescrow{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-dim);font-weight:700;}
 .badge-archive{background:rgba(136,136,136,0.15);color:var(--archive)}
 .badge-called{background:rgba(74,222,128,0.15);color:var(--green)}
 .badge-notcalled{background:rgba(248,113,113,0.15);color:var(--red)}
@@ -401,7 +403,10 @@ input,select,textarea{font-family:var(--font)}
   padding:12px 14px;border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
 }
-.kanban-col-title{font-size:0.82rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em}
+.kanban-col-title{font-size:0.82rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;border-radius:4px;padding:2px 4px;margin:-2px -4px;transition:background .15s}
+.kanban-col-title:hover{background:rgba(255,255,255,0.06)}
+.kanban-col-title:hover::after{content:' ✏️';font-size:0.7rem;opacity:0.6}
+.kanban-col-title-input{font-size:0.82rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;background:var(--surface3);border:1px solid var(--gold);border-radius:5px;color:inherit;padding:2px 6px;width:120px;outline:none;font-family:var(--font)}
 .kanban-col-count{
   background:var(--surface2);color:var(--gray);
   font-size:0.7rem;font-weight:600;padding:2px 7px;border-radius:10px;
@@ -604,7 +609,7 @@ input,select,textarea{font-family:var(--font)}
 /* ═══ ADD LEAD DRAWER ══════════════════════════════════════════════════════ */
 .al-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:400;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(2px)}
 .al-backdrop.open{opacity:1;pointer-events:all}
-.al-drawer{position:fixed;top:0;right:0;bottom:0;width:460px;max-width:96vw;background:var(--surface);border-left:1px solid var(--border);z-index:401;transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);overflow-y:auto;display:flex;flex-direction:column}
+.al-drawer{position:fixed;top:0;right:0;bottom:0;width:575px;max-width:96vw;background:var(--surface);border-left:1px solid var(--border);z-index:401;transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);overflow-y:auto;display:flex;flex-direction:column}
 .al-drawer.open{transform:translateX(0)}
 .al-drawer-header{display:flex;align-items:flex-start;gap:12px;padding:20px 20px 16px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:2}
 .al-avatar{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--gold),#8a6030);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:var(--bg)}
@@ -615,7 +620,9 @@ input,select,textarea{font-family:var(--font)}
 .al-name-input::placeholder{color:var(--gray2)}
 .al-company-input{width:100%;background:transparent;border:none;color:var(--gray);font-size:0.8rem;outline:none;padding:2px 0;font-family:var(--font)}
 .al-company-input::placeholder{color:var(--gray2)}
-.al-status-sel{background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--white);font-size:0.78rem;padding:5px 8px;cursor:pointer;outline:none;flex-shrink:0;align-self:flex-start}
+.al-status-sel{background:rgba(0,0,0,0.25);border:1.5px solid var(--gold);border-radius:7px;color:var(--white);font-size:0.78rem;font-weight:500;padding:6px 10px;cursor:pointer;outline:none;flex-shrink:0;align-self:flex-start;box-shadow:0 0 0 3px rgba(201,169,110,0.12),0 2px 6px rgba(0,0,0,0.3);transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23C9A96E'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:24px}
+.al-status-sel:hover{box-shadow:0 0 0 4px rgba(201,169,110,0.2),0 2px 8px rgba(0,0,0,0.35)}
+.al-status-sel:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,169,110,0.25)}
 .al-close-btn{width:28px;height:28px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--gray);font-size:0.85rem;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:color .15s,background .15s}
 .al-close-btn:hover{color:var(--white);background:var(--surface3)}
 .al-section{padding:16px 20px;border-bottom:1px solid var(--border)}
@@ -1521,7 +1528,7 @@ tr.prop-expiring:hover{
     <div class="nav-section-label">MAIN</div>
     <div class="nav-item active" onclick="showView('dashboard')" data-view="dashboard"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></div>
     <div class="nav-item" onclick="showView('leads')" data-view="leads"><span class="nav-icon">👥</span><span class="nav-label">All Leads</span><span class="nav-badge" id="leadsCountBadge">0</span></div>
-    <div class="nav-item" onclick="showView('kanban')" data-view="kanban"><span class="nav-icon">🗂</span><span class="nav-label">Kanban Board</span></div>
+    <div class="nav-item" onclick="showView('kanban')" data-view="kanban"><span class="nav-icon">🗂</span><span class="nav-label">Process</span></div>
     <div class="nav-section-label">SCHEDULE</div>
     <div class="nav-item" onclick="showView('calendar')" data-view="calendar"><span class="nav-icon">📅</span><span class="nav-label">Calendar</span></div>
     <div class="nav-item" onclick="showView('daily')" data-view="daily"><span class="nav-icon">☀️</span><span class="nav-label">Daily Schedule</span></div>
@@ -1686,9 +1693,9 @@ tr.prop-expiring:hover{
     </div>
     <div class="kpi-card" style="--accent:var(--green)">
       <div class="kpi-icon">💰</div>
-      <div class="kpi-label">Total Estimated Value</div>
+      <div class="kpi-label">Opportunity</div>
       <div class="kpi-num">$<span id="kpi-vol">0</span></div>
-      <div class="kpi-sub">Across active pipeline</div>
+      <div class="kpi-sub">Total lead value in pipeline</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" id="kpi-bar-vol" style="background:var(--green)"></div></div>
     </div>
   </div>
@@ -1774,7 +1781,7 @@ tr.prop-expiring:hover{
     <table class="data-table">
       <thead>
         <tr>
-          <th>Name</th><th>Phone</th><th>Address</th>
+          <th style="width:52px"></th><th>Name</th><th>Phone</th><th>Address</th>
           <th>Status</th><th>Call</th><th>Source</th>
           <th>Est. Value</th><th>Last Contact</th><th>Actions</th>
         </tr>
@@ -2010,6 +2017,16 @@ tr.prop-expiring:hover{
     <div>
       <div class="card" style="padding:20px;margin-bottom:16px">
         <div class="detail-section-title">Lead Summary</div>
+        <!-- House photo for this lead -->
+        <div id="lead-photo-wrap" style="display:none;margin-bottom:6px;border-radius:10px;overflow:hidden;position:relative">
+          <img id="lead-photo-img" style="width:100%;height:160px;object-fit:cover;display:block"/>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,rgba(0,0,0,0.55))"></div>
+          <button onclick="leadPhotoRemove()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.55);border:none;color:#fff;border-radius:50%;width:24px;height:24px;font-size:0.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Remove photo">✕</button>
+        </div>
+        <div style="margin-bottom:14px">
+          <button onclick="document.getElementById('lead-photo-file').click()" style="width:100%;padding:7px;background:var(--surface3);border:1px dashed var(--border2);border-radius:8px;color:var(--gray);font-size:0.78rem;cursor:pointer;transition:border-color .2s,color .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--gray)'">📸 Update House Photo</button>
+          <input type="file" id="lead-photo-file" accept="image/*" style="display:none" onchange="leadPhotoUpdate(this.files[0])"/>
+        </div>
         <div style="text-align:center;padding:16px 0">
           <div style="font-family:var(--serif);font-size:2rem;color:var(--gold)" id="d-value-display">—</div>
           <div style="font-size:0.75rem;color:var(--gray);margin-top:4px">List Price</div>
@@ -2079,35 +2096,35 @@ tr.prop-expiring:hover{
 <!-- ══ KANBAN ═══════════════════════════════════════════ -->
 <div class="view" id="view-kanban">
   <div class="topbar">
-    <div class="page-title">Kanban <span>Board</span></div>
+    <div class="page-title">Deal <span>Process</span></div>
     <div class="topbar-actions">
-      <div style="font-size:0.8rem;color:var(--gray)">Drag cards between days to schedule</div>
-      <button class="btn btn-primary btn-sm" onclick="openKanbanAdd()">+ Add Lead to Board</button>
+      <div style="font-size:0.8rem;color:var(--gray)">Purchase/Escrow properties · drag to move between stages · click title to rename</div>
+      <button class="btn btn-ghost btn-sm" onclick="showView('properties')">🏠 Go to Properties</button>
     </div>
   </div>
   <div class="kanban-board" id="kanbanBoard">
     <div class="kanban-col" data-day="monday">
-      <div class="kanban-col-header"><span class="kanban-col-title" style="color:var(--gold)">Monday</span><span class="kanban-col-count" id="cnt-monday">0</span></div>
+      <div class="kanban-col-header"><span class="kanban-col-title" id="klbl-monday" style="color:var(--gold)" onclick="kanbanEditLabel('monday')">Monday</span><span class="kanban-col-count" id="cnt-monday">0</span></div>
       <div class="kanban-cards" id="col-monday" ondragover="dragOver(event)" ondrop="drop(event,'monday')" ondragleave="dragLeave(event)"></div>
     </div>
     <div class="kanban-col" data-day="tuesday">
-      <div class="kanban-col-header"><span class="kanban-col-title" style="color:var(--cold)">Tuesday</span><span class="kanban-col-count" id="cnt-tuesday">0</span></div>
+      <div class="kanban-col-header"><span class="kanban-col-title" id="klbl-tuesday" style="color:var(--cold)" onclick="kanbanEditLabel('tuesday')">Tuesday</span><span class="kanban-col-count" id="cnt-tuesday">0</span></div>
       <div class="kanban-cards" id="col-tuesday" ondragover="dragOver(event)" ondrop="drop(event,'tuesday')" ondragleave="dragLeave(event)"></div>
     </div>
     <div class="kanban-col" data-day="wednesday">
-      <div class="kanban-col-header"><span class="kanban-col-title" style="color:var(--green)">Wednesday</span><span class="kanban-col-count" id="cnt-wednesday">0</span></div>
+      <div class="kanban-col-header"><span class="kanban-col-title" id="klbl-wednesday" style="color:var(--green)" onclick="kanbanEditLabel('wednesday')">Wednesday</span><span class="kanban-col-count" id="cnt-wednesday">0</span></div>
       <div class="kanban-cards" id="col-wednesday" ondragover="dragOver(event)" ondrop="drop(event,'wednesday')" ondragleave="dragLeave(event)"></div>
     </div>
     <div class="kanban-col" data-day="thursday">
-      <div class="kanban-col-header"><span class="kanban-col-title" style="color:var(--purple)">Thursday</span><span class="kanban-col-count" id="cnt-thursday">0</span></div>
+      <div class="kanban-col-header"><span class="kanban-col-title" id="klbl-thursday" style="color:var(--purple)" onclick="kanbanEditLabel('thursday')">Thursday</span><span class="kanban-col-count" id="cnt-thursday">0</span></div>
       <div class="kanban-cards" id="col-thursday" ondragover="dragOver(event)" ondrop="drop(event,'thursday')" ondragleave="dragLeave(event)"></div>
     </div>
     <div class="kanban-col" data-day="friday">
-      <div class="kanban-col-header"><span class="kanban-col-title" style="color:var(--warm)">Friday</span><span class="kanban-col-count" id="cnt-friday">0</span></div>
+      <div class="kanban-col-header"><span class="kanban-col-title" id="klbl-friday" style="color:var(--warm)" onclick="kanbanEditLabel('friday')">Friday</span><span class="kanban-col-count" id="cnt-friday">0</span></div>
       <div class="kanban-cards" id="col-friday" ondragover="dragOver(event)" ondrop="drop(event,'friday')" ondragleave="dragLeave(event)"></div>
     </div>
     <div class="kanban-col" data-day="unscheduled">
-      <div class="kanban-col-header"><span class="kanban-col-title" style="color:var(--gray)">Unscheduled</span><span class="kanban-col-count" id="cnt-unscheduled">0</span></div>
+      <div class="kanban-col-header"><span class="kanban-col-title" id="klbl-unscheduled" style="color:var(--gray)" onclick="kanbanEditLabel('unscheduled')">Unscheduled</span><span class="kanban-col-count" id="cnt-unscheduled">0</span></div>
       <div class="kanban-cards" id="col-unscheduled" ondragover="dragOver(event)" ondrop="drop(event,'unscheduled')" ondragleave="dragLeave(event)"></div>
     </div>
   </div>
@@ -2362,12 +2379,58 @@ tr.prop-expiring:hover{
         <div class="settings-section">
           <h3>Company Details</h3><p>Shown on reports and outbound communications.</p>
           <div class="form-grid">
-            <div class="form-group full"><label class="form-label">Company Name</label><input class="form-input" value="Bakersfield Cash Home Buyers"/></div>
-            <div class="form-group"><label class="form-label">Phone</label><input class="form-input" value="(661) 555-1234"/></div>
-            <div class="form-group"><label class="form-label">Email</label><input class="form-input" value="offers@bakersfieldcashhomebuyers.com"/></div>
-            <div class="form-group full"><label class="form-label">Address</label><input class="form-input" value="1801 Chester Ave, Suite 200, Bakersfield CA 93301"/></div>
+            <div class="form-group full"><label class="form-label">Company Name</label><input class="form-input" id="co-name" value="Bakersfield Cash Home Buyers"/></div>
+            <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="co-phone" value="(661) 555-1234"/></div>
+            <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="co-email" value="offers@bakersfieldcashhomebuyers.com"/></div>
+            <div class="form-group full"><label class="form-label">Address</label><input class="form-input" id="co-address" value="1801 Chester Ave, Suite 200, Bakersfield CA 93301"/></div>
           </div>
-          <button class="btn btn-primary btn-sm" style="margin-top:16px">Save Company</button>
+          <button class="btn btn-primary btn-sm" style="margin-top:16px" onclick="saveCompanySettings()">Save Company</button>
+        </div>
+        <!-- ── Yearly Goals ───────────────────────────────── -->
+        <div class="settings-section" style="margin-top:0;border-top:1px solid var(--border)">
+          <h3>🎯 Yearly Goals</h3>
+          <p>Set your annual targets. The YTD Units and YTD Volume gauges on the dashboard will show your real-time progress toward these goals.</p>
+          <div class="form-grid" style="margin-top:16px">
+            <div class="form-group">
+              <label class="form-label">YTD Units Goal
+                <span style="font-size:0.68rem;color:var(--gray);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px">Total closed deals for the year</span>
+              </label>
+              <div style="position:relative">
+                <input class="form-input" id="goal-ytd-units" type="number" min="0" placeholder="e.g. 50" style="padding-right:48px" oninput="previewYtdGoals()"/>
+                <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--gray);font-size:0.78rem;pointer-events:none">units</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">YTD Volume Goal
+                <span style="font-size:0.68rem;color:var(--gray);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px">Total sales volume for the year</span>
+              </label>
+              <div style="position:relative">
+                <input class="form-input" id="goal-ytd-volume" type="number" min="0" placeholder="e.g. 10000000" style="padding-right:28px" oninput="previewYtdGoals()"/>
+                <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--gray);font-size:0.78rem;pointer-events:none">$</span>
+              </div>
+            </div>
+          </div>
+          <!-- Live progress preview -->
+          <div id="ytd-goal-preview" style="display:none;margin-top:16px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px 18px">
+            <div style="font-size:0.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px">Current Progress Toward Goal</div>
+            <div style="display:flex;gap:24px;flex-wrap:wrap">
+              <div>
+                <div style="font-size:0.7rem;color:var(--gray);margin-bottom:3px">Units</div>
+                <div id="ytd-goal-units-bar" style="width:180px;height:8px;background:var(--surface3);border-radius:4px;overflow:hidden">
+                  <div id="ytd-goal-units-fill" style="height:100%;border-radius:4px;background:var(--gold);width:0%;transition:width .4s"></div>
+                </div>
+                <div id="ytd-goal-units-lbl" style="font-size:0.72rem;color:var(--gold);margin-top:4px">0 / 0 units</div>
+              </div>
+              <div>
+                <div style="font-size:0.7rem;color:var(--gray);margin-bottom:3px">Volume</div>
+                <div id="ytd-goal-volume-bar" style="width:180px;height:8px;background:var(--surface3);border-radius:4px;overflow:hidden">
+                  <div id="ytd-goal-volume-fill" style="height:100%;border-radius:4px;background:var(--gold);width:0%;transition:width .4s"></div>
+                </div>
+                <div id="ytd-goal-volume-lbl" style="font-size:0.72rem;color:var(--gold);margin-top:4px">$0 / $0</div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:18px" onclick="saveYtdGoals()">💾 Save Goals</button>
         </div>
       </div>
       <div class="settings-panel" id="sp-notifications">
@@ -3226,6 +3289,7 @@ function doLogin(){
     try{ document.getElementById('userName').textContent = u==='admin'?'Admin':u.split('@')[0]; }catch(e){}
     try{ seedDemoData(); }catch(e){ console.warn('seedDemoData:',e); }
     try{ _migratePropPhotos(); }catch(e){ console.warn('migratePropPhotos:',e); }
+    try{ loadCompanySettings(); }catch(e){ console.warn('loadCompanySettings:',e); }
     try{ showView('dashboard'); }catch(e){ console.warn('showView:',e); }
   } else {
     try{ document.getElementById('loginErr').style.display='block'; }catch(e){}
@@ -3319,7 +3383,7 @@ function showView(v){
   else if(v==='daily') renderDaily();
   else if(v==='streetview') renderStreetViewLeads();
   else if(v==='routemap'){ renderRouteLeadPins(); showRouteTab('addresses'); }
-  else if(v==='settings') renderUsers();
+  else if(v==='settings'){ renderUsers(); setTimeout(loadCompanySettings, 50); }
   // update badge
   document.getElementById('leadsCountBadge').textContent = DB.leads.length;
 }
@@ -3537,8 +3601,14 @@ function renderLeads(){
   leads.sort((a,b)=>b.created-a.created);
   const tbody=document.getElementById('leadsTableBody');
   if(!tbody)return;
-  tbody.innerHTML=leads.length?leads.map(l=>`
+  tbody.innerHTML=leads.length?leads.map(l=>{
+    const lph = _loadLeadPhoto(l.id);
+    const photoCell = lph
+      ? `<img src="${lph}" style="width:38px;height:38px;object-fit:cover;border-radius:6px;border:1px solid var(--border);display:block"/>`
+      : `<div style="width:38px;height:38px;border-radius:6px;background:var(--surface3);display:flex;align-items:center;justify-content:center;font-size:1rem">👤</div>`;
+    return `
     <tr onclick="openLead('${l.id}')">
+      <td style="padding:6px 8px">${photoCell}</td>
       <td><strong>${l.fname} ${l.lname}</strong></td>
       <td>${l.phone}</td>
       <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--gray)">${l.address}</td>
@@ -3554,12 +3624,30 @@ function renderLeads(){
           <button class="btn btn-danger btn-sm btn-icon" onclick="deleteLeadById('${l.id}')" title="Delete">🗑</button>
         </div>
       </td>
-    </tr>`).join(''):`<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">👥</div><p>No leads found matching your filters</p></div></td></tr>`;
+    </tr>`;
+  }).join(''):`<tr><td colspan="10"><div class="empty-state"><div class="empty-icon">👥</div><p>No leads found matching your filters</p></div></td></tr>`;
 }
 
 function statusBadge(s){
-  const map={hot:'badge-hot',warm:'badge-warm',cold:'badge-cold',closed:'badge-closed',archive:'badge-archive'};
-  const lbl={hot:'🔥 Hot',warm:'🌤 Warm',cold:'❄ Cold',closed:'✅ Closed',archive:'📦 Archived'};
+  // Open Escrow — always renders in the current accent color using rgba() for full browser support
+  if(s === 'Open Escrow'){
+    let hex = '#C9A96E';
+    try{ hex = localStorage.getItem('bchb_accent_color') || hex; }catch(e){}
+    // Expand shorthand #abc → #aabbcc
+    if(hex.length === 4) hex = '#'+hex[1]+hex[1]+hex[2]+hex[2]+hex[3]+hex[3];
+    const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return `<span class="badge" style="background:rgba(${r},${g},${b},0.16);color:${hex};border:1px solid rgba(${r},${g},${b},0.5);font-weight:700;letter-spacing:0.01em">🔑 Open Escrow</span>`;
+  }
+  const map={
+    hot:'badge-hot', warm:'badge-warm', cold:'badge-cold',
+    closed:'badge-closed', archive:'badge-archive', escrow:'badge-escrow',
+    Active:'badge-active', Pending:'badge-warm', Expiring:'badge-hot',
+    Closed:'badge-closed', Cancelled:'badge-archive'
+  };
+  const lbl={
+    hot:'🔥 Hot', warm:'🌤 Warm', cold:'❄ Cold',
+    closed:'✅ Closed', archive:'📦 Archived', escrow:'🏡 In Escrow'
+  };
   return `<span class="badge ${map[s]||''}">${lbl[s]||s}</span>`;
 }
 function callBadge(s){
@@ -3658,12 +3746,52 @@ function openLead(id){
   document.getElementById('d-call-badge').textContent={called:'✅ Called',notcalled:'📵 Not Called',willcall:'📋 Will Call'}[lead.callstatus];
   document.getElementById('d-source-pill').className='source-pill '+lead.source;
   document.getElementById('d-source-pill').textContent=lead.source;
+  // House photo in summary card
+  const leadPhoto = _loadLeadPhoto(id);
+  const photoWrap = document.getElementById('lead-photo-wrap');
+  const photoImg  = document.getElementById('lead-photo-img');
+  if(leadPhoto){ photoImg.src=leadPhoto; photoWrap.style.display='block'; }
+  else { photoWrap.style.display='none'; photoImg.src=''; }
   // default call date/time
   const now=new Date();
   document.getElementById('d-calldate').value=now.toISOString().split('T')[0];
   document.getElementById('d-calltime').value=now.toTimeString().slice(0,5);
   renderNotes(lead); renderTimeline(lead); renderLeadTasks(id); renderAttachedNotes(id);
   showView('lead-detail');
+}
+
+/* ── Lead photo update/remove from detail view ── */
+function leadPhotoUpdate(file){
+  if(!file || !currentLeadId) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 600;
+      let w = img.width, h = img.height;
+      if(w > MAX || h > MAX){ if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;} }
+      const cv = document.createElement('canvas'); cv.width=w; cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      const dataUrl = cv.toDataURL('image/jpeg', 0.8);
+      try{
+        localStorage.setItem('bchb_lead_photo_'+currentLeadId, dataUrl);
+        document.getElementById('lead-photo-img').src = dataUrl;
+        document.getElementById('lead-photo-wrap').style.display = 'block';
+        renderLeads();
+        showToast('Photo updated ✓');
+      } catch(err){ showToast('Photo too large to save'); }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function leadPhotoRemove(){
+  if(!currentLeadId) return;
+  _deleteLeadPhoto(currentLeadId);
+  document.getElementById('lead-photo-wrap').style.display = 'none';
+  document.getElementById('lead-photo-img').src = '';
+  renderLeads();
+  showToast('Photo removed');
 }
 
 function renderNotes(lead){
@@ -3800,8 +3928,18 @@ function doConvertLead(){
     tasks:            [],
     notes:            (lead.notes||[]).map(n=>n.text).join('\n\n'),
     convertedFromLead:lead.id,
-    created:          Date.now()
+    created:          Date.now(),
+    // Purchase → auto-place in Open Escrow column on Kanban board
+    propKanbanDay:    _cvtSelectedType === 'Purchase' ? 'monday' : null
   };
+
+  // Transfer lead house photo to the new property (if one exists)
+  const leadPhoto = _loadLeadPhoto(lead.id);
+  if(leadPhoto){
+    try{ _savePropPhoto(propId, leadPhoto); prop.hasPhoto = true; }
+    catch(e){ console.warn('Photo transfer failed',e); }
+    _deleteLeadPhoto(lead.id); // remove from lead storage after transfer
+  }
 
   // Save property
   let props = PropDB.properties;
@@ -3889,6 +4027,7 @@ function deleteLeadById(id){
     ()=>{
       const leads=DB.leads.filter(l=>l.id!==id);
       DB.leads=leads;
+      _deleteLeadPhoto(id); // clean up photo from localStorage
       localStorage.setItem('bchb_leads', JSON.stringify(leads));
       localStorage.setItem('bchb_seeded','1');
       document.getElementById('leadsCountBadge').textContent=leads.length;
@@ -3911,38 +4050,125 @@ function openStreetViewFor(addr){
 /* ══════════════════════════════════════════════════════
    KANBAN
 ══════════════════════════════════════════════════════ */
+
+/* ── Kanban column label editing ──────────────────────
+   Labels stored in localStorage as bchb_kanban_labels: { monday: "Monday", ... }
+   Clicking a column title swaps it for an input; Enter or blur saves.
+─────────────────────────────────────────────────────── */
+const KANBAN_DEFAULT_LABELS = {
+  monday:'Open Escrow', tuesday:'Title & Docs', wednesday:'Inspection',
+  thursday:'Final Walk', friday:'Closing', unscheduled:'On Hold'
+};
+function _getKanbanLabels(){
+  try{ return Object.assign({}, KANBAN_DEFAULT_LABELS, JSON.parse(localStorage.getItem('bchb_kanban_labels')||'{}')); }
+  catch(e){ return {...KANBAN_DEFAULT_LABELS}; }
+}
+function _saveKanbanLabel(day, val){
+  const labels = _getKanbanLabels();
+  labels[day] = val || KANBAN_DEFAULT_LABELS[day];
+  localStorage.setItem('bchb_kanban_labels', JSON.stringify(labels));
+}
+function applyKanbanLabels(){
+  const labels = _getKanbanLabels();
+  Object.keys(labels).forEach(day => {
+    const el = document.getElementById('klbl-'+day);
+    if(el && el.tagName === 'SPAN') el.textContent = labels[day];
+  });
+}
+function kanbanEditLabel(day){
+  const span = document.getElementById('klbl-'+day);
+  if(!span || span.tagName !== 'SPAN') return;
+  const currentText = span.textContent.replace(/\s*✏️\s*$/, '').trim();
+  const color = span.style.color;
+  // Swap span → input
+  const inp = document.createElement('input');
+  inp.className = 'kanban-col-title-input';
+  inp.style.color = color;
+  inp.value = currentText;
+  span.replaceWith(inp);
+  inp.focus();
+  inp.select();
+  function commit(){
+    const newVal = inp.value.trim() || KANBAN_DEFAULT_LABELS[day];
+    _saveKanbanLabel(day, newVal);
+    // Swap input → span
+    const newSpan = document.createElement('span');
+    newSpan.className = 'kanban-col-title';
+    newSpan.id = 'klbl-'+day;
+    newSpan.style.color = color;
+    newSpan.textContent = newVal;
+    newSpan.onclick = () => kanbanEditLabel(day);
+    inp.replaceWith(newSpan);
+  }
+  inp.addEventListener('blur', commit);
+  inp.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); inp.blur(); }
+    if(e.key === 'Escape'){ inp.value = currentText; inp.blur(); }
+  });
+}
+
 let dragId=null;
 function renderKanban(){
+  applyKanbanLabels();
   const days=['monday','tuesday','wednesday','thursday','friday','unscheduled'];
+  // Kanban shows Purchase (escrow) properties only
+  const allProps = PropDB.properties.filter(p => p.transactionType === 'Purchase');
+  const labels = _getKanbanLabels();
   days.forEach(day=>{
     const col=document.getElementById('col-'+day);
     const cnt=document.getElementById('cnt-'+day);
     if(!col)return;
-    const cards=DB.leads.filter(l=>l.kanbanDay===day);
-    cnt.textContent=cards.length;
-    col.innerHTML=cards.map(l=>`
-      <div class="kanban-card" draggable="true" data-id="${l.id}"
-           ondragstart="dragStart(event,'${l.id}')" ondragend="dragEnd(event)"
-           onclick="openLead('${l.id}')">
-        <div class="kanban-card-name">${l.fname} ${l.lname}</div>
-        <div class="kanban-card-addr">${l.address.split(',')[0]}</div>
-        <div class="kanban-card-footer">
-          ${statusBadge(l.status)}
-          <span class="kanban-card-date">${l.lastContact?fmt(l.lastContact):'No contact'}</span>
+    const cards = allProps.filter(p => p.propKanbanDay === day);
+    cnt.textContent = cards.length;
+    col.innerHTML = cards.map(p => {
+      const photo = _loadPropPhoto(p.id);
+      const photoHtml = photo
+        ? `<img src="${photo}" style="width:100%;height:80px;object-fit:cover;border-radius:6px;margin-bottom:8px;display:block"/>`
+        : '';
+      const closing = p.closingDate ? `<span style="font-size:0.68rem;color:var(--gold)">🗓 Close ${p.closingDate}</span>` : '';
+      const mls = p.mlsNumber ? `<span style="font-size:0.68rem;color:var(--gray);font-family:monospace">${p.mlsNumber}</span>` : '';
+      const price = p.salesPrice ? `<span style="font-size:0.75rem;color:var(--green);font-family:var(--serif)">${'$'+Number(p.salesPrice).toLocaleString()}</span>` : '';
+      return `
+      <div class="kanban-card" draggable="true" data-id="${p.id}"
+           ondragstart="dragStart(event,'${p.id}')" ondragend="dragEnd(event)"
+           onclick="openPropertyFromKanban('${p.id}')">
+        ${photoHtml}
+        <div class="kanban-card-name" style="margin-bottom:3px">${p.addrStreet||'—'}</div>
+        <div class="kanban-card-addr">${[p.city,p.state].filter(Boolean).join(', ')}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center">
+          ${mls}${price ? (mls?'<span style="color:var(--border2)">·</span>':'') + price : ''}
         </div>
-      </div>`).join('');
+        <div class="kanban-card-footer" style="margin-top:6px">
+          ${closing || `<span style="font-size:0.68rem;color:var(--gray)">No closing date</span>`}
+          ${p.agent ? `<span style="font-size:0.68rem;color:var(--gray)">${p.agent}</span>` : ''}
+        </div>
+      </div>`;
+    }).join('') ||
+    `<div style="padding:14px;text-align:center;color:var(--gray2);font-size:0.75rem">No properties</div>`;
   });
 }
+
+function openPropertyFromKanban(id){
+  // Navigate to properties view and open the property drawer
+  showView('properties');
+  setTimeout(()=>{ openEditPropertyDrawer(id); }, 80);
+}
+
 function dragStart(e,id){ dragId=id; setTimeout(()=>e.target.classList.add('dragging'),0); }
 function dragEnd(e){ e.target.classList.remove('dragging'); document.querySelectorAll('.kanban-cards').forEach(c=>c.classList.remove('drag-over')); }
 function dragOver(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
 function dragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
 function drop(e,day){
   e.preventDefault(); e.currentTarget.classList.remove('drag-over');
-  if(!dragId)return;
-  const leads=DB.leads; const i=leads.findIndex(l=>l.id===dragId);
-  if(i>=0){ leads[i].kanbanDay=day; leads[i].timeline.push({type:'scheduled',msg:`Scheduled for ${day.charAt(0).toUpperCase()+day.slice(1)}`,ts:Date.now(),color:'var(--warm)'}); DB.leads=leads; }
-  dragId=null; renderKanban();
+  if(!dragId) return;
+  const props = PropDB.properties;
+  const i = props.findIndex(p => p.id === dragId);
+  if(i >= 0 && props[i].transactionType === 'Purchase'){
+    props[i].propKanbanDay = day;
+    PropDB.properties = props;
+  }
+  dragId = null;
+  renderKanban();
 }
 
 /* ══════════════════════════════════════════════════════
@@ -6076,6 +6302,25 @@ function applyAccentColor(hex, swatchEl){
   root.style.setProperty('--gold', hex);
   root.style.setProperty('--gold-dim', `rgba(${r},${g},${b},0.15)`);
   root.style.setProperty('--gold-glow', `rgba(${r},${g},${b},0.08)`);
+  root.style.setProperty('--gold-glow12', `rgba(${r},${g},${b},0.12)`);
+  root.style.setProperty('--gold-glow20', `rgba(${r},${g},${b},0.20)`);
+  root.style.setProperty('--gold-glow25', `rgba(${r},${g},${b},0.25)`);
+  // Update status select glow + Open Escrow text color to match accent
+  document.querySelectorAll('.al-status-sel').forEach(el=>{
+    el.style.borderColor = hex;
+    el.style.boxShadow = `0 0 0 3px rgba(${r},${g},${b},0.12),0 2px 6px rgba(0,0,0,0.3)`;
+    if(el.value === 'Open Escrow') el.style.color = hex;
+  });
+  // Re-render any visible Open Escrow badges with the new accent color
+  document.querySelectorAll('.badge').forEach(el=>{
+    if(el.textContent.includes('Open Escrow')){
+      el.style.background = `rgba(${r},${g},${b},0.16)`;
+      el.style.color = hex;
+      el.style.border = `1px solid rgba(${r},${g},${b},0.5)`;
+    }
+  });
+  // Re-render properties table if visible so new badges pick up the color
+  if(document.getElementById('view-properties')?.classList.contains('active')) renderProperties();
   // Update shared gauge gradient stops to match accent color
   // Light stop = brighten toward white; dark stop = darken toward black
   const lighten = (c,a) => Math.min(255,Math.round(c+(255-c)*a));
@@ -7343,9 +7588,50 @@ function piExportCSV(){
 let _alTasks = [];
 let _alTaskFilterVal = 'All';
 
+/* ── Add Lead photo ──────────────────────────────────── */
+let _alLeadPhoto = null;
+
+function alHandlePhotoDrop(e){
+  e.preventDefault();
+  document.getElementById('al-photo-drop').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if(file) alHandlePhotoFile(file);
+}
+function alHandlePhotoFile(file){
+  if(!file || !file.type.startsWith('image/')) return;
+  if(file.size > 5*1024*1024){ showToast('⚠️ Image exceeds 5MB'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX=600; let w=img.width, h=img.height;
+      if(w>h && w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      else if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+      const canvas=document.createElement('canvas');
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      _alLeadPhoto = dataUrl;
+      document.getElementById('al-photo-img').src = dataUrl;
+      document.getElementById('al-photo-preview').style.display = 'block';
+      document.getElementById('al-photo-drop').style.display = 'none';
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('al-photo-input').value = '';
+}
+function alClearPhoto(){
+  _alLeadPhoto = null;
+  document.getElementById('al-photo-preview').style.display = 'none';
+  document.getElementById('al-photo-drop').style.display = 'flex';
+  document.getElementById('al-photo-img').src = '';
+}
+
 function openAddLeadDrawer(){
   _alTasks = [];
   _alTaskFilterVal = 'All';
+  _alLeadPhoto = null;
   // Reset all fields
   ['al-fname','al-lname','al-phone','al-email','al-address','al-value','al-offer','al-notes','al-task-inp'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.value='';
@@ -7358,6 +7644,8 @@ function openAddLeadDrawer(){
   document.getElementById('al-situation').value='';
   document.getElementById('al-type').value='';
   document.getElementById('al-owed-val').textContent='$0';
+  // Reset photo
+  alClearPhoto();
   // Reset task filter buttons
   document.querySelectorAll('.al-tf').forEach((b,i)=>{b.classList.toggle('active',i===0)});
   alRenderTasks();
@@ -7461,6 +7749,11 @@ function saveLeadDrawer(){
   if(noteTxt) lead.notes.push({id:uid(),text:noteTxt,ts:Date.now()});
   lead.timeline.push({type:'created',msg:`Lead created — Source: ${lead.source}`,ts:Date.now(),color:'var(--gold)'});
   const leads=DB.leads; leads.push(lead); DB.leads=leads;
+  // Save house photo if one was captured in the drawer
+  if(_alLeadPhoto){
+    try{ localStorage.setItem('bchb_lead_photo_'+lead.id, _alLeadPhoto); }
+    catch(e){ console.warn('Lead photo save failed (storage full?)',e); }
+  }
   localStorage.setItem('bchb_seeded','1');
   logActivity(`New lead: ${fn} ${ln} (${lead.source})`,'var(--green)');
   document.getElementById('leadsCountBadge').textContent=DB.leads.length;
@@ -7619,6 +7912,7 @@ function openEditPropertyDrawer(id){
   document.getElementById('prop-street').value = p.addrStreet||'';
   document.getElementById('prop-avatar').textContent = p.addrStreet?p.addrStreet[0].toUpperCase():'🏠';
   document.getElementById('prop-status').value = p.propertyStatus||'Active';
+  propStatusColor(document.getElementById('prop-status'));
   document.getElementById('prop-txtype').value = p.transactionType||'Listing';
   document.getElementById('prop-proptype').value = p.propertyType||'Residential';
   document.getElementById('prop-addr-street').value = p.addrStreet||'';
@@ -7738,6 +8032,13 @@ function _loadPropPhoto(id){
 function _deletePropPhoto(id){
   localStorage.removeItem('bchb_photo_' + id);
 }
+/* Lead photo helpers — parallel to prop photo, stored as bchb_lead_photo_<id> */
+function _loadLeadPhoto(id){
+  return localStorage.getItem('bchb_lead_photo_' + id) || null;
+}
+function _deleteLeadPhoto(id){
+  localStorage.removeItem('bchb_lead_photo_' + id);
+}
 /* Migration: move any photoUrl embedded in old property objects to separate keys */
 function _migratePropPhotos(){
   let props = PropDB.properties;
@@ -7768,6 +8069,7 @@ function _clearPropDrawer(){
   document.getElementById('prop-state').value='CA';
   document.getElementById('prop-units').value='1';
   document.getElementById('prop-status').value='Active';
+  propStatusColor(document.getElementById('prop-status'));
   document.getElementById('prop-txtype').value='Listing';
   document.getElementById('prop-proptype').value='Residential';
   // clear error highlights
@@ -7859,6 +8161,17 @@ function saveProperty(){
                           ? (PropDB.properties.find(p=>p.id===_editingPropId)?.created || Date.now())
                           : Date.now()
     };
+
+    // Auto-assign to Kanban 'Open Escrow' column when transactionType = Purchase.
+    // If editing an existing property, preserve its current kanban column.
+    // If it was previously a Listing (no propKanbanDay), start it in the first column.
+    if(prop.transactionType === 'Purchase'){
+      const existing = _editingPropId ? PropDB.properties.find(p=>p.id===_editingPropId) : null;
+      prop.propKanbanDay = (existing && existing.propKanbanDay) ? existing.propKanbanDay : 'monday';
+    } else {
+      // Not a Purchase — remove from kanban board
+      prop.propKanbanDay = null;
+    }
 
     let props = PropDB.properties;
     if(_editingPropId){
@@ -8270,6 +8583,92 @@ function propRenderTasks(){
    YTD VOLUME gauge
      Sum:   salesPrice of all YTD closed properties (same filter as above)
 ══════════════════════════════════════════════════════ */
+/* ── Property status select coloring ─────────────────────
+   When "Open Escrow" is selected the select text turns accent color.
+   All other statuses use the default white text.
+─────────────────────────────────────────────────────── */
+function propStatusColor(sel){
+  if(!sel) sel = document.getElementById('prop-status');
+  if(!sel) return;
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim() || '#C9A96E';
+  const colorMap = {
+    'Active':     '#4ade80',
+    'Open Escrow': accent,
+    'Pending':    '#f5a623',
+    'Expiring':   '#ff5a5a',
+    'Closed':     '#22c55e',
+    'Cancelled':  '#888899'
+  };
+  sel.style.color = colorMap[sel.value] || '#ffffff';
+}
+
+/* ── Company Settings & Yearly Goals ─────────────────────
+   Stored in bchb_company: { name, phone, email, address, ytdUnitsGoal, ytdVolumeGoal }
+   Goals drive the YTD gauge ring progress on the dashboard.
+─────────────────────────────────────────────────────── */
+function _getCompany(){
+  try{ return JSON.parse(localStorage.getItem('bchb_company')||'{}'); }
+  catch(e){ return {}; }
+}
+function _saveCompany(obj){
+  localStorage.setItem('bchb_company', JSON.stringify(obj));
+}
+function saveCompanySettings(){
+  const co = _getCompany();
+  co.name    = document.getElementById('co-name')?.value.trim() || co.name || '';
+  co.phone   = document.getElementById('co-phone')?.value.trim() || co.phone || '';
+  co.email   = document.getElementById('co-email')?.value.trim() || co.email || '';
+  co.address = document.getElementById('co-address')?.value.trim() || co.address || '';
+  _saveCompany(co);
+  showToast('Company info saved ✓');
+}
+function saveYtdGoals(){
+  const co = _getCompany();
+  co.ytdUnitsGoal  = Math.max(0, Number(document.getElementById('goal-ytd-units')?.value)||0);
+  co.ytdVolumeGoal = Math.max(0, Number(document.getElementById('goal-ytd-volume')?.value)||0);
+  _saveCompany(co);
+  showToast('Yearly goals saved ✓');
+  // Re-sync dashboard gauges immediately
+  syncGaugesFromProperties();
+}
+function loadCompanySettings(){
+  const co = _getCompany();
+  if(co.name)    { const el=document.getElementById('co-name');    if(el) el.value=co.name; }
+  if(co.phone)   { const el=document.getElementById('co-phone');   if(el) el.value=co.phone; }
+  if(co.email)   { const el=document.getElementById('co-email');   if(el) el.value=co.email; }
+  if(co.address) { const el=document.getElementById('co-address'); if(el) el.value=co.address; }
+  if(co.ytdUnitsGoal)  { const el=document.getElementById('goal-ytd-units');  if(el) el.value=co.ytdUnitsGoal; }
+  if(co.ytdVolumeGoal) { const el=document.getElementById('goal-ytd-volume'); if(el) el.value=co.ytdVolumeGoal; }
+  previewYtdGoals();
+}
+function previewYtdGoals(){
+  const goalU = Math.max(0, Number(document.getElementById('goal-ytd-units')?.value)||0);
+  const goalV = Math.max(0, Number(document.getElementById('goal-ytd-volume')?.value)||0);
+  const preview = document.getElementById('ytd-goal-preview');
+  if(!preview) return;
+  if(!goalU && !goalV){ preview.style.display='none'; return; }
+  preview.style.display='block';
+  // Get current actuals
+  const props = PropDB.properties;
+  const yr = new Date().getFullYear();
+  const closed = props.filter(p=>p.propertyStatus==='Closed'&&p.closingDate&&new Date(p.closingDate).getFullYear()===yr);
+  const actU = closed.length;
+  const actV = closed.reduce((s,p)=>s+(Number(p.salesPrice)||0),0);
+  // Units bar
+  if(goalU){
+    const pct = Math.min(100, Math.round(actU/goalU*100));
+    document.getElementById('ytd-goal-units-fill').style.width = pct+'%';
+    document.getElementById('ytd-goal-units-lbl').textContent = `${actU} / ${goalU} units (${pct}%)`;
+  }
+  // Volume bar
+  if(goalV){
+    const pct = Math.min(100, Math.round(actV/goalV*100));
+    document.getElementById('ytd-goal-volume-fill').style.width = pct+'%';
+    const fmt = v => v>=1000000?'$'+(v/1000000).toFixed(1)+'M':v>=1000?'$'+(v/1000).toFixed(0)+'K':'$'+v.toLocaleString();
+    document.getElementById('ytd-goal-volume-lbl').textContent = `${fmt(actV)} / ${fmt(goalV)} (${pct}%)`;
+  }
+}
+
 function syncGaugesFromProperties(){
   const props = PropDB.properties;
   const now = new Date();
@@ -8311,19 +8710,52 @@ function syncGaugesFromProperties(){
   const ytdUnits = closedThisYear.length;
   const ytdVolume = closedThisYear.reduce((s,p)=>s+(Number(p.salesPrice)||0),0);
 
-  // Write computed values then render rings
-  const computed = {listings,expiring,pending,moclosing:moClosing,ytdunits:ytdUnits,ytdvolume:ytdVolume};
-  const maxVal = Math.max(1,...Object.values(computed));
+  // Load yearly goals for goal-based YTD ring progress
+  const co = _getCompany();
+  const goalUnits  = Math.max(1, co.ytdUnitsGoal  || 1);
+  const goalVolume = Math.max(1, co.ytdVolumeGoal || 1);
 
-  GAUGE_KEYS.forEach(k=>{
-    const val = computed[k]||0;
+  // The 4 activity gauges share a relative scale; YTD gauges use their own goal-based scale
+  const activityVals = {listings, expiring, pending, moclosing: moClosing};
+  const maxActivity = Math.max(1, ...Object.values(activityVals));
+
+  // Render the 4 activity rings (relative to each other)
+  ['listings','expiring','pending','moclosing'].forEach(k => {
+    const val = activityVals[k] || 0;
     setGaugeTxt(k, val);
     const ring = document.getElementById('gring-'+k);
     if(ring){
       ring.style.strokeDashoffset = GAUGE_CIRC;
-      setTimeout(()=>{ ring.style.strokeDashoffset = val===0?GAUGE_CIRC:Math.min(GAUGE_CIRC*(1-Math.max(0.08,val/maxVal)),GAUGE_CIRC*0.92); },100);
+      setTimeout(()=>{
+        ring.style.strokeDashoffset = val===0 ? GAUGE_CIRC
+          : Math.min(GAUGE_CIRC*(1-Math.max(0.08,val/maxActivity)), GAUGE_CIRC*0.92);
+      }, 100);
     }
   });
+
+  // Render YTD Units ring — progress = actual / goal
+  setGaugeTxt('ytdunits', ytdUnits);
+  const unitsRing = document.getElementById('gring-ytdunits');
+  if(unitsRing){
+    const pct = co.ytdUnitsGoal ? Math.min(ytdUnits / goalUnits, 1) : (ytdUnits > 0 ? 0.5 : 0);
+    unitsRing.style.strokeDashoffset = GAUGE_CIRC;
+    setTimeout(()=>{
+      unitsRing.style.strokeDashoffset = pct === 0 ? GAUGE_CIRC
+        : Math.min(GAUGE_CIRC*(1-Math.max(0.08, pct)), GAUGE_CIRC*0.92);
+    }, 100);
+  }
+
+  // Render YTD Volume ring — progress = actual / goal
+  setGaugeTxt('ytdvolume', ytdVolume);
+  const volumeRing = document.getElementById('gring-ytdvolume');
+  if(volumeRing){
+    const pct = co.ytdVolumeGoal ? Math.min(ytdVolume / goalVolume, 1) : (ytdVolume > 0 ? 0.5 : 0);
+    volumeRing.style.strokeDashoffset = GAUGE_CIRC;
+    setTimeout(()=>{
+      volumeRing.style.strokeDashoffset = pct === 0 ? GAUGE_CIRC
+        : Math.min(GAUGE_CIRC*(1-Math.max(0.08, pct)), GAUGE_CIRC*0.92);
+    }, 100);
+  }
 }
 
 </script>
@@ -8568,6 +9000,27 @@ function syncGaugesFromProperties(){
     </div>
   </div>
 
+  <!-- House Photo -->
+  <div class="al-section">
+    <div class="al-section-title">📸 House Photo</div>
+    <div class="ev-docs-drop" id="al-photo-drop"
+      onclick="document.getElementById('al-photo-input').click()"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="alHandlePhotoDrop(event)">
+      <div class="ev-docs-drop-icon">🏠</div>
+      <div>
+        <div class="ev-docs-drop-text"><strong>Click to upload</strong> or drag &amp; drop</div>
+        <div class="ev-docs-drop-sub">JPG, PNG, WEBP — up to 5MB</div>
+      </div>
+    </div>
+    <input type="file" id="al-photo-input" accept="image/*" style="display:none" onchange="alHandlePhotoFile(this.files[0])"/>
+    <div id="al-photo-preview" style="display:none;position:relative;margin-top:2px">
+      <img id="al-photo-img" style="width:100%;height:160px;object-fit:cover;border-radius:10px;display:block;border:1px solid var(--border)"/>
+      <button onclick="alClearPhoto()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);border:none;color:#fff;border-radius:50%;width:26px;height:26px;font-size:0.8rem;cursor:pointer;line-height:1">✕</button>
+    </div>
+  </div>
+
   <!-- Lead Details -->
   <div class="al-section">
     <div class="al-section-title">🎯 Lead Details</div>
@@ -8659,11 +9112,11 @@ function syncGaugesFromProperties(){
       </div>
       <input class="al-company-input" id="prop-mls-preview" placeholder="MLS # will appear here…" readonly/>
     </div>
-    <select class="al-status-sel" id="prop-status">
+    <select class="al-status-sel" id="prop-status" onchange="propStatusColor(this)">
       <option value="Active">Active</option>
       <option value="Pending">Pending</option>
+      <option value="Open Escrow">Open Escrow</option>
       <option value="Expiring">Expiring</option>
-      <option value="Closing">Closing This Month</option>
       <option value="Closed">Closed</option>
       <option value="Cancelled">Cancelled</option>
     </select>
