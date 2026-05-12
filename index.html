@@ -1694,7 +1694,7 @@ tr.prop-expiring:hover{
     <div class="kpi-card" style="--accent:var(--green)">
       <div class="kpi-icon">💰</div>
       <div class="kpi-label">Opportunity</div>
-      <div class="kpi-num">$<span id="kpi-vol">0</span></div>
+      <div class="kpi-num"><span id="kpi-vol">$0</span></div>
       <div class="kpi-sub">Total lead value in pipeline</div>
       <div class="kpi-bar"><div class="kpi-bar-fill" id="kpi-bar-vol" style="background:var(--green)"></div></div>
     </div>
@@ -3474,11 +3474,25 @@ function animCount(id, target){
   let s=0; const step=Math.ceil(target/30);
   const t=setInterval(()=>{ s=Math.min(s+step,target); el.textContent=s; if(s>=target)clearInterval(t); },40);
 }
+function fmtCompactMoney(val){
+  // Same compact notation as YTD Volume gauge, with $ prefix
+  if(val === 0) return '$0';
+  if(val >= 1000000){
+    const m = val / 1000000;
+    return '$' + (m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)) + 'M';
+  }
+  if(val >= 100000) return '$' + Math.round(val / 1000) + 'K';
+  if(val >= 1000){
+    const k = val / 1000;
+    return '$' + (k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)) + 'K';
+  }
+  return '$' + val.toLocaleString();
+}
 function animMoney(id, target){
   const el=document.getElementById(id);
   if(!el)return;
-  let s=0; const step=Math.ceil(target/40);
-  const t=setInterval(()=>{ s=Math.min(s+step,target); el.textContent=(s/1000000).toFixed(2)+'M'; if(s>=target)clearInterval(t); },30);
+  let s=0; const step=Math.max(1,Math.ceil(target/40));
+  const t=setInterval(()=>{ s=Math.min(s+step,target); el.textContent=fmtCompactMoney(s); if(s>=target)clearInterval(t); },30);
 }
 function setBar(id,val,max){ const el=document.getElementById(id); if(el) el.style.width=Math.min(100,Math.round(val/max*100))+'%'; }
 function refreshDashboard(){ renderDashboard(); }
@@ -4111,8 +4125,11 @@ let dragId=null;
 function renderKanban(){
   applyKanbanLabels();
   const days=['monday','tuesday','wednesday','thursday','friday','unscheduled'];
-  // Kanban shows Purchase (escrow) properties only
-  const allProps = PropDB.properties.filter(p => p.transactionType === 'Purchase');
+  // Process board shows Open Escrow properties only.
+  // Any Open Escrow property missing a column defaults to 'monday' (the first column).
+  const allProps = PropDB.properties
+    .filter(p => p.propertyStatus === 'Open Escrow')
+    .map(p => ({...p, propKanbanDay: p.propKanbanDay || 'monday'}));
   const labels = _getKanbanLabels();
   days.forEach(day=>{
     const col=document.getElementById('col-'+day);
@@ -4163,7 +4180,7 @@ function drop(e,day){
   if(!dragId) return;
   const props = PropDB.properties;
   const i = props.findIndex(p => p.id === dragId);
-  if(i >= 0 && props[i].transactionType === 'Purchase'){
+  if(i >= 0 && props[i].propertyStatus === 'Open Escrow'){
     props[i].propKanbanDay = day;
     PropDB.properties = props;
   }
@@ -7587,6 +7604,7 @@ function piExportCSV(){
 ══════════════════════════════════════════════════════ */
 let _alTasks = [];
 let _alTaskFilterVal = 'All';
+let _alDocs = [];
 
 /* ── Add Lead photo ──────────────────────────────────── */
 let _alLeadPhoto = null;
@@ -7632,10 +7650,17 @@ function openAddLeadDrawer(){
   _alTasks = [];
   _alTaskFilterVal = 'All';
   _alLeadPhoto = null;
-  // Reset all fields
-  ['al-fname','al-lname','al-phone','al-email','al-address','al-value','al-offer','al-notes','al-task-inp'].forEach(id=>{
+  _alDocs = [];
+  // Reset all text/number fields
+  ['al-fname','al-lname','al-phone','al-email','al-address','al-city','al-zip',
+   'al-value','al-offer','al-commission','al-bonus','al-tcfee','al-split','al-officefees',
+   'al-escrow','al-mortgage','al-agent',
+   'al-contract-start','al-contract-exp','al-escrow-date','al-closing-date',
+   'al-notes','al-task-inp'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.value='';
   });
+  // State defaults to CA
+  const stateEl=document.getElementById('al-state'); if(stateEl) stateEl.value='CA';
   const addrPrev=document.getElementById('al-addr-preview'); if(addrPrev) addrPrev.value='';
   document.getElementById('al-avatar').textContent='?';
   document.getElementById('al-status').value='warm';
@@ -7643,7 +7668,14 @@ function openAddLeadDrawer(){
   document.getElementById('al-callstatus').value='notcalled';
   document.getElementById('al-situation').value='';
   document.getElementById('al-type').value='';
-  document.getElementById('al-owed-val').textContent='$0';
+  const txtypeEl=document.getElementById('al-txtype'); if(txtypeEl) txtypeEl.value='Listing';
+  const roleEl=document.getElementById('al-role'); if(roleEl) roleEl.value='';
+  const owedEl=document.getElementById('al-owed-val'); if(owedEl) owedEl.textContent='$0';
+  // Reset commission display
+  const estComm=document.getElementById('al-est-commission'); if(estComm){estComm.textContent='$0';estComm.style.color='var(--gold)';}
+  const estBrk=document.getElementById('al-est-breakdown'); if(estBrk) estBrk.innerHTML='';
+  // Reset docs
+  alRenderDocs();
   // Reset photo
   alClearPhoto();
   // Reset task filter buttons
@@ -7666,11 +7698,93 @@ function alUpdateAvatar(){
 }
 
 function alUpdateFinancials(){
-  const val=Number(document.getElementById('al-value').value)||0;
-  const offer=Number(document.getElementById('al-offer').value)||0;
+  const val=Number(document.getElementById('al-value')?.value)||0;
+  const offer=Number(document.getElementById('al-offer')?.value)||0;
   const diff=val-offer;
-  document.getElementById('al-owed-val').textContent=
-    diff>=0?'$'+diff.toLocaleString():'-$'+Math.abs(diff).toLocaleString();
+  const owedEl=document.getElementById('al-owed-val');
+  if(owedEl) owedEl.textContent=diff>=0?'$'+diff.toLocaleString():'-$'+Math.abs(diff).toLocaleString();
+}
+
+/* ── Add Lead Commission Calculator ── */
+function alCalcCommission(){
+  const price      = Number(document.getElementById('al-value')?.value)       || 0;
+  const commPct    = Number(document.getElementById('al-commission')?.value)   || 0;
+  const bonus      = Number(document.getElementById('al-bonus')?.value)        || 0;
+  const tcFee      = Number(document.getElementById('al-tcfee')?.value)        || 0;
+  const splitPct   = Number(document.getElementById('al-split')?.value)        || 0;
+  const officeFees = Number(document.getElementById('al-officefees')?.value)   || 0;
+
+  const grossComm  = price * (commPct / 100);
+  const agentBase  = splitPct > 0 ? grossComm * (splitPct / 100) : grossComm;
+  const brokerCut  = splitPct > 0 ? grossComm - agentBase : 0;
+  const netComm    = agentBase + bonus - tcFee - officeFees;
+
+  const fmt = v => {
+    const abs = Math.abs(v).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    return v < 0 ? '-$' + abs : '$' + abs;
+  };
+
+  const el  = document.getElementById('al-est-commission');
+  const brk = document.getElementById('al-est-breakdown');
+  if(!el) return;
+
+  el.textContent = fmt(netComm);
+  el.style.color = netComm < 0 ? '#ef4444' : 'var(--gold)';
+
+  if(price > 0 || commPct > 0){
+    let lines = [];
+    if(commPct > 0)   lines.push(`${fmt(price)} × ${commPct}% = ${fmt(grossComm)} gross`);
+    if(splitPct > 0)  lines.push(`${splitPct}% split → your share ${fmt(agentBase)} (broker gets ${fmt(brokerCut)})`);
+    if(bonus > 0)     lines.push(`+ Bonus ${fmt(bonus)}`);
+    if(tcFee > 0)     lines.push(`− TC Fee ${fmt(tcFee)}`);
+    if(officeFees>0)  lines.push(`− Office Fees ${fmt(officeFees)}`);
+    brk.innerHTML = lines.join('<br>');
+  } else {
+    brk.innerHTML = '';
+  }
+}
+
+/* ── Add Lead Document Handlers ── */
+function alHandleDocsDrop(e){
+  e.preventDefault();
+  document.getElementById('al-docs-drop').classList.remove('drag-over');
+  alHandleDocsFiles(e.dataTransfer.files);
+}
+function alHandleDocsFiles(files){
+  if(!files || !files.length) return;
+  Array.from(files).forEach(file => {
+    if(file.size > 5*1024*1024){ showToast(`⚠️ ${file.name} exceeds 5MB, skipped`); return; }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      _alDocs.push({ id:uid(), name:file.name, type:file.type, dataUrl:ev.target.result });
+      alRenderDocs();
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('al-docs-input').value = '';
+}
+function alRenderDocs(){
+  const grid = document.getElementById('al-docs-grid');
+  if(!grid) return;
+  if(!_alDocs.length){ grid.innerHTML=''; return; }
+  grid.innerHTML = _alDocs.map(doc => {
+    const isImg = doc.type.startsWith('image/');
+    const isPdf = doc.type==='application/pdf' || doc.name.toLowerCase().endsWith('.pdf');
+    const thumb = isImg
+      ? `<img src="${doc.dataUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:4px"/>`
+      : isPdf ? `<div style="font-size:1.4rem;display:flex;align-items:center;justify-content:center;height:100%">📄</div>`
+      : `<div style="font-size:1.4rem;display:flex;align-items:center;justify-content:center;height:100%">📎</div>`;
+    const shortName = doc.name.length>20 ? doc.name.slice(0,18)+'…' : doc.name;
+    return `<div class="prop-doc-card">
+      <div class="prop-doc-thumb">${thumb}</div>
+      <div class="prop-doc-name" title="${doc.name}">${shortName}</div>
+      <button class="prop-doc-del" onclick="alDeleteDoc('${doc.id}')" title="Remove">✕</button>
+    </div>`;
+  }).join('');
+}
+function alDeleteDoc(id){
+  _alDocs = _alDocs.filter(d => d.id !== id);
+  alRenderDocs();
 }
 
 function alAddTask(){
@@ -7725,41 +7839,79 @@ function alRenderTasks(){
 }
 
 function saveLeadDrawer(){
-  const fn=document.getElementById('al-fname').value.trim();
-  const ln=document.getElementById('al-lname').value.trim();
-  const ph=document.getElementById('al-phone').value.trim();
-  const addr=document.getElementById('al-address').value.trim();
-  if(!fn||!ph||!addr){ showToast('Name, phone & address are required'); return; }
-  const lead={
-    id:uid(), fname:fn, lname:ln||'',
-    phone:ph, email:document.getElementById('al-email').value.trim(),
-    address:addr,
-    value:Number(document.getElementById('al-value').value)||0,
-    offer:Number(document.getElementById('al-offer').value)||0,
-    type:document.getElementById('al-type').value,
-    status:document.getElementById('al-status').value,
-    callstatus:document.getElementById('al-callstatus').value,
-    source:document.getElementById('al-source').value,
-    situation:document.getElementById('al-situation').value,
-    kanbanDay:'unscheduled', notes:[], timeline:[],
-    tasks:_alTasks.map(t=>({...t})),
-    created:Date.now(), lastContact:null,
+  const fn  = document.getElementById('al-fname').value.trim();
+  const ln  = document.getElementById('al-lname').value.trim();
+  const ph  = document.getElementById('al-phone').value.trim();
+  const str = document.getElementById('al-address').value.trim();
+  const city= document.getElementById('al-city')?.value.trim() || '';
+  if(!fn || !ph){ showToast('Name and phone are required'); return; }
+
+  // Build full address string
+  const stateVal = document.getElementById('al-state')?.value.trim() || '';
+  const zipVal   = document.getElementById('al-zip')?.value.trim()   || '';
+  const addrParts = [str, city, stateVal, zipVal].filter(Boolean);
+  const fullAddr  = addrParts.join(', ') || '';
+
+  const lead = {
+    id: uid(),
+    fname: fn, lname: ln || '',
+    phone: ph,
+    email: document.getElementById('al-email')?.value.trim() || '',
+    address: fullAddr,
+    addressStreet: str,
+    addressCity: city,
+    addressState: stateVal,
+    addressZip: zipVal,
+    value:   Number(document.getElementById('al-value')?.value)    || 0,
+    offer:   Number(document.getElementById('al-offer')?.value)    || 0,
+    type:    document.getElementById('al-type')?.value   || '',
+    txtype:  document.getElementById('al-txtype')?.value || 'Listing',
+    role:    document.getElementById('al-role')?.value   || '',
+    status:  document.getElementById('al-status')?.value || 'warm',
+    callstatus: document.getElementById('al-callstatus')?.value || 'notcalled',
+    source:  document.getElementById('al-source')?.value || 'manual',
+    situation: document.getElementById('al-situation')?.value || '',
+    // Commission fields
+    commission:  Number(document.getElementById('al-commission')?.value)  || 0,
+    bonus:       Number(document.getElementById('al-bonus')?.value)       || 0,
+    tcFee:       Number(document.getElementById('al-tcfee')?.value)       || 0,
+    splitPct:    Number(document.getElementById('al-split')?.value)       || 0,
+    officeFees:  Number(document.getElementById('al-officefees')?.value)  || 0,
+    // Escrow & agent
+    escrowCompany:   document.getElementById('al-escrow')?.value.trim()   || '',
+    mortgageCompany: document.getElementById('al-mortgage')?.value.trim() || '',
+    agent:           document.getElementById('al-agent')?.value.trim()    || '',
+    // Dates
+    contractStartDate: document.getElementById('al-contract-start')?.value || '',
+    contractExpDate:   document.getElementById('al-contract-exp')?.value   || '',
+    openEscrowDate:    document.getElementById('al-escrow-date')?.value    || '',
+    closingDate:       document.getElementById('al-closing-date')?.value   || '',
+    // Docs
+    docs: _alDocs.map(d => ({...d})),
+    // System fields
+    kanbanDay: 'unscheduled', notes: [], timeline: [],
+    tasks: _alTasks.map(t => ({...t})),
+    created: Date.now(), lastContact: null,
   };
-  const noteTxt=document.getElementById('al-notes').value.trim();
-  if(noteTxt) lead.notes.push({id:uid(),text:noteTxt,ts:Date.now()});
-  lead.timeline.push({type:'created',msg:`Lead created — Source: ${lead.source}`,ts:Date.now(),color:'var(--gold)'});
-  const leads=DB.leads; leads.push(lead); DB.leads=leads;
-  // Save house photo if one was captured in the drawer
+
+  const noteTxt = document.getElementById('al-notes')?.value.trim();
+  if(noteTxt) lead.notes.push({id:uid(), text:noteTxt, ts:Date.now()});
+  lead.timeline.push({type:'created', msg:`Lead created — Source: ${lead.source}`, ts:Date.now(), color:'var(--gold)'});
+
+  const leads = DB.leads; leads.push(lead); DB.leads = leads;
+
+  // Save house photo
   if(_alLeadPhoto){
-    try{ localStorage.setItem('bchb_lead_photo_'+lead.id, _alLeadPhoto); }
-    catch(e){ console.warn('Lead photo save failed (storage full?)',e); }
+    try{ localStorage.setItem('bchb_lead_photo_' + lead.id, _alLeadPhoto); }
+    catch(e){ console.warn('Lead photo save failed (storage full?)', e); }
   }
+
   localStorage.setItem('bchb_seeded','1');
-  logActivity(`New lead: ${fn} ${ln} (${lead.source})`,'var(--green)');
-  document.getElementById('leadsCountBadge').textContent=DB.leads.length;
+  logActivity(`New lead: ${fn} ${ln} (${lead.source})`, 'var(--green)');
+  document.getElementById('leadsCountBadge').textContent = DB.leads.length;
   closeAddLeadDrawer();
   renderLeads();
-  showToast(`${fn} ${ln} added ✓`);
+  showToast(`${fn} ${ln||''} added ✓`);
 }
 
 // Intercept all showView('add-lead') calls to open the drawer instead
@@ -8162,14 +8314,17 @@ function saveProperty(){
                           : Date.now()
     };
 
-    // Auto-assign to Kanban 'Open Escrow' column when transactionType = Purchase.
-    // If editing an existing property, preserve its current kanban column.
-    // If it was previously a Listing (no propKanbanDay), start it in the first column.
-    if(prop.transactionType === 'Purchase'){
+    // Auto-assign to Process board when status = 'Open Escrow'.
+    // If editing, preserve the column the user already dragged it to.
+    // If the property never had a column (new or was a different status), land in first column.
+    if(prop.propertyStatus === 'Open Escrow'){
       const existing = _editingPropId ? PropDB.properties.find(p=>p.id===_editingPropId) : null;
-      prop.propKanbanDay = (existing && existing.propKanbanDay) ? existing.propKanbanDay : 'monday';
+      const existingWasOpenEscrow = existing && existing.propertyStatus === 'Open Escrow';
+      const hasColumn = existing && existing.propKanbanDay;
+      // Only preserve the column if the property was ALREADY Open Escrow and had a column.
+      // If status is being changed TO Open Escrow now, always reset to the first column.
+      prop.propKanbanDay = (existingWasOpenEscrow && hasColumn) ? existing.propKanbanDay : 'monday';
     } else {
-      // Not a Purchase — remove from kanban board
       prop.propKanbanDay = null;
     }
 
@@ -8692,8 +8847,8 @@ function syncGaugesFromProperties(){
     return days>=0 && days<=10;
   }).length;
 
-  // PENDING = all Purchase transactions (purchase means escrow is open)
-  const pending = props.filter(p=>p.transactionType==='Purchase').length;
+  // PENDING = all properties currently in Open Escrow status
+  const pending = props.filter(p=>p.propertyStatus==='Open Escrow').length;
 
   // MO CLOSING = any property whose Closing Date is in the current month
   const moClosing = props.filter(p=>{
@@ -8967,42 +9122,41 @@ function syncGaugesFromProperties(){
     <div class="al-section-title">📋 Contact Info</div>
     <div class="al-two-col">
       <div class="al-field">
-        <div class="al-field-label">📧 Email</div>
-        <input class="al-field-input" id="al-email" type="email" placeholder="email@example.com"/>
-      </div>
-      <div class="al-field">
         <div class="al-field-label">📱 Phone <span style="color:var(--gold)">*</span></div>
         <input class="al-field-input" id="al-phone" type="tel" placeholder="(661) 555-0000"/>
       </div>
+      <div class="al-field">
+        <div class="al-field-label">📧 Email</div>
+        <input class="al-field-input" id="al-email" type="email" placeholder="email@example.com"/>
+      </div>
     </div>
-    <div class="al-field">
-      <div class="al-field-label">📍 Property Address <span style="color:var(--gold)">*</span></div>
-      <input class="al-field-input" id="al-address" placeholder="123 Main St, Bakersfield CA 93301" oninput="document.getElementById('al-addr-preview').value=this.value"/>
-    </div>
-    <div class="al-two-col" style="margin-bottom:0">
-      <div class="al-field" style="margin-bottom:0">
-        <div class="al-field-label">🏠 Property Type</div>
-        <select class="al-field-select" id="al-type">
-          <option value="">Select type…</option>
-          <option>Single Family</option><option>Condo</option>
-          <option>Multi-Family</option><option>Land</option>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">📣 Lead Source</div>
+        <select class="al-field-select" id="al-source">
+          <option value="manual">Manual Entry</option>
+          <option value="website">Website Form</option>
+          <option value="zillow">Zillow</option>
+          <option value="facebook">Facebook Ads</option>
+          <option value="referral">Referral</option>
+          <option value="direct mail">Direct Mail</option>
+          <option value="cold call">Cold Call</option>
         </select>
       </div>
-      <div class="al-field" style="margin-bottom:0">
-        <div class="al-field-label">💡 Situation</div>
-        <select class="al-field-select" id="al-situation">
-          <option value="">Select…</option>
-          <option>Foreclosure</option><option>Inherited</option>
-          <option>Relocating</option><option>Rental Issues</option>
-          <option>Divorce</option><option>Downsizing</option><option>Other</option>
+      <div class="al-field">
+        <div class="al-field-label">📞 Call Status</div>
+        <select class="al-field-select" id="al-callstatus">
+          <option value="notcalled">Not Called</option>
+          <option value="called">Called</option>
+          <option value="willcall">Will Call</option>
         </select>
       </div>
     </div>
   </div>
 
-  <!-- House Photo -->
+  <!-- Property Photo -->
   <div class="al-section">
-    <div class="al-section-title">📸 House Photo</div>
+    <div class="al-section-title">📸 Property Photo</div>
     <div class="ev-docs-drop" id="al-photo-drop"
       onclick="document.getElementById('al-photo-input').click()"
       ondragover="event.preventDefault();this.classList.add('drag-over')"
@@ -9015,52 +9169,178 @@ function syncGaugesFromProperties(){
       </div>
     </div>
     <input type="file" id="al-photo-input" accept="image/*" style="display:none" onchange="alHandlePhotoFile(this.files[0])"/>
-    <div id="al-photo-preview" style="display:none;position:relative;margin-top:2px">
+    <div id="al-photo-preview" style="display:none;position:relative;margin-top:8px">
       <img id="al-photo-img" style="width:100%;height:160px;object-fit:cover;border-radius:10px;display:block;border:1px solid var(--border)"/>
       <button onclick="alClearPhoto()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);border:none;color:#fff;border-radius:50%;width:26px;height:26px;font-size:0.8rem;cursor:pointer;line-height:1">✕</button>
     </div>
   </div>
 
-  <!-- Lead Details -->
+  <!-- Property Information -->
   <div class="al-section">
-    <div class="al-section-title">🎯 Lead Details</div>
-    <div class="al-two-col" style="margin-bottom:0">
-      <div class="al-field" style="margin-bottom:0">
-        <div class="al-field-label">📣 Lead Source</div>
-        <select class="al-field-select" id="al-source">
-          <option value="manual">Manual Entry</option>
-          <option value="website">Website Form</option>
-          <option value="zillow">Zillow</option>
-          <option value="facebook">Facebook Ads</option>
+    <div class="al-section-title">🏠 Property Information</div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">Transaction Type</div>
+        <select class="al-field-select" id="al-txtype">
+          <option value="Listing">Listing</option>
+          <option value="Purchase">Purchase</option>
         </select>
       </div>
-      <div class="al-field" style="margin-bottom:0">
-        <div class="al-field-label">📞 Call Status</div>
-        <select class="al-field-select" id="al-callstatus">
-          <option value="notcalled">Not Called</option>
-          <option value="called">Called</option>
-          <option value="willcall">Will Call</option>
+      <div class="al-field">
+        <div class="al-field-label">Property Type</div>
+        <select class="al-field-select" id="al-type">
+          <option value="">Select type…</option>
+          <option value="Residential">Residential</option>
+          <option value="Single Family">Single Family</option>
+          <option value="Condo">Condo</option>
+          <option value="Multi-Family">Multi-Family</option>
+          <option value="Commercial">Commercial</option>
+          <option value="Land">Land</option>
+        </select>
+      </div>
+    </div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">💡 Situation</div>
+        <select class="al-field-select" id="al-situation">
+          <option value="">Select…</option>
+          <option>Foreclosure</option><option>Inherited</option>
+          <option>Relocating</option><option>Rental Issues</option>
+          <option>Divorce</option><option>Downsizing</option><option>Other</option>
+        </select>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">Role</div>
+        <select class="al-field-select" id="al-role">
+          <option value="">—</option>
+          <option value="seller">Seller</option>
+          <option value="buyer">Buyer</option>
         </select>
       </div>
     </div>
   </div>
 
-  <!-- Financials -->
+  <!-- Address Information -->
   <div class="al-section">
-    <div class="al-section-title">💰 Financials</div>
+    <div class="al-section-title">📍 Address Information</div>
+    <div class="al-field">
+      <div class="al-field-label">Street <span style="color:var(--gold)">*</span></div>
+      <input class="al-field-input" id="al-address" placeholder="123 Main St"
+        oninput="document.getElementById('al-addr-preview').value=this.value+', '+(document.getElementById('al-city').value||'')"/>
+    </div>
     <div class="al-two-col">
       <div class="al-field">
-        <div class="al-field-label">💵 List Price ($)</div>
-        <input class="al-field-input" id="al-value" type="number" placeholder="280000" oninput="alUpdateFinancials()"/>
+        <div class="al-field-label">City <span style="color:var(--gold)">*</span></div>
+        <input class="al-field-input" id="al-city" placeholder="Bakersfield"
+          oninput="document.getElementById('al-addr-preview').value=(document.getElementById('al-address').value||'')+', '+this.value"/>
       </div>
       <div class="al-field">
-        <div class="al-field-label">🤝 Our Offer ($)</div>
-        <input class="al-field-input" id="al-offer" type="number" placeholder="0" oninput="alUpdateFinancials()"/>
+        <div class="al-field-label">State</div>
+        <input class="al-field-input" id="al-state" placeholder="CA" value="CA"/>
       </div>
     </div>
-    <div class="al-owed-box" id="al-owed-box">
-      <div class="al-field-label">📊 Estimated Savings</div>
-      <div class="al-owed-val" id="al-owed-val">$0</div>
+    <div class="al-field" style="max-width:50%">
+      <div class="al-field-label">Zip Code</div>
+      <input class="al-field-input" id="al-zip" placeholder="93301"/>
+    </div>
+  </div>
+
+  <!-- Price Information -->
+  <div class="al-section">
+    <div class="al-section-title">💵 Price Information</div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">Sales Price ($) <span style="color:var(--gold)">*</span></div>
+        <input class="al-field-input" id="al-value" type="number" placeholder="0" oninput="alCalcCommission()"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">Our Offer ($)</div>
+        <input class="al-field-input" id="al-offer" type="number" placeholder="0"/>
+      </div>
+    </div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">Commission % <span style="color:var(--gray);font-size:0.6rem;text-transform:none;letter-spacing:0;margin-left:4px">(e.g. 2.5)</span></div>
+        <div style="position:relative">
+          <input class="al-field-input" id="al-commission" type="number" placeholder="0" style="padding-right:28px" oninput="alCalcCommission()"/>
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gray);font-size:0.78rem;pointer-events:none">%</span>
+        </div>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">Bonus ($)</div>
+        <input class="al-field-input" id="al-bonus" type="number" placeholder="0" oninput="alCalcCommission()"/>
+      </div>
+    </div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">TC Fee ($)</div>
+        <input class="al-field-input" id="al-tcfee" type="number" placeholder="0" oninput="alCalcCommission()"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">Your Split (% you keep)</div>
+        <div style="position:relative">
+          <input class="al-field-input" id="al-split" type="number" placeholder="e.g. 50" style="padding-right:28px" oninput="alCalcCommission()"/>
+          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gray);font-size:0.78rem;pointer-events:none">%</span>
+        </div>
+      </div>
+    </div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">Office Fees ($)</div>
+        <input class="al-field-input" id="al-officefees" type="number" placeholder="0" oninput="alCalcCommission()"/>
+      </div>
+    </div>
+    <!-- Estimated Commission -->
+    <div style="background:var(--surface3);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;margin-top:4px">
+      <div style="font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);margin-bottom:6px">Estimated Commission to Agent</div>
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <div id="al-est-commission" style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-weight:700">$0</div>
+        <div id="al-est-breakdown" style="font-size:0.72rem;color:var(--gray);line-height:1.5"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Escrow & Agent -->
+  <div class="al-section">
+    <div class="al-section-title">🏦 Escrow &amp; Agent</div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">Escrow Company</div>
+        <input class="al-field-input" id="al-escrow" placeholder="Company name"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">Mortgage Company</div>
+        <input class="al-field-input" id="al-mortgage" placeholder="Company name"/>
+      </div>
+    </div>
+    <div class="al-field">
+      <div class="al-field-label">Agent</div>
+      <input class="al-field-input" id="al-agent" placeholder="Agent name"/>
+    </div>
+  </div>
+
+  <!-- Dates -->
+  <div class="al-section">
+    <div class="al-section-title">📅 Dates</div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">Contract Start Date</div>
+        <input class="al-field-input" id="al-contract-start" type="date"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">Contract Expiration Date</div>
+        <input class="al-field-input" id="al-contract-exp" type="date"/>
+      </div>
+    </div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">Open Escrow Date</div>
+        <input class="al-field-input" id="al-escrow-date" type="date"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">Closing Date</div>
+        <input class="al-field-input" id="al-closing-date" type="date"/>
+      </div>
     </div>
   </div>
 
@@ -9092,6 +9372,24 @@ function syncGaugesFromProperties(){
       </select>
       <button class="al-task-add-btn" onclick="alAddTask()">+ Add</button>
     </div>
+  </div>
+
+  <!-- Document Inspections -->
+  <div class="al-section">
+    <div class="al-section-title">📎 Document Inspections</div>
+    <div class="ev-docs-drop" id="al-docs-drop"
+      onclick="document.getElementById('al-docs-input').click()"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="alHandleDocsDrop(event)">
+      <div class="ev-docs-drop-icon">📁</div>
+      <div>
+        <div class="ev-docs-drop-text"><strong>Click to upload</strong> or drag &amp; drop</div>
+        <div class="ev-docs-drop-sub">PDF, JPG, PNG, DOCX — up to 5MB each</div>
+      </div>
+    </div>
+    <input type="file" id="al-docs-input" accept=".pdf,.jpg,.jpeg,.png,.docx,.doc" multiple style="display:none" onchange="alHandleDocsFiles(this.files)"/>
+    <div class="doc-grid" id="al-docs-grid"></div>
   </div>
 
   <!-- Notes -->
