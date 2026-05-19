@@ -290,6 +290,115 @@ input,select,textarea{font-family:var(--font)}
 .badge-closed{background:rgba(34,197,94,0.15);color:#22c55e}
 .badge-active{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3);font-weight:700}
 .badge-escrow{background:rgba(167,139,250,0.15);color:#a78bfa}
+/* ══ SALES BOARD ══════════════════════════════════════════ */
+.sb-gauge-row{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:14px;
+  margin-bottom:18px;
+}
+.sb-gauge-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:14px 10px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  transition:border-color var(--transition),transform var(--transition);
+}
+.sb-gauge-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.sb-gauge-title{
+  font-size:0.72rem;font-weight:600;color:var(--gray);
+  text-transform:uppercase;letter-spacing:.08em;
+  text-align:center;width:100%;white-space:nowrap;
+}
+.sb-donut-wrap{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
+.sb-donut-wrap svg{width:100%;height:100%;overflow:visible}
+.sb-gauge-legend{display:none}
+.sb-leg-row{display:none}
+.sb-leg-dot{display:none}
+.sb-leg-label{display:none}
+.sb-leg-val{display:none}
+.sb-leg-more{display:none}
+
+/* ── Sales Board body grid ── */
+.sb-body-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:auto 1fr;
+  gap:14px;
+  min-height:0;
+}
+.sb-col-left{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:14px}
+.sb-col-mid{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:14px}
+.sb-col-right{grid-column:3;grid-row:1/3;display:flex;flex-direction:column}
+.sb-section-title{
+  font-size:0.78rem;font-weight:700;color:var(--white);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.sb-section-sub{font-size:0.68rem;color:var(--gray);font-weight:400;margin-left:4px}
+
+/* top agents */
+.sb-agents-row{display:flex;gap:12px;justify-content:space-around;padding:8px 0 16px;align-items:flex-end}
+.sb-agent-item{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
+.sb-agent-avatar-wrap{
+  position:relative;width:88px;height:88px;flex-shrink:0;
+  border-radius:50%;padding:3px;background:var(--border2);
+}
+.sb-ring-1{background:linear-gradient(135deg,#f59e0b,#fde68a)}
+.sb-ring-2{background:linear-gradient(135deg,#9ca3af,#e5e7eb)}
+.sb-ring-3{background:linear-gradient(135deg,#b45309,#f97316)}
+.sb-agent-avatar{
+  width:100%;height:100%;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,#6366f1,#4f46e5);
+}
+.sb-rank-badge{
+  position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.65rem;font-weight:900;border:2px solid var(--surface);z-index:2;
+}
+.sb-rank-1{background:#f59e0b;color:#0d0d0f}
+.sb-rank-2{background:#9ca3af;color:#0d0d0f}
+.sb-rank-3{background:#b45309;color:#fff}
+.sb-agent-name{font-size:0.78rem;font-weight:600;color:var(--white);text-align:center;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-agent-stats{font-size:0.68rem;color:var(--gray);text-align:center}
+.sb-agent-vol{font-size:0.84rem;font-weight:700;color:#22d3ee;text-align:center}
+
+/* monthly chart */
+.sb-chart-area{width:100%;overflow:hidden}
+.sb-chart-area svg{width:100%;display:block}
+
+/* tables */
+.sb-table{width:100%;border-collapse:collapse;font-size:0.75rem}
+.sb-table th{
+  font-size:0.65rem;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--gray);font-weight:600;
+  padding:0 8px 8px;border-bottom:1px solid var(--border);text-align:left;
+}
+.sb-table td{
+  padding:7px 8px;border-bottom:1px solid rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.85);vertical-align:middle;
+}
+.sb-table tr:last-child td{border-bottom:none}
+.sb-table tr:hover td{background:rgba(255,255,255,0.03)}
+.sb-table .sb-addr{max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-table .sb-price{color:#22d3ee;font-weight:600}
+.sb-table .sb-agent-name-cell{color:var(--gold)}
+.sb-no-data{
+  text-align:center;color:var(--gray);font-size:0.8rem;
+  padding:24px 0;font-style:italic;
+}
+.sb-rank-num{
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(99,102,241,0.2);color:#a5b4fc;
+  font-size:0.65rem;font-weight:800;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.sb-rank-vol{font-weight:700;color:#22d3ee;font-size:0.78rem}
+.sb-rank-closed{color:var(--green);font-weight:600}
+@media(max-width:1100px){
+  .sb-gauge-row{grid-template-columns:repeat(3,1fr)}
+  .sb-body-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto}
+  .sb-col-right{grid-row:auto;grid-column:1/3}
+}
+
 .badge-openescrow{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-dim);font-weight:700;}
 .badge-archive{background:rgba(136,136,136,0.15);color:var(--archive)}
 .badge-called{background:rgba(74,222,128,0.15);color:var(--green)}
@@ -430,18 +539,52 @@ input,select,textarea{font-family:var(--font)}
 .kanban-card-date{font-size:0.68rem;color:var(--gray2)}
 
 /* ── CALENDAR ───────────────────────────────────────── */
-.cal-header{
+.cal-topbar{
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:16px;
+  margin-bottom:20px;flex-wrap:wrap;gap:12px;
 }
-.cal-nav{display:flex;gap:8px}
-.cal-month-label{font-family:var(--serif);font-size:1.3rem}
+.cal-page-title{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--white)}
+.cal-page-sub{font-size:0.78rem;color:var(--gray);margin-top:2px}
+.cal-topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cal-view-tabs{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.cal-vtab{
+  padding:7px 18px;background:transparent;border:none;
+  color:var(--gray);font-size:0.82rem;font-weight:500;cursor:pointer;
+  transition:background .15s,color .15s;white-space:nowrap;
+}
+.cal-vtab:hover{color:var(--white)}
+.cal-vtab.active{background:var(--surface3);color:var(--white);font-weight:600}
+.cal-new-event-btn{
+  padding:8px 18px;background:linear-gradient(135deg,#6c3fc7,#9b7dd4);
+  border:none;border-radius:8px;color:#fff;
+  font-size:0.84rem;font-weight:600;cursor:pointer;
+  transition:opacity .15s;white-space:nowrap;letter-spacing:.01em;
+}
+.cal-new-event-btn:hover{opacity:.88}
+.cal-header{
+  display:flex;align-items:center;gap:8px;
+  padding:14px 18px;border-bottom:1px solid var(--border);
+}
+.cal-nav-btn{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--gray);font-size:1.1rem;width:30px;height:30px;
+  border-radius:6px;cursor:pointer;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.cal-nav-btn:hover{color:var(--white);border-color:var(--white)}
+.cal-month-label{font-family:var(--serif);font-size:1.15rem;font-weight:700;color:var(--white);flex:1;text-align:center}
+.cal-today-btn{
+  margin-left:4px;padding:5px 14px;background:transparent;
+  border:1px solid var(--border);border-radius:6px;
+  color:var(--gray);font-size:0.78rem;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.cal-today-btn:hover{color:var(--white);border-color:var(--white)}
 .cal-grid{
   display:grid;grid-template-columns:repeat(7,1fr);
-  gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;
+  gap:1px;background:var(--border);
 }
 .cal-day-name{
-  background:var(--surface2);padding:10px;
+  background:var(--surface2);padding:10px 8px;
   text-align:center;font-size:0.72rem;letter-spacing:0.08em;
   text-transform:uppercase;color:var(--gray);
 }
@@ -854,6 +997,115 @@ input,select,textarea{font-family:var(--font)}
 .sfb-escrow:hover{border-color:#a78bfa;background:rgba(167,139,250,0.08)}
 .sfb-escrow.active{background:#a78bfa!important;border-color:#a78bfa!important;color:#0d0d0f!important}
 .badge-escrow{background:rgba(167,139,250,0.15);color:#a78bfa}
+/* ══ SALES BOARD ══════════════════════════════════════════ */
+.sb-gauge-row{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:14px;
+  margin-bottom:18px;
+}
+.sb-gauge-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:14px 10px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  transition:border-color var(--transition),transform var(--transition);
+}
+.sb-gauge-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.sb-gauge-title{
+  font-size:0.72rem;font-weight:600;color:var(--gray);
+  text-transform:uppercase;letter-spacing:.08em;
+  text-align:center;width:100%;white-space:nowrap;
+}
+.sb-donut-wrap{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
+.sb-donut-wrap svg{width:100%;height:100%;overflow:visible}
+.sb-gauge-legend{display:none}
+.sb-leg-row{display:none}
+.sb-leg-dot{display:none}
+.sb-leg-label{display:none}
+.sb-leg-val{display:none}
+.sb-leg-more{display:none}
+
+/* ── Sales Board body grid ── */
+.sb-body-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:auto 1fr;
+  gap:14px;
+  min-height:0;
+}
+.sb-col-left{grid-column:1;grid-row:1;display:flex;flex-direction:column;gap:14px}
+.sb-col-mid{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:14px}
+.sb-col-right{grid-column:3;grid-row:1/3;display:flex;flex-direction:column}
+.sb-section-title{
+  font-size:0.78rem;font-weight:700;color:var(--white);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.sb-section-sub{font-size:0.68rem;color:var(--gray);font-weight:400;margin-left:4px}
+
+/* top agents */
+.sb-agents-row{display:flex;gap:12px;justify-content:space-around;padding:8px 0 16px;align-items:flex-end}
+.sb-agent-item{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
+.sb-agent-avatar-wrap{
+  position:relative;width:88px;height:88px;flex-shrink:0;
+  border-radius:50%;padding:3px;background:var(--border2);
+}
+.sb-ring-1{background:linear-gradient(135deg,#f59e0b,#fde68a)}
+.sb-ring-2{background:linear-gradient(135deg,#9ca3af,#e5e7eb)}
+.sb-ring-3{background:linear-gradient(135deg,#b45309,#f97316)}
+.sb-agent-avatar{
+  width:100%;height:100%;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;font-weight:800;color:#fff;
+  background:linear-gradient(135deg,#6366f1,#4f46e5);
+}
+.sb-rank-badge{
+  position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.65rem;font-weight:900;border:2px solid var(--surface);z-index:2;
+}
+.sb-rank-1{background:#f59e0b;color:#0d0d0f}
+.sb-rank-2{background:#9ca3af;color:#0d0d0f}
+.sb-rank-3{background:#b45309;color:#fff}
+.sb-agent-name{font-size:0.78rem;font-weight:600;color:var(--white);text-align:center;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sb-agent-stats{font-size:0.68rem;color:var(--gray);text-align:center}
+.sb-agent-vol{font-size:0.84rem;font-weight:700;color:#22d3ee;text-align:center}
+
+/* monthly chart */
+.sb-chart-area{width:100%;overflow:hidden}
+.sb-chart-area svg{width:100%;display:block}
+
+/* tables */
+.sb-table{width:100%;border-collapse:collapse;font-size:0.75rem}
+.sb-table th{
+  font-size:0.65rem;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--gray);font-weight:600;
+  padding:0 8px 8px;border-bottom:1px solid var(--border);text-align:left;
+}
+.sb-table td{
+  padding:7px 8px;border-bottom:1px solid rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.85);vertical-align:middle;
+}
+.sb-table tr:last-child td{border-bottom:none}
+.sb-table tr:hover td{background:rgba(255,255,255,0.03)}
+.sb-table .sb-addr{max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-table .sb-price{color:#22d3ee;font-weight:600}
+.sb-table .sb-agent-name-cell{color:var(--gold)}
+.sb-no-data{
+  text-align:center;color:var(--gray);font-size:0.8rem;
+  padding:24px 0;font-style:italic;
+}
+.sb-rank-num{
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(99,102,241,0.2);color:#a5b4fc;
+  font-size:0.65rem;font-weight:800;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.sb-rank-vol{font-weight:700;color:#22d3ee;font-size:0.78rem}
+.sb-rank-closed{color:var(--green);font-weight:600}
+@media(max-width:1100px){
+  .sb-gauge-row{grid-template-columns:repeat(3,1fr)}
+  .sb-body-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto}
+  .sb-col-right{grid-row:auto;grid-column:1/3}
+}
+
 
 
 /* ═══ GOOGLE CALENDAR ══════════════════════════════════════════════════════ */
@@ -1373,60 +1625,178 @@ tr.prop-expiring:hover{
 
 
 /* ── Calendar 2-col layout ──────────────────────────── */
-.cal-wrap{display:grid;grid-template-columns:1fr 320px;gap:0;height:calc(100vh - 140px);overflow:hidden}
-.cal-left{overflow-y:auto;padding-right:0;border-right:1px solid var(--border)}
-.cal-right{display:flex;flex-direction:column;overflow-y:auto;background:var(--surface)}
-.cal-upcoming-header{padding:22px 20px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
-.cal-upcoming-header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px}
-.cal-upcoming-date{font-size:1.25rem;font-weight:700;color:var(--white);line-height:1.2}
-.cal-upcoming-sub{font-size:0.75rem;color:var(--gray);margin-top:3px}
-.cal-upcoming-create-btn{
-  flex-shrink:0;padding:7px 14px;border-radius:8px;
-  background:var(--gold);color:#0d0d0f;border:none;
-  font-weight:700;font-size:0.78rem;cursor:pointer;
-  white-space:nowrap;transition:background .15s;
+.cal-wrap{display:grid;grid-template-columns:1fr 340px;gap:0;height:calc(100vh - 170px);overflow:hidden}
+.cal-left{overflow-y:auto;border-right:1px solid var(--border);display:flex;flex-direction:column}
+.cal-right{display:flex;flex-direction:column;overflow:hidden;background:var(--surface)}
+
+/* ── Calendar Right Panel (All Events) ────────────── */
+.cal-right-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 20px 14px;border-bottom:1px solid var(--border);flex-shrink:0;
 }
-.cal-upcoming-create-btn:hover{background:#b8935c}
-/* mini-calendar in right panel */
-.mini-cal{padding:12px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0}
-.mini-cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.mini-cal-month{font-size:0.82rem;font-weight:600;color:var(--white)}
-.mini-cal-nav{display:flex;gap:2px}
-.mini-cal-nav button{background:none;border:none;color:var(--gray);cursor:pointer;padding:3px 7px;border-radius:5px;font-size:0.85rem;transition:color .15s,background .15s}
-.mini-cal-nav button:hover{color:var(--white);background:var(--surface2)}
-.mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
-.mini-cal-dn{font-size:0.6rem;color:var(--gray);text-align:center;padding:3px 0;font-weight:600;letter-spacing:.04em}
-.mini-cal-d{font-size:0.72rem;text-align:center;padding:4px 2px;border-radius:50%;cursor:pointer;color:var(--gray);transition:background .12s,color .12s;aspect-ratio:1;display:flex;align-items:center;justify-content:center;width:26px;height:26px;margin:0 auto}
-.mini-cal-d:hover{background:var(--surface2);color:var(--white)}
-.mini-cal-d.this-month{color:var(--white)}
-.mini-cal-d.today{background:var(--gold);color:#0d0d0f;font-weight:700}
-.mini-cal-d.today:hover{background:#b8935c}
-.mini-cal-d.has-event::after{content:'';display:block;width:4px;height:4px;background:var(--gold);border-radius:50%;margin:-2px auto 0;opacity:.8}
-.mini-cal-d.today.has-event::after{background:#0d0d0f}
-.cal-upcoming-today-section{padding:14px 16px 16px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface2)}
-.cal-upcoming-today-label{font-size:0.72rem;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.cal-upcoming-today-label::before{content:'';display:inline-block;width:3px;height:14px;background:var(--gold);border-radius:2px}
-.cal-upcoming-today-empty{font-size:0.85rem;color:var(--white);padding:8px 4px;opacity:.6}
-.cal-upcoming-today-item{
-  padding:10px 12px;border-radius:8px;margin-bottom:6px;
-  border-left:3px solid var(--gold);background:var(--surface);
-  cursor:pointer;transition:border-color .15s;
+.cal-right-title{font-size:0.92rem;font-weight:700;color:var(--white);display:flex;align-items:center;gap:6px}
+.cal-right-icon{font-size:1rem}
+.cal-right-count{
+  font-size:0.7rem;color:var(--gray);
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:20px;padding:3px 10px;font-weight:500;
 }
-.cal-upcoming-today-item:hover{border-color:var(--gold-glow)}
-.cal-upcoming-list{flex:1;overflow-y:auto;padding:12px 16px}
-.cal-upcoming-item{
-  padding:11px 13px;border-radius:10px;margin-bottom:7px;
-  border:1px solid var(--border);background:var(--surface2);
-  cursor:pointer;transition:border-color .15s;
+.cal-all-events-list{flex:1;overflow-y:auto;padding:6px 0 12px}
+.cal-ev-date-group{padding:0 16px 2px}
+.cal-ev-date-label{
+  font-size:0.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gray);font-weight:700;
+  padding:10px 0 6px;
+  border-top:1px solid var(--border);
+  margin-top:4px;
 }
-.cal-upcoming-item:hover{border-color:var(--gold)}
+.cal-ev-date-group:first-child .cal-ev-date-label{border-top:none;margin-top:0;padding-top:6px}
+.cal-all-ev-item{
+  padding:10px 12px;border-radius:8px;margin-bottom:5px;
+  border-left:3px solid rgba(201,169,110,.6);
+  background:var(--surface2);
+  cursor:pointer;transition:background .15s,border-color .15s;
+}
+.cal-all-ev-item:hover{background:var(--surface3);border-left-color:var(--gold)}
+.cal-all-ev-item.today-ev{
+  border-left-color:#c94040;
+  background:rgba(239,68,68,.1);
+}
+.cal-all-ev-item.today-ev:hover{background:rgba(239,68,68,.16)}
+.cal-all-ev-item.ev-call{border-left-color:var(--green)}
+.cal-all-ev-item.ev-appt{border-left-color:var(--gold)}
+.cal-all-ev-item.ev-follow{border-left-color:#a78bfa}
+.cal-all-ev-title{font-size:0.84rem;font-weight:600;color:var(--white);margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cal-all-ev-meta{font-size:0.71rem;color:var(--gray)}
+.cal-all-empty{text-align:center;color:var(--gray);font-size:0.82rem;padding:40px 16px}
+/* ── Calendar Sub-header (Week & Day nav) ─────────── */
+.cal-sub-header{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 16px;border-bottom:1px solid var(--border);flex-shrink:0;
+  background:var(--surface);
+}
+.cal-sub-label{
+  font-size:1rem;font-weight:700;color:var(--white);flex:1;text-align:left;
+  padding-left:4px;
+}
+
+/* ── Week View v2 ─────────────────────────────────── */
+.cal-week-wrap{display:flex;flex-direction:column;height:calc(100vh - 170px);overflow:hidden}
+.cal-week-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+.wk2-grid{display:flex;flex-direction:column}
+.wk2-header-row{
+  display:grid;grid-template-columns:72px repeat(7,1fr);
+  position:sticky;top:0;z-index:3;
+  background:var(--surface);border-bottom:1px solid var(--border);
+}
+.wk2-time-head{border-right:1px solid var(--border)}
+.wk2-col-head{
+  padding:10px 6px 8px;text-align:center;
+  border-right:1px solid var(--border);
+}
+.wk2-col-head:last-child{border-right:none}
+.wk2-today-head{background:rgba(99,102,241,0.07)}
+.wk2-day-abbr{font-size:0.68rem;letter-spacing:.07em;color:var(--gray);font-weight:600;text-transform:uppercase}
+.wk2-day-num{
+  font-size:1.3rem;font-weight:700;color:var(--white);margin-top:3px;
+  width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;
+}
+.wk2-today-num{background:#6366f1;color:#fff}
+.wk2-allday-row{
+  display:grid;grid-template-columns:72px repeat(7,1fr);
+  border-bottom:2px solid var(--border);min-height:30px;
+}
+.wk2-allday-label{
+  font-size:0.58rem;color:var(--gray2);text-transform:uppercase;
+  letter-spacing:.06em;padding:0 6px;border-right:1px solid var(--border);
+  display:flex;align-items:center;justify-content:flex-end;
+}
+.wk2-allday-cell{
+  border-right:1px solid var(--border);padding:2px 3px;min-height:30px;
+}
+.wk2-allday-cell:last-child{border-right:none}
+.wk2-hour-row{
+  display:grid;grid-template-columns:72px repeat(7,1fr);
+  height:52px;border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.wk2-time-lbl{
+  font-size:0.63rem;color:var(--gray2);padding:5px 10px 0 0;
+  border-right:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:flex-end;flex-shrink:0;
+}
+.wk2-cell{
+  border-right:1px solid rgba(255,255,255,0.04);
+  cursor:pointer;position:relative;padding:2px 3px;transition:background .1s;
+}
+.wk2-cell:last-child{border-right:none}
+.wk2-cell:hover{background:rgba(99,102,241,0.07)}
+.wk2-today-col{background:rgba(99,102,241,0.05)}
+.wk2-today-col:hover{background:rgba(99,102,241,0.1)}
+.wk2-ev{
+  font-size:0.7rem;font-weight:600;padding:2px 6px;border-radius:4px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  cursor:pointer;position:relative;margin-bottom:1px;display:block;
+  background:rgba(239,68,68,0.18);color:#f87171;border-left:3px solid #ef4444;
+}
+.wk2-ev.call{background:rgba(90,180,255,0.18);color:var(--cold);border-color:var(--cold)}
+.wk2-ev.appt{background:rgba(74,222,128,0.15);color:var(--green);border-color:var(--green)}
+.wk2-ev.follow{background:rgba(167,139,250,0.18);color:#a78bfa;border-color:#a78bfa}
+
+/* ── Day View v2 ──────────────────────────────────── */
+.cal-day-wrap{display:flex;flex-direction:column;height:calc(100vh - 170px);overflow:hidden}
+.cal-day-scroll{flex:1;overflow-y:auto}
+.dv2-date-banner{
+  display:flex;align-items:center;gap:20px;
+  padding:14px 24px;border-bottom:1px solid var(--border);
+  background:rgba(99,102,241,0.1);
+  flex-shrink:0;
+}
+.dv2-big-num{
+  font-size:3rem;font-weight:900;color:#6366f1;line-height:1;
+  min-width:54px;text-align:center;
+}
+.dv2-day-name{
+  font-size:0.72rem;font-weight:700;letter-spacing:.1em;
+  color:var(--white);text-transform:uppercase;
+}
+.dv2-month-year{font-size:0.78rem;color:var(--gray);margin-top:3px}
+.dv2-grid{display:flex;flex-direction:column}
+.dv2-hour-row{
+  display:grid;grid-template-columns:72px 1fr;
+  height:52px;border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.dv2-time-lbl{
+  font-size:0.63rem;color:var(--gray2);padding:5px 10px 0 0;
+  display:flex;align-items:flex-start;justify-content:flex-end;
+  border-right:1px solid var(--border);
+}
+.dv2-slot{cursor:pointer;padding:2px 10px;position:relative;transition:background .1s}
+.dv2-slot:hover{background:rgba(99,102,241,0.06)}
+.dv2-ev{
+  font-size:0.75rem;font-weight:600;padding:3px 8px;border-radius:5px;
+  cursor:pointer;margin-bottom:2px;display:block;
+  background:rgba(239,68,68,0.18);color:#f87171;border-left:3px solid #ef4444;
+}
+.dv2-ev.call{background:rgba(90,180,255,0.18);color:var(--cold);border-color:var(--cold)}
+.dv2-ev.appt{background:rgba(74,222,128,0.15);color:var(--green);border-color:var(--green)}
+.dv2-ev.follow{background:rgba(167,139,250,0.18);color:#a78bfa;border-color:#a78bfa}
+
+
+/* keep old upcoming classes for daily view compat */
 .cal-upcoming-item-title{font-size:0.85rem;font-weight:600;color:var(--white);margin-bottom:3px}
 .cal-upcoming-item-meta{font-size:0.73rem;color:var(--gray)}
-.cal-upcoming-item.gcal{border-left:3px solid #4285f4}
 .cal-upcoming-empty{text-align:center;color:var(--gray);font-size:0.82rem;padding:30px 16px}
-.cal-upcoming-section-label{font-size:0.72rem;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin:14px 0 10px;padding:0 2px;display:flex;align-items:center;gap:6px}
-.cal-upcoming-section-label::before{content:'';display:inline-block;width:3px;height:14px;background:var(--gold);border-radius:2px}
 .cal-upcoming-day-label{font-size:0.7rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin:10px 0 6px;padding:0 2px}
+
+/* mini-calendar (kept for JS compat, hidden) */
+.mini-cal{display:none}
+.mini-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.mini-cal-dn{font-size:0.6rem;color:var(--gray);text-align:center;padding:3px 0;font-weight:600}
+.mini-cal-d{font-size:0.72rem;text-align:center;padding:4px 2px;border-radius:50%;cursor:pointer;color:var(--gray);transition:background .12s,color .12s;aspect-ratio:1;display:flex;align-items:center;justify-content:center;width:26px;height:26px;margin:0 auto}
+.mini-cal-d.this-month{color:var(--white)}
+.mini-cal-d.today{background:var(--gold);color:#0d0d0f;font-weight:700}
+.mini-cal-d.has-event::after{content:'';display:block;width:4px;height:4px;background:var(--gold);border-radius:50%;margin:-2px auto 0;opacity:.8}
 
 
 /* ══ PROPERTY INTEL ══ */
@@ -1481,6 +1851,274 @@ tr.prop-expiring:hover{
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .pi-detail-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
 .pi-detail-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:100%;max-width:640px;max-height:85vh;overflow-y:auto;padding:28px}
+
+/* ══════════════════════════════════════════════════════
+   PHONEBOOK
+══════════════════════════════════════════════════════ */
+.pb-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.pb-title-group{}
+.pb-title{font-family:var(--serif);font-size:1.6rem;font-weight:500}
+.pb-title span{color:var(--gold)}
+.pb-sub{font-size:0.78rem;color:var(--gray);margin-top:3px}
+.pb-add-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:8px;
+  background:var(--purple);color:#fff;
+  font-size:0.83rem;font-weight:600;letter-spacing:0.03em;
+  transition:background var(--transition),box-shadow var(--transition);
+  flex-shrink:0;
+}
+.pb-add-btn:hover{background:#9061f9;box-shadow:0 0 20px rgba(167,139,250,0.35)}
+
+/* alphabet bar */
+.pb-alpha-bar{
+  display:flex;flex-wrap:nowrap;gap:3px;margin-bottom:18px;
+  overflow-x:auto;padding-bottom:4px;
+  scrollbar-width:none;
+}
+.pb-alpha-bar::-webkit-scrollbar{display:none}
+.pb-alpha-btn{
+  flex:1;min-width:28px;height:32px;border-radius:6px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--gray);font-size:0.72rem;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all var(--transition);white-space:nowrap;
+}
+.pb-alpha-btn:hover{border-color:var(--purple);color:var(--purple)}
+.pb-alpha-btn.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+
+/* status chips */
+.pb-chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.pb-chip{
+  padding:6px 16px;border-radius:20px;
+  border:1px solid var(--border2);
+  background:var(--surface2);
+  color:var(--gray);font-size:0.78rem;font-weight:500;
+  cursor:pointer;transition:all var(--transition);
+}
+.pb-chip:hover{border-color:var(--purple);color:var(--purple)}
+.pb-chip.active{background:rgba(167,139,250,0.15);border-color:var(--purple);color:var(--purple)}
+
+/* search */
+.pb-search-wrap{position:relative;margin-bottom:24px}
+.pb-search-wrap .pb-search-icon{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-size:0.9rem;color:var(--gray);pointer-events:none;
+}
+.pb-search{
+  width:100%;padding:11px 16px 11px 40px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;color:var(--white);font-size:0.85rem;
+  transition:border-color var(--transition);
+}
+.pb-search:focus{outline:none;border-color:var(--purple)}
+.pb-search::placeholder{color:var(--gray2)}
+
+/* grid */
+.pb-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:16px;
+}
+.pb-card{
+  background:#16161f;border:1px solid #22222e;
+  border-radius:14px;padding:20px;
+  transition:border-color var(--transition),box-shadow var(--transition);
+  position:relative;
+}
+.pb-card:hover{border-color:#2e2e40;box-shadow:0 6px 24px rgba(0,0,0,0.35)}
+.pb-card-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.pb-avatar{
+  width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.95rem;font-weight:700;color:#fff;flex-shrink:0;
+  text-transform:uppercase;letter-spacing:0.03em;
+  box-shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+.pb-card-info{flex:1;min-width:0}
+.pb-card-name{font-size:0.95rem;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pb-card-company{font-size:0.76rem;color:var(--gray);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pb-status-badge{
+  font-size:0.68rem;font-weight:600;padding:3px 10px;border-radius:20px;
+  text-transform:uppercase;letter-spacing:0.05em;flex-shrink:0;white-space:nowrap;
+}
+.pb-contact-row{display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--gray);margin-bottom:8px}
+.pb-contact-icon{font-size:0.85rem;width:16px;flex-shrink:0}
+.pb-contact-val{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pb-card-actions{display:flex;gap:8px;margin-top:16px}
+.pb-btn{
+  flex:1;padding:8px 10px;border-radius:8px;
+  background:#1e1e2a;border:1px solid #2a2a38;
+  color:#8888a0;font-size:0.78rem;font-weight:500;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:all var(--transition);cursor:pointer;
+}
+.pb-btn:hover{background:#252535;color:var(--white);border-color:#363650}
+.pb-btn-arrow{
+  width:34px;height:34px;border-radius:8px;
+  background:rgba(167,139,250,0.14);border:1px solid rgba(167,139,250,0.28);
+  color:var(--purple);font-size:1.05rem;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all var(--transition);cursor:pointer;font-weight:700;
+}
+.pb-btn-arrow:hover{background:var(--purple);color:#fff;border-color:var(--purple)}
+.pb-empty{
+  grid-column:1/-1;text-align:center;padding:60px 20px;
+  color:var(--gray);font-size:0.88rem;
+}
+.pb-empty .pb-empty-icon{font-size:2.5rem;margin-bottom:12px;opacity:0.4}
+.pb-count{font-size:0.78rem;color:var(--gray);margin-bottom:14px}
+
+/* ── SLIDE-IN PANEL ── */
+#pb-panel-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);
+  z-index:4000;opacity:0;pointer-events:none;
+  transition:opacity 0.3s ease;
+  backdrop-filter:blur(3px);
+}
+#pb-panel-overlay.open{opacity:1;pointer-events:all}
+#pb-panel{
+  position:fixed;top:0;right:0;bottom:0;
+  width:420px;max-width:100vw;
+  background:var(--surface);border-left:1px solid var(--border);
+  z-index:4001;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+#pb-panel.open{transform:translateX(0)}
+.pb-panel-header{
+  padding:24px 24px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.pb-panel-title{font-size:1.05rem;font-weight:600;color:var(--white)}
+.pb-panel-title span{color:var(--purple)}
+.pb-panel-close{
+  width:32px;height:32px;border-radius:6px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--gray);font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all var(--transition);
+}
+.pb-panel-close:hover{background:var(--surface3);color:var(--white)}
+.pb-panel-body{flex:1;overflow-y:auto;padding:20px 24px}
+.pb-panel-field-label{
+  font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:6px;margin-top:16px;display:block;
+}
+.pb-panel-field-label:first-child{margin-top:0}
+.pb-panel-input,.pb-panel-select{
+  width:100%;padding:10px 14px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;color:var(--white);font-size:0.85rem;
+  transition:border-color var(--transition);
+}
+.pb-panel-input:focus,.pb-panel-select:focus{outline:none;border-color:var(--purple)}
+.pb-panel-input::placeholder{color:var(--gray2)}
+.pb-panel-select option{background:var(--surface2)}
+.pb-panel-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pb-panel-footer{
+  padding:16px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;flex-shrink:0;
+}
+.pb-panel-save{
+  flex:1;padding:12px;border-radius:8px;
+  background:var(--purple);color:#fff;
+  font-size:0.85rem;font-weight:600;
+  transition:background var(--transition),box-shadow var(--transition);
+}
+.pb-panel-save:hover{background:#9061f9;box-shadow:0 0 20px rgba(167,139,250,0.3)}
+.pb-panel-cancel{
+  padding:12px 20px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--gray);font-size:0.85rem;font-weight:500;
+  transition:all var(--transition);
+}
+.pb-panel-cancel:hover{color:var(--white);background:var(--surface3)}
+
+
+/* ── EDIT PANEL ── */
+#pb-edit-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);
+  z-index:4100;opacity:0;pointer-events:none;
+  transition:opacity 0.3s ease;backdrop-filter:blur(3px);
+}
+#pb-edit-overlay.open{opacity:1;pointer-events:all}
+#pb-edit-panel{
+  position:fixed;top:0;right:0;bottom:0;
+  width:460px;max-width:100vw;
+  background:var(--surface);border-left:1px solid var(--border);
+  z-index:4101;
+  transform:translateX(100%);
+  transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+#pb-edit-panel.open{transform:translateX(0)}
+.pb-edit-top-bar{
+  padding:20px 24px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;flex-shrink:0;
+}
+.pb-edit-avatar-lg{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;font-weight:700;color:#fff;flex-shrink:0;
+}
+.pb-edit-name-block{flex:1;min-width:0}
+.pb-edit-full-name{font-size:1.05rem;font-weight:600;color:var(--white)}
+.pb-edit-sub{font-size:0.75rem;color:var(--gray);margin-top:2px}
+.pb-edit-close{
+  width:32px;height:32px;border-radius:6px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--gray);font-size:1rem;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;transition:all var(--transition);flex-shrink:0;
+}
+.pb-edit-close:hover{background:var(--surface3);color:var(--white)}
+.pb-edit-body{flex:1;overflow-y:auto;padding:20px 24px}
+.pb-edit-section{margin-bottom:20px}
+.pb-edit-section-title{
+  font-size:0.62rem;letter-spacing:0.13em;text-transform:uppercase;
+  color:var(--gray2);margin-bottom:12px;font-weight:600;
+  display:flex;align-items:center;gap:8px;
+}
+.pb-edit-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.pb-edit-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0}
+.pb-edit-field{margin-bottom:14px}
+.pb-edit-label{
+  font-size:0.7rem;letter-spacing:0.09em;text-transform:uppercase;
+  color:var(--gray);margin-bottom:5px;display:block;font-weight:500;
+}
+.pb-edit-input,.pb-edit-select{
+  width:100%;padding:10px 14px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;color:var(--white);font-size:0.85rem;
+  transition:border-color var(--transition);
+}
+.pb-edit-input:focus,.pb-edit-select:focus{outline:none;border-color:var(--purple)}
+.pb-edit-input::placeholder{color:var(--gray2)}
+.pb-edit-select option{background:var(--surface2)}
+.pb-edit-footer{
+  padding:16px 24px;border-top:1px solid var(--border);
+  display:flex;gap:10px;flex-shrink:0;
+}
+.pb-edit-save{
+  flex:1;padding:12px;border-radius:8px;
+  background:var(--purple);color:#fff;
+  font-size:0.85rem;font-weight:600;
+  transition:background var(--transition),box-shadow var(--transition);
+}
+.pb-edit-save:hover{background:#9061f9;box-shadow:0 0 20px rgba(167,139,250,0.3)}
+.pb-edit-open-full{
+  padding:12px 16px;border-radius:8px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--gray);font-size:0.85rem;font-weight:500;
+  transition:all var(--transition);white-space:nowrap;
+}
+.pb-edit-open-full:hover{color:var(--white);background:var(--surface3)}
+.pb-card{cursor:pointer;}
+
 </style>
 </head>
 <body>
@@ -1527,17 +2165,19 @@ tr.prop-expiring:hover{
   <div class="sidebar-nav">
     <div class="nav-section-label">MAIN</div>
     <div class="nav-item active" onclick="showView('dashboard')" data-view="dashboard"><span class="nav-icon">📊</span><span class="nav-label">Dashboard</span></div>
+    <div class="nav-item" onclick="showView('salesboard')" data-view="salesboard"><span class="nav-icon">&#9635;</span><span class="nav-label">Sales Board</span></div>
     <div class="nav-item" onclick="showView('leads')" data-view="leads"><span class="nav-icon">👥</span><span class="nav-label">All Leads</span><span class="nav-badge" id="leadsCountBadge">0</span></div>
     <div class="nav-item" onclick="showView('kanban')" data-view="kanban"><span class="nav-icon">🗂</span><span class="nav-label">Process</span></div>
     <div class="nav-section-label">SCHEDULE</div>
     <div class="nav-item" onclick="showView('calendar')" data-view="calendar"><span class="nav-icon">📅</span><span class="nav-label">Calendar</span></div>
-    <div class="nav-item" onclick="showView('daily')" data-view="daily"><span class="nav-icon">☀️</span><span class="nav-label">Daily Schedule</span></div>
+
     <div class="nav-section-label">TOOLS</div>
     <div class="nav-item" onclick="showView('properties')" data-view="properties"><span class="nav-icon">🏡</span><span class="nav-label">Properties</span><span class="nav-badge" id="propsCountBadge" style="display:none">0</span></div>
     <div class="nav-item" onclick="showView('streetview')" data-view="streetview"><span class="nav-icon">🗺</span><span class="nav-label">Street View</span></div>
 
     <div class="nav-item" onclick="showView('routemap')" data-view="routemap"><span class="nav-icon">🛣</span><span class="nav-label">Route Map</span></div>
     <div class="nav-item" onclick="showView('email')" data-view="email"><span class="nav-icon">✉️</span><span class="nav-label">Email</span></div>
+    <div class="nav-item" onclick="showView('phonebook')" data-view="phonebook"><span class="nav-icon">📒</span><span class="nav-label">Phonebook</span></div>
     <div class="nav-item" onclick="showView('notepad')" data-view="notepad"><span class="nav-icon">📝</span><span class="nav-label">Notepad</span></div>
     <div class="nav-item" onclick="showView('integrations')" data-view="integrations"><span class="nav-icon">🔗</span><span class="nav-label">Integrations & API</span></div>
     <div class="nav-item" onclick="showView('settings')" data-view="settings"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></div>
@@ -2132,90 +2772,109 @@ tr.prop-expiring:hover{
 
 <!-- ══ CALENDAR ═════════════════════════════════════════ -->
 <div class="view" id="view-calendar">
-  <div class="topbar">
-    <div class="page-title">Calendar <span>& Events</span></div>
-    <div class="topbar-actions">
+  <!-- Top bar: title + view tabs + new event -->
+  <div class="cal-topbar">
+    <div>
+      <div class="cal-page-title">Calendar</div>
+      <div class="cal-page-sub">Schedule and manage your time</div>
+    </div>
+    <div class="cal-topbar-actions">
+      <div class="cal-view-tabs">
+        <button class="cal-vtab active" id="calTab-month" onclick="setCalTab('month',this)">Month</button>
+        <button class="cal-vtab" id="calTab-week" onclick="setCalTab('week',this)">Week</button>
+        <button class="cal-vtab" id="calTab-day" onclick="setCalTab('day',this)">Day</button>
+      </div>
       <div id="gcal-cal-chip" style="display:none;align-items:center;gap:6px;padding:5px 10px;background:rgba(66,133,244,0.12);border:1px solid rgba(66,133,244,0.3);border-radius:20px;font-size:0.75rem;color:#7ab3f8">
         <div class="gcal-dot"></div><span id="gcal-cal-label">Google Calendar</span>
       </div>
       <button id="gcal-sync-btn" class="btn btn-ghost btn-sm" onclick="gcalSync()" style="display:none">🔄 Sync</button>
-      <button class="btn btn-primary btn-sm" onclick="openAddEvent()">+ Add Event</button>
+      <button class="btn btn-primary btn-sm" onclick="openAddEvent()">+ New Event</button>
     </div>
   </div>
-  <div class="cal-wrap">
-    <!-- Left: monthly grid -->
+
+  <!-- ── MONTH VIEW ── -->
+  <div id="calMonthWrap" class="cal-wrap">
     <div class="cal-left">
       <div class="cal-header">
+        <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
         <div class="cal-month-label" id="calMonthLabel"></div>
-        <div class="cal-nav">
-          <button class="btn btn-ghost btn-sm btn-icon" onclick="changeMonth(-1)">‹</button>
-          <button class="btn btn-ghost btn-sm" onclick="goToday()">Today</button>
-          <button class="btn btn-ghost btn-sm btn-icon" onclick="changeMonth(1)">›</button>
-        </div>
+        <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+        <button class="cal-today-btn" onclick="goToday()">Today</button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
     </div>
-    <!-- Right: upcoming events -->
     <div class="cal-right">
-      <div class="cal-upcoming-header">
-        <div class="cal-upcoming-header-top">
-          <div>
-            <div class="cal-upcoming-date" id="calUpcomingDate"></div>
-            <div class="cal-upcoming-sub" id="calUpcomingSub"></div>
-          </div>
-        </div>
+      <div class="cal-right-header">
+        <div class="cal-right-title"><span class="cal-right-icon">📅</span> All Events</div>
+        <div class="cal-right-count" id="calEventCount">0 events</div>
       </div>
-      <!-- Mini calendar -->
-      <div class="mini-cal">
-        <div class="mini-cal-header">
-          <div class="mini-cal-month" id="miniCalMonth"></div>
-          <div class="mini-cal-nav">
-            <button onclick="miniCalNav(-1)">‹</button>
-            <button onclick="miniCalNav(1)">›</button>
-          </div>
-        </div>
-        <div class="mini-cal-grid" id="miniCalGrid"></div>
+      <div class="cal-all-events-list" id="calAllEventsList">
+        <div class="cal-all-empty">No events scheduled</div>
       </div>
-      <!-- Create button -->
-      <div style="padding:12px 16px;border-bottom:1px solid var(--border);flex-shrink:0">
-        <button class="cal-upcoming-create-btn" onclick="openAddEvent()" style="width:100%;padding:10px">+ Create New Event</button>
-      </div>
-      <!-- Today's events section -->
-      <div class="cal-upcoming-today-section">
-        <div class="cal-upcoming-today-label">Today's Events</div>
-        <div id="calTodayList"></div>
-      </div>
-      <!-- Upcoming section -->
-      <div class="cal-upcoming-list" id="calUpcomingList"></div>
     </div>
+  </div>
+
+  <!-- ── WEEK VIEW ── -->
+  <div id="calWeekWrap" class="cal-week-wrap" style="display:none">
+    <div class="cal-sub-header">
+      <button class="cal-nav-btn" onclick="changeWeek(-1)">‹</button>
+      <div class="cal-sub-label" id="calWeekLabel">Week</div>
+      <button class="cal-nav-btn" onclick="changeWeek(1)">›</button>
+      <button class="cal-today-btn" onclick="goTodayWeek()">Today</button>
+    </div>
+    <div class="cal-week-scroll">
+      <div id="calWeekInner"></div>
+    </div>
+  </div>
+
+  <!-- ── DAY VIEW ── -->
+  <div id="calDayWrap" class="cal-day-wrap" style="display:none">
+    <div class="cal-sub-header">
+      <button class="cal-nav-btn" onclick="changeCalDay(-1)">‹</button>
+      <div class="cal-sub-label" id="calDayLabel">Today</div>
+      <button class="cal-nav-btn" onclick="changeCalDay(1)">›</button>
+      <button class="cal-today-btn" onclick="goTodayDay()">Today</button>
+    </div>
+    <div class="cal-day-scroll" id="calDayScroll"></div>
   </div>
 </div>
 
-<!-- ══ DAILY SCHEDULE ════════════════════════════════════ -->
-<div class="view" id="view-daily">
+
+<!-- ══ SALES BOARD ══════════════════════════════════════ -->
+<div class="view" id="view-salesboard">
   <div class="topbar">
-    <div class="page-title">Daily <span>Schedule</span></div>
+    <div class="page-title">Sales <span>Board</span></div>
     <div class="topbar-actions">
-      <button class="btn btn-ghost btn-sm btn-icon" onclick="changeDay(-1)">‹</button>
-      <div style="font-size:0.9rem;padding:0 12px;color:var(--gold);font-weight:600" id="dailyDateLabel"></div>
-      <button class="btn btn-ghost btn-sm btn-icon" onclick="changeDay(1)">›</button>
-      <button class="btn btn-primary btn-sm" onclick="openAddEvent()">+ Add Event</button>
+      <select class="filter-select" id="sbYearSel" onchange="renderSalesBoard()" style="min-width:90px">
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" onclick="renderSalesBoard()">↻ Refresh</button>
     </div>
   </div>
-  <div class="daily-split">
-    <!-- LEFT: time grid -->
-    <div class="daily-left">
-      <div class="daily-left-head">Today's Schedule</div>
-      <div class="daily-grid-wrap">
-        <div class="daily-time-col" id="dailyTimeCol"></div>
-        <div class="daily-events-col" id="dailyEvents"></div>
-      </div>
+  <!-- 6 Donut Gauges -->
+  <div class="sb-gauge-row" id="sbGaugeRow"></div>
+  <!-- Body: LEFT=Agents+Listings | CENTER=Chart+Escrows | RIGHT=Ranking -->
+  <div class="sb-body-grid">
+
+    <!-- FAR LEFT: Top Agents + Active Listings -->
+    <div class="sb-col-left">
+      <div class="card" id="sbTopAgents" style="padding:18px 20px"></div>
+      <div class="card" id="sbActiveList" style="padding:18px 20px;overflow-x:auto"></div>
     </div>
-    <!-- RIGHT: upcoming -->
-    <div class="daily-right">
-      <div class="daily-right-head">Upcoming Events</div>
-      <div class="daily-upcoming-list" id="dailyUpcoming"></div>
+
+    <!-- CENTER: Monthly Closings Chart + Open Escrows -->
+    <div class="sb-col-mid">
+      <div class="card" id="sbMonthChart" style="padding:18px 20px"></div>
+      <div class="card" id="sbEscrowList" style="padding:18px 20px;overflow-x:auto"></div>
     </div>
+
+    <!-- FAR RIGHT: Agent Ranking (full height) -->
+    <div class="sb-col-right">
+      <div class="card" id="sbAgentRank" style="padding:18px 20px;height:100%;box-sizing:border-box;overflow-y:auto"></div>
+    </div>
+
   </div>
 </div>
 
@@ -3128,6 +3787,79 @@ tr.prop-expiring:hover{
     </div><!-- /email-wrap -->
   </div><!-- /emailClient -->
 </div><!-- /view-email -->
+<!-- ══════════════════════════════════════════════════
+     PHONEBOOK VIEW
+══════════════════════════════════════════════════════ -->
+<div class="view" id="view-phonebook">
+  <div style="padding:28px 32px 120px;max-width:1400px;margin:0 auto;">
+
+    <!-- Header -->
+    <div class="pb-header">
+      <div class="pb-title-group">
+        <div class="pb-title">Phonebook <span>Contacts</span></div>
+        <div class="pb-sub">All your contacts in one place</div>
+      </div>
+      <button class="pb-add-btn" onclick="openPbPanel()">＋ Add Contact</button>
+    </div>
+
+    <!-- A–Z Bar -->
+    <div class="pb-alpha-bar" id="pb-alpha-bar" data-built="1">
+      <button class="pb-alpha-btn active" data-letter="ALL" onclick="pbSetAlpha(this,'ALL')">ALL</button>
+      <button class="pb-alpha-btn" data-letter="A" onclick="pbSetAlpha(this,'A')">A</button>
+      <button class="pb-alpha-btn" data-letter="B" onclick="pbSetAlpha(this,'B')">B</button>
+      <button class="pb-alpha-btn" data-letter="C" onclick="pbSetAlpha(this,'C')">C</button>
+      <button class="pb-alpha-btn" data-letter="D" onclick="pbSetAlpha(this,'D')">D</button>
+      <button class="pb-alpha-btn" data-letter="E" onclick="pbSetAlpha(this,'E')">E</button>
+      <button class="pb-alpha-btn" data-letter="F" onclick="pbSetAlpha(this,'F')">F</button>
+      <button class="pb-alpha-btn" data-letter="G" onclick="pbSetAlpha(this,'G')">G</button>
+      <button class="pb-alpha-btn" data-letter="H" onclick="pbSetAlpha(this,'H')">H</button>
+      <button class="pb-alpha-btn" data-letter="I" onclick="pbSetAlpha(this,'I')">I</button>
+      <button class="pb-alpha-btn" data-letter="J" onclick="pbSetAlpha(this,'J')">J</button>
+      <button class="pb-alpha-btn" data-letter="K" onclick="pbSetAlpha(this,'K')">K</button>
+      <button class="pb-alpha-btn" data-letter="L" onclick="pbSetAlpha(this,'L')">L</button>
+      <button class="pb-alpha-btn" data-letter="M" onclick="pbSetAlpha(this,'M')">M</button>
+      <button class="pb-alpha-btn" data-letter="N" onclick="pbSetAlpha(this,'N')">N</button>
+      <button class="pb-alpha-btn" data-letter="O" onclick="pbSetAlpha(this,'O')">O</button>
+      <button class="pb-alpha-btn" data-letter="P" onclick="pbSetAlpha(this,'P')">P</button>
+      <button class="pb-alpha-btn" data-letter="Q" onclick="pbSetAlpha(this,'Q')">Q</button>
+      <button class="pb-alpha-btn" data-letter="R" onclick="pbSetAlpha(this,'R')">R</button>
+      <button class="pb-alpha-btn" data-letter="S" onclick="pbSetAlpha(this,'S')">S</button>
+      <button class="pb-alpha-btn" data-letter="T" onclick="pbSetAlpha(this,'T')">T</button>
+      <button class="pb-alpha-btn" data-letter="U" onclick="pbSetAlpha(this,'U')">U</button>
+      <button class="pb-alpha-btn" data-letter="V" onclick="pbSetAlpha(this,'V')">V</button>
+      <button class="pb-alpha-btn" data-letter="W" onclick="pbSetAlpha(this,'W')">W</button>
+      <button class="pb-alpha-btn" data-letter="X" onclick="pbSetAlpha(this,'X')">X</button>
+      <button class="pb-alpha-btn" data-letter="Y" onclick="pbSetAlpha(this,'Y')">Y</button>
+      <button class="pb-alpha-btn" data-letter="Z" onclick="pbSetAlpha(this,'Z')">Z</button>
+    </div>
+
+    <!-- Status Chips -->
+    <div class="pb-chip-row" id="pb-chip-row">
+      <button class="pb-chip active" data-status="all" onclick="pbSetStatus(this,'all')">All</button>
+      <button class="pb-chip" data-status="hot"        onclick="pbSetStatus(this,'hot')">Active</button>
+      <button class="pb-chip" data-status="lead"       onclick="pbSetStatus(this,'lead')">Lead</button>
+      <button class="pb-chip" data-status="contacted"  onclick="pbSetStatus(this,'contacted')">Contacted</button>
+      <button class="pb-chip" data-status="working"    onclick="pbSetStatus(this,'working')">Working On It</button>
+      <button class="pb-chip" data-status="closed"     onclick="pbSetStatus(this,'closed')">Closed</button>
+      <button class="pb-chip" data-status="archive"    onclick="pbSetStatus(this,'archive')">Archived</button>
+    </div>
+
+    <!-- Search -->
+    <div class="pb-search-wrap">
+      <span class="pb-search-icon">🔍</span>
+      <input class="pb-search" id="pb-search" placeholder="Search contacts by name, email, phone…"
+        oninput="renderPhonebook()"/>
+    </div>
+
+    <!-- Count -->
+    <div class="pb-count" id="pb-count"></div>
+
+    <!-- Grid -->
+    <div class="pb-grid" id="pb-grid"></div>
+  </div>
+</div>
+
+
 </main>
 </div>
 </div>
@@ -3381,6 +4113,7 @@ function showView(v){
     }
   }
   else if(v==='daily') renderDaily();
+  else if(v==='salesboard') renderSalesBoard();
   else if(v==='streetview') renderStreetViewLeads();
   else if(v==='routemap'){ renderRouteLeadPins(); showRouteTab('addresses'); }
   else if(v==='settings'){ renderUsers(); setTimeout(loadCompanySettings, 50); }
@@ -4227,70 +4960,193 @@ function renderCalendar(){
 }
 
 function renderUpcoming(){
-  const today = new Date();
-  const dateEl   = document.getElementById('calUpcomingDate');
-  const subEl    = document.getElementById('calUpcomingSub');
-  const todayEl  = document.getElementById('calTodayList');
-  const listEl   = document.getElementById('calUpcomingList');
-  if(!dateEl||!listEl) return;
+  // Redirect to new all-events renderer when on calendar view
+  if(document.getElementById('calAllEventsList')){
+    renderAllEvents();
+  }
+}
 
-  // Header — date + subtitle
-  const dateStr = today.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-  const dayStr  = today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-  dateEl.textContent = dateStr;
-  subEl.textContent  = 'Today is '+dayStr;
+function renderAllEvents(){
+  const listEl  = document.getElementById('calAllEventsList');
+  const countEl = document.getElementById('calEventCount');
+  if(!listEl) return;
 
-  const allEvs   = DB.events || [];
-  const gcalEvs  = window.GCal?.cachedEvents || [];
+  const today   = new Date();
   const todayStr = today.toISOString().split('T')[0];
+  const allEvs  = DB.events || [];
+  const gcalEvs = window.GCal?.cachedEvents || [];
 
   const combined = [
     ...allEvs.map(e=>({...e,isGcal:false})),
     ...gcalEvs.map(e=>({...e,isGcal:true}))
-  ].sort((a,b)=> a.date===b.date ? (a.time||'')>(b.time||'')?1:-1 : a.date>b.date?1:-1);
+  ].filter(e=>e.date).sort((a,b)=> a.date===b.date ? (a.time||'')<(b.time||'')?-1:1 : a.date<b.date?-1:1);
 
-  // ── Today's events ──
-  const todayEvs = combined.filter(e=>e.date===todayStr);
-  if(todayEl){
-    if(!todayEvs.length){
-      todayEl.innerHTML='<div class="cal-upcoming-today-empty">No meetings for today</div>';
-    } else {
-      todayEl.innerHTML = todayEvs.map(e=>{
-        const t = e.time ? new Date('1970-01-01T'+e.time).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}) : '';
-        return '<div class="cal-upcoming-today-item" onclick="openAddEvent(\''+todayStr+'\')">'
-          +'<div class="cal-upcoming-item-title">'+(e.isGcal?'📅 ':'')+e.title+'</div>'
-          +'<div class="cal-upcoming-item-meta">'+(t||'All day')+(e.linkedLead?' · '+e.linkedLead:'')+'</div>'
-          +'</div>';
-      }).join('');
-    }
-  }
+  if(countEl) countEl.textContent = combined.length + (combined.length===1?' event':' events');
 
-  // ── Upcoming (future only, not today) ──
-  const futureEvs = combined.filter(e=>e.date>todayStr).slice(0,30);
-  if(!futureEvs.length){
-    listEl.innerHTML='<div class="cal-upcoming-empty">No upcoming events scheduled</div>';
+  if(!combined.length){
+    listEl.innerHTML='<div class="cal-all-empty">No events scheduled</div>';
     return;
   }
 
   const groups={};
-  futureEvs.forEach(e=>{ if(!groups[e.date]) groups[e.date]=[]; groups[e.date].push(e); });
+  combined.forEach(e=>{ if(!groups[e.date]) groups[e.date]=[]; groups[e.date].push(e); });
 
-  let out='<div class="cal-upcoming-section-label">Upcoming</div>';
+  let out='';
   Object.keys(groups).sort().forEach(date=>{
     const d = new Date(date+'T12:00:00');
-    const label = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-    out += '<div class="cal-upcoming-day-label">'+label+'</div>';
+    const isToday = date === todayStr;
+    const label = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}).toUpperCase();
+    out += '<div class="cal-ev-date-group'+(isToday?' today-group':'')+'">'
+         + '<div class="cal-ev-date-label'+(isToday?' today-label':'')+'">'+label+'</div>';
     groups[date].forEach(e=>{
       const t = e.time ? new Date('1970-01-01T'+e.time).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}) : '';
-      out += '<div class="cal-upcoming-item'+(e.isGcal?' gcal':'')+'" onclick="openAddEvent(\''+date+'\')">'
-           + '<div class="cal-upcoming-item-title">'+(e.isGcal?'📅 ':'')+e.title+'</div>'
-           + '<div class="cal-upcoming-item-meta">'+(t||'All day')+(e.linkedLead?' · '+e.linkedLead:'')+'</div>'
-           +'</div>';
+      const typeClass = e.isGcal ? '' : (e.type ? 'ev-'+e.type : '');
+      const todayCls  = isToday ? ' today-ev' : '';
+      const dur       = e.duration ? ' · '+e.duration : '';
+      const idAttr    = e.id ? 'openEditEvent(\''+ e.id +'\' )' : 'openAddEvent(\''+ date +'\' )';
+      out += '<div class="cal-all-ev-item '+typeClass+todayCls+'" onclick="'+idAttr+'">';
+      out += '  <div class="cal-all-ev-title">'+(e.isGcal?'📅 ':'' )+e.title+'</div>';
+      out += '  <div class="cal-all-ev-meta">'+( t||'All day' )+dur+(e.linkedLead?' · '+e.linkedLead:'')+'</div>';
+      out += '</div>';
     });
+    out += '</div>';
   });
-  listEl.innerHTML=out;
+  listEl.innerHTML = out;
 }
 
+function setCalTab(tab, btn){
+  document.querySelectorAll('.cal-vtab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  // Show/hide panels
+  const monthWrap = document.getElementById('calMonthWrap');
+  const weekWrap  = document.getElementById('calWeekWrap');
+  const dayWrap   = document.getElementById('calDayWrap');
+  if(monthWrap) monthWrap.style.display = tab==='month' ? '' : 'none';
+  if(weekWrap)  weekWrap.style.display  = tab==='week'  ? '' : 'none';
+  if(dayWrap)   dayWrap.style.display   = tab==='day'   ? '' : 'none';
+  if(tab==='month') renderCalendar();
+  if(tab==='week')  renderWeekView();
+  if(tab==='day')   renderDayView();
+}
+
+/* ── Week View ── */
+let calWeekStart = (function(){
+  const d=new Date(); d.setHours(0,0,0,0);
+  d.setDate(d.getDate()-d.getDay()); // Sunday
+  return d;
+})();
+
+function changeWeek(dir){
+  calWeekStart=new Date(calWeekStart);
+  calWeekStart.setDate(calWeekStart.getDate()+dir*7);
+  renderWeekView();
+}
+function goTodayWeek(){
+  calWeekStart=new Date(); calWeekStart.setHours(0,0,0,0);
+  calWeekStart.setDate(calWeekStart.getDate()-calWeekStart.getDay());
+  renderWeekView();
+}
+
+function renderWeekView(){
+  const inner   = document.getElementById('calWeekInner');
+  const labelEl = document.getElementById('calWeekLabel');
+  if(!inner) return;
+
+  const today    = new Date(); today.setHours(0,0,0,0);
+  const todayStr = today.toISOString().split('T')[0];
+  const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const HOURS = [7,8,9,10,11,12,13,14,15,16,17,18,19,20,21];
+
+  const wkEnd = new Date(calWeekStart); wkEnd.setDate(wkEnd.getDate()+6);
+  labelEl.textContent = calWeekStart.toLocaleDateString('en-US',{month:'short',day:'numeric'})
+    +' – '+wkEnd.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  const cols=[];
+  for(let d=0;d<7;d++){const dt=new Date(calWeekStart);dt.setDate(dt.getDate()+d);cols.push(dt);}
+  const evs=DB.events||[];
+
+  // Header row
+  let html='<div class="wk2-grid"><div class="wk2-header-row"><div class="wk2-time-head"></div>';
+  cols.forEach(dt=>{
+    const ds=dt.toISOString().split('T')[0];
+    const isT=ds===todayStr;
+    html+='<div class="wk2-col-head'+(isT?' wk2-today-head':'')+'"><div class="wk2-day-abbr">'+DAYS[dt.getDay()]+'</div>'
+      +'<div class="wk2-day-num'+(isT?' wk2-today-num':'')+'">'+dt.getDate()+'</div></div>';
+  });
+  html+='</div>';
+
+  // All day row
+  html+='<div class="wk2-allday-row"><div class="wk2-allday-label">ALL DAY</div>';
+  cols.forEach(dt=>{
+    const ds=dt.toISOString().split('T')[0];
+    const isT=ds===todayStr;
+    const allevs=evs.filter(e=>e.date===ds&&!e.time);
+    html+='<div class="wk2-allday-cell'+(isT?' wk2-today-col':'')+'">';
+    allevs.forEach(e=>{html+='<div class="wk2-ev '+(e.type||'')+'" onclick="openEditEvent(\''+e.id+'\')">'+e.title+'</div>';});
+    html+='</div>';
+  });
+  html+='</div>';
+
+  // Hour rows
+  HOURS.forEach(h=>{
+    const lbl=h<12?h+'am':h===12?'12pm':(h-12)+'pm';
+    const hh=String(h).padStart(2,'0');
+    html+='<div class="wk2-hour-row"><div class="wk2-time-lbl">'+lbl+'</div>';
+    cols.forEach(dt=>{
+      const ds=dt.toISOString().split('T')[0];
+      const isT=ds===todayStr;
+      const hevs=evs.filter(e=>e.date===ds&&parseInt((e.time||'').split(':')[0])===h);
+      html+='<div class="wk2-cell'+(isT?' wk2-today-col':'')+'" onclick="openAddEvent(\''+ds+'\',\''+hh+':00\')">';
+      hevs.forEach(e=>{html+='<div class="wk2-ev '+(e.type||'')+'" onclick="event.stopPropagation();openEditEvent(\''+e.id+'\')">'+e.title+'</div>';});
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+  html+='</div>';
+  inner.innerHTML=html;
+}
+/* ── Day View ── */
+let calDayDate = new Date();
+function changeCalDay(dir){
+  calDayDate=new Date(calDayDate); calDayDate.setDate(calDayDate.getDate()+dir);
+  renderDayView();
+}
+function goTodayDay(){ calDayDate=new Date(); renderDayView(); }
+
+function renderDayView(){
+  const scrollEl = document.getElementById('calDayScroll');
+  const labelEl  = document.getElementById('calDayLabel');
+  if(!scrollEl) return;
+
+  const dateStr  = calDayDate.toISOString().split('T')[0];
+  const today    = new Date(); today.setHours(0,0,0,0);
+  const isToday  = dateStr===today.toISOString().split('T')[0];
+
+  labelEl.textContent = calDayDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+  const HOURS = [7,8,9,10,11,12,13,14,15,16,17,18,19,20,21];
+  const evs   = (DB.events||[]).filter(e=>e.date===dateStr).sort((a,b)=>(a.time||'')>(b.time||'')?1:-1);
+  const dayName   = calDayDate.toLocaleDateString('en-US',{weekday:'long'}).toUpperCase();
+  const monthYear = calDayDate.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+
+  let html='<div class="dv2-date-banner">'
+    +'<div class="dv2-big-num">'+calDayDate.getDate()+'</div>'
+    +'<div><div class="dv2-day-name">'+dayName+'</div><div class="dv2-month-year">'+monthYear+'</div></div>'
+    +'</div>';
+
+  html+='<div class="dv2-grid">';
+  HOURS.forEach(h=>{
+    const lbl=h<12?h+'am':h===12?'12pm':(h-12)+'pm';
+    const hh=String(h).padStart(2,'0');
+    const hevs=evs.filter(e=>parseInt((e.time||'').split(':')[0])===h);
+    html+='<div class="dv2-hour-row"><div class="dv2-time-lbl">'+lbl+'</div>'
+      +'<div class="dv2-slot" onclick="openAddEvent(\''+dateStr+'\',\''+hh+':00\')">';
+    hevs.forEach(e=>{html+='<div class="dv2-ev '+(e.type||'')+'" onclick="event.stopPropagation();openEditEvent(\''+e.id+'\')">'+e.title+'</div>';});
+    html+='</div></div>';
+  });
+  html+='</div>';
+  scrollEl.innerHTML=html;
+}
 /* ── Mini Calendar (right panel) ── */
 let miniCalDate = new Date();
 function miniCalNav(dir){
@@ -4558,6 +5414,200 @@ function saveEvent(){
   else if(currentView==='daily') renderDaily();
   else renderUpcoming&&renderUpcoming();
 }
+
+
+/* ══════════════════════════════════════════════════════
+   SALES BOARD
+══════════════════════════════════════════════════════ */
+function sbFmtMoney(n){
+  if(!n) return '$0';
+  if(n>=1000000){
+    const m = n/1000000;
+    return '$'+(m%1===0 ? m.toFixed(0) : m.toFixed(1))+'M';
+  }
+  if(n>=100000) return '$'+Math.round(n/1000)+'K';
+  if(n>=1000){
+    const k = n/1000;
+    return '$'+(k%1===0 ? k.toFixed(0) : k.toFixed(1))+'K';
+  }
+  return '$'+Number(n).toLocaleString();
+}
+function sbFmtFull(n){
+  return n ? '$'+Number(n).toLocaleString() : '$0';
+}
+function sbSum(arr, field){ return arr.reduce((s,p)=>s+(Number(p[field])||0),0); }
+
+function sbDonutSVG(pct, line1, line2, ringId){
+  const r=38, cx=50, cy=50;
+  const circ = 2*Math.PI*r; // ~238.76
+  const targetOffset = circ * (1 - Math.max(pct, 0.001));
+  const fs1 = line1.length>8 ? '8' : line1.length>5 ? '10' : '14';
+  return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--surface3)" stroke-width="12"/>
+    <circle id="${ringId}" cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--gold)" stroke-width="12"
+      stroke-linecap="round"
+      stroke-dasharray="${circ} ${circ}"
+      stroke-dashoffset="${circ}"
+      style="transform:rotate(-90deg);transform-origin:50px 50px;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)"
+      data-target="${targetOffset}"/>
+    <circle cx="${cx}" cy="${cy-r}" r="4.5" fill="var(--gold)"/>
+    <text x="50" y="48" text-anchor="middle" dominant-baseline="middle"
+      font-family="Playfair Display,serif" font-size="${fs1}" font-weight="700" fill="#fff">${line1}</text>
+    ${line2?`<text x="50" y="62" text-anchor="middle" font-family="Inter,sans-serif" font-size="6" fill="rgba(255,255,255,0.4)">${line2}</text>`:''}
+  </svg>`;
+}
+
+function sbGaugeCard(title, pct, line1, line2, idx){
+  const ringId = 'sb-ring-'+idx;
+  const donut = sbDonutSVG(pct, line1, line2, ringId);
+  return `<div class="sb-gauge-card">
+    <div class="sb-gauge-title">${title}</div>
+    <div class="sb-donut-wrap">${donut}</div>
+  </div>`;
+}
+
+function renderSalesBoard(){
+  const yrEl = document.getElementById('sbYearSel');
+  const yr = parseInt(yrEl ? yrEl.value : new Date().getFullYear());
+  const now = new Date();
+  const thisMonth = now.getMonth();
+  const props = PropDB.properties||[];
+
+  const listings  = props.filter(p=>p.transactionType==='Listing');
+  const active    = listings.filter(p=>p.propertyStatus!=='Closed'&&p.propertyStatus!=='Expired');
+  const expired   = props.filter(p=>p.propertyStatus==='Expired');
+  const escrow    = props.filter(p=>p.propertyStatus==='Open Escrow'||p.propertyStatus==='Pending');
+  const closed    = props.filter(p=>p.propertyStatus==='Closed');
+  const closedYr  = closed.filter(p=>{const d=new Date(p.closingDate||p.created);return d.getFullYear()===yr;});
+  const closedMo  = closedYr.filter(p=>{const d=new Date(p.closingDate||p.created);return d.getMonth()===thisMonth;});
+  const purchases = props.filter(p=>p.transactionType==='Purchase'||p.transactionType==='Buy');
+
+  /* ── 6 Gauge Donuts ── */
+  const ytdVol = sbSum(closedYr,'salesPrice');
+  const gaugeData = [
+    { title:'Listings',    pct:Math.min(active.length/20,1),    line1:active.length.toString(),          line2:'Active' },
+    { title:'Expiring',    pct:Math.min(expired.length/10,1),   line1:expired.length.toString(),         line2:'Expired' },
+    { title:'Pending',     pct:Math.min(escrow.length/15,1),    line1:escrow.length.toString(),          line2:'In Escrow' },
+    { title:'Mo. Closing', pct:Math.min(closedMo.length/10,1),  line1:closedMo.length.toString(),        line2:'This Month' },
+    { title:'YTD Units',   pct:Math.min(closedYr.length/50,1),  line1:(closedYr.length>=1000?((closedYr.length/1000)%1===0?(closedYr.length/1000).toFixed(0)+'K':(closedYr.length/1000).toFixed(1)+'K'):closedYr.length.toString()),  line2:'Closed YTD' },
+    { title:'YTD Volume',  pct:Math.min(ytdVol/5000000,1),      line1:sbFmtMoney(ytdVol),                line2:'Total Volume' },
+  ];
+  document.getElementById('sbGaugeRow').innerHTML = gaugeData.map((g,i)=>sbGaugeCard(g.title,g.pct,g.line1,g.line2,i)).join('');
+  // Animate rings in — same pattern as dashboard loadGauges()
+  setTimeout(()=>{
+    gaugeData.forEach((_,i)=>{
+      const ring = document.getElementById('sb-ring-'+i);
+      if(ring){ ring.style.strokeDashoffset = ring.dataset.target; }
+    });
+  }, 80);
+
+  /* ── FAR LEFT: Top 3 Agents ── */
+  const agentMap={};
+  closedYr.forEach(p=>{
+    const ag=p.agent||'Unknown';
+    if(!agentMap[ag]) agentMap[ag]={name:ag,closed:0,vol:0};
+    agentMap[ag].closed++;
+    agentMap[ag].vol+=Number(p.salesPrice)||0;
+  });
+  props.forEach(p=>{const ag=p.agent||'Unknown';if(!agentMap[ag])agentMap[ag]={name:ag,closed:0,vol:0};});
+  const agentList=Object.values(agentMap).sort((a,b)=>b.closed-a.closed||b.vol-a.vol);
+  const top3=agentList.slice(0,3);
+  const medalClass=['sb-rank-1','sb-rank-2','sb-rank-3'];
+  const ringClass=['sb-ring-1','sb-ring-2','sb-ring-3'];
+  let agHtml='<div class="sb-section-title">Top Agents <span class="sb-section-sub">'+yr+'</span></div><div class="sb-agents-row">';
+  if(!top3.length){
+    agHtml+='<div class="sb-no-data">No agent data yet</div>';
+  } else {
+    top3.forEach((ag,i)=>{
+      const ini=ag.name.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||'?';
+      const cols=['#6366f1','#8b5cf6','#a78bfa'];
+      agHtml+=`<div class="sb-agent-item">
+        <div class="sb-agent-avatar-wrap ${ringClass[i]}">
+          <div class="sb-agent-avatar" style="background:linear-gradient(135deg,${cols[i]},#4f46e5)">${ini}</div>
+          <div class="sb-rank-badge ${medalClass[i]}">${i+1}</div>
+        </div>
+        <div class="sb-agent-name">${ag.name}</div>
+        <div class="sb-agent-stats">${ag.closed} closed</div>
+        <div class="sb-agent-vol">${sbFmtMoney(ag.vol)}</div>
+      </div>`;
+    });
+  }
+  agHtml+='</div>';
+  document.getElementById('sbTopAgents').innerHTML = agHtml;
+
+  /* ── FAR LEFT: Active Listings table ── */
+  let alHtml='<div class="sb-section-title">Active Listings</div>';
+  if(!active.length){
+    alHtml+='<div class="sb-no-data">No active listings</div>';
+  } else {
+    alHtml+='<table class="sb-table"><thead><tr><th>Address</th><th>MLS#</th><th>Price</th><th>Agent</th></tr></thead><tbody>';
+    active.slice(0,8).forEach(p=>{
+      const addr=((p.addrStreet||'')+' '+(p.city||'')).trim()||'—';
+      alHtml+=`<tr><td class="sb-addr">${addr}</td><td>${p.mlsNumber||'—'}</td><td class="sb-price">${sbFmtFull(p.salesPrice)}</td><td class="sb-agent-name-cell">${p.agent||'—'}</td></tr>`;
+    });
+    alHtml+='</tbody></table>';
+    if(active.length>8) alHtml+=`<div style="font-size:0.72rem;color:var(--gray);padding:8px 0 0 8px">${active.length-8} more…</div>`;
+  }
+  document.getElementById('sbActiveList').innerHTML = alHtml;
+
+  /* ── CENTER: Monthly Closings chart ── */
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthData=months.map((_,m)=>{
+    const mo=closedYr.filter(p=>{const d=new Date(p.closingDate||p.created);return d.getMonth()===m;});
+    return {count:mo.length,vol:sbSum(mo,'salesPrice')};
+  });
+  const maxCount=Math.max(...monthData.map(m=>m.count),1);
+  const svgW=460,svgH=130,padL=28,padB=24,padT=10,padR=10;
+  const chartW=svgW-padL-padR,chartH=svgH-padT-padB;
+  const barW=(chartW/12)*0.55,barGap=(chartW/12);
+  let svgBars='';
+  for(let y=0;y<=maxCount;y++){
+    const yy=padT+chartH-(y/maxCount)*chartH;
+    svgBars+=`<line x1="${padL}" y1="${yy}" x2="${svgW-padR}" y2="${yy}" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>`;
+    if(y===Math.ceil(maxCount/2)||y===maxCount) svgBars+=`<text x="${padL-4}" y="${yy+3}" text-anchor="end" fill="rgba(255,255,255,0.3)" font-size="8">${y}</text>`;
+  }
+  monthData.forEach((m,i)=>{
+    const x=padL+i*barGap+(barGap-barW)/2;
+    const barH=m.count>0?(m.count/maxCount)*chartH:0;
+    const y=padT+chartH-barH;
+    const isNow=i===thisMonth&&new Date().getFullYear()===yr;
+    svgBars+=`<rect x="${x}" y="${y}" width="${barW}" height="${barH}" rx="3" fill="${isNow?'#22d3ee':'#6366f1'}" opacity="${isNow?'1':'0.7'}"/>`;
+    if(m.count>0) svgBars+=`<text x="${x+barW/2}" y="${y-3}" text-anchor="middle" fill="white" font-size="7.5" font-weight="700">${m.count}</text>`;
+    svgBars+=`<text x="${x+barW/2}" y="${svgH-padB+12}" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="7.5">${months[i]}</text>`;
+  });
+  document.getElementById('sbMonthChart').innerHTML=`<div class="sb-section-title">Monthly Closings <span class="sb-section-sub">${yr}</span></div><div class="sb-chart-area"><svg viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">${svgBars}</svg></div>`;
+
+  /* ── CENTER: Open Escrows table ── */
+  let esHtml='<div class="sb-section-title">Open Escrows</div>';
+  if(!escrow.length){
+    esHtml+='<div class="sb-no-data">No open escrows</div>';
+  } else {
+    esHtml+='<table class="sb-table"><thead><tr><th>Address</th><th>Price</th><th>Closing</th><th>Agent</th></tr></thead><tbody>';
+    escrow.slice(0,8).forEach(p=>{
+      const addr=((p.addrStreet||'')+' '+(p.city||'')).trim()||'—';
+      const closing=p.closingDate?new Date(p.closingDate).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'—';
+      esHtml+=`<tr><td class="sb-addr">${addr}</td><td class="sb-price">${sbFmtFull(p.salesPrice)}</td><td>${closing}</td><td class="sb-agent-name-cell">${p.agent||'—'}</td></tr>`;
+    });
+    esHtml+='</tbody></table>';
+    if(escrow.length>8) esHtml+=`<div style="font-size:0.72rem;color:var(--gray);padding:8px 0 0 8px">${escrow.length-8} more…</div>`;
+  }
+  document.getElementById('sbEscrowList').innerHTML = esHtml;
+
+  /* ── FAR RIGHT: Agent Ranking ── */
+  let rkHtml='<div class="sb-section-title">Agent Ranking <span class="sb-section-sub">'+yr+'</span></div>';
+  rkHtml+='<table class="sb-table"><thead><tr><th>#</th><th>Agent</th><th>Closed</th><th>Volume</th></tr></thead><tbody>';
+  const ranked=agentList.filter(a=>a.closed>0);
+  if(!ranked.length){
+    rkHtml+='<tr><td colspan="4" class="sb-no-data">No data yet</td></tr>';
+  } else {
+    ranked.forEach((ag,i)=>{
+      rkHtml+=`<tr><td><span class="sb-rank-num">${i+1}</span></td><td>${ag.name}</td><td class="sb-rank-closed">${ag.closed}</td><td class="sb-rank-vol">${sbFmtMoney(ag.vol)}</td></tr>`;
+    });
+  }
+  rkHtml+='</tbody></table>';
+  document.getElementById('sbAgentRank').innerHTML = rkHtml;
+}
+
 
 /* ══════════════════════════════════════════════════════
    STREET VIEW
@@ -9655,5 +10705,414 @@ function syncGaugesFromProperties(){
   </div>
 </div>
 
+
+<!-- ══════ SLIDE-IN PANEL ══════ -->
+<div id="pb-panel-overlay" onclick="closePbPanel()"></div>
+<div id="pb-panel">
+  <div class="pb-panel-header">
+    <div class="pb-panel-title">Add <span>Contact</span></div>
+    <button class="pb-panel-close" onclick="closePbPanel()">✕</button>
+  </div>
+  <div class="pb-panel-body">
+    <div class="pb-panel-row">
+      <div>
+        <label class="pb-panel-field-label">First Name *</label>
+        <input class="pb-panel-input" id="pb-fname" placeholder="John"/>
+      </div>
+      <div>
+        <label class="pb-panel-field-label">Last Name *</label>
+        <input class="pb-panel-input" id="pb-lname" placeholder="Doe"/>
+      </div>
+    </div>
+    <label class="pb-panel-field-label">Phone *</label>
+    <input class="pb-panel-input" id="pb-phone" placeholder="+1 555-0000" type="tel"/>
+    <label class="pb-panel-field-label">Email</label>
+    <input class="pb-panel-input" id="pb-email" placeholder="john@example.com" type="email"/>
+    <label class="pb-panel-field-label">Company / Address</label>
+    <input class="pb-panel-input" id="pb-company" placeholder="Company name or property address"/>
+    <label class="pb-panel-field-label">Status</label>
+    <select class="pb-panel-select" id="pb-status">
+      <option value="lead">Lead</option>
+      <option value="hot">Active</option>
+      <option value="contacted">Contacted</option>
+      <option value="working">Working On It</option>
+      <option value="closed">Closed</option>
+      <option value="archive">Archived</option>
+    </select>
+    <label class="pb-panel-field-label">Source</label>
+    <select class="pb-panel-select" id="pb-source">
+      <option value="Direct">Direct</option>
+      <option value="Referral">Referral</option>
+      <option value="Online">Online</option>
+      <option value="Cold Call">Cold Call</option>
+      <option value="Driving for Dollars">Driving for Dollars</option>
+      <option value="Mailer">Mailer</option>
+      <option value="Other">Other</option>
+    </select>
+    <label class="pb-panel-field-label">Notes</label>
+    <textarea class="pb-panel-input" id="pb-notes" rows="3" placeholder="Quick note about this contact…" style="resize:vertical;min-height:70px"></textarea>
+  </div>
+  <div class="pb-panel-footer">
+    <button class="pb-panel-cancel" onclick="closePbPanel()">Cancel</button>
+    <button class="pb-panel-save" onclick="savePbContact()">Save Contact</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   PHONEBOOK  (auto-syncs with DB.leads)
+══════════════════════════════════════════════════════ */
+(function(){
+  var pbAlpha  = 'ALL';
+  var pbStatus = 'all';
+
+  /* avatar colour palette */
+  var PB_COLORS = ['#7c3aed','#2563eb','#059669','#d97706','#dc2626','#7c3aed','#0891b2','#be185d'];
+  function pbColor(name){
+    var n=0; for(var i=0;i<name.length;i++) n+=name.charCodeAt(i);
+    return PB_COLORS[n%PB_COLORS.length];
+  }
+  function pbInitials(f,l){ return ((f||'').charAt(0)+(l||'').charAt(0)).toUpperCase(); }
+
+  /* status label + badge colours */
+  var PB_STATUS = {
+    hot:      { label:'Active',       bg:'rgba(167,139,250,0.18)', color:'#c4b5fd' },
+    lead:     { label:'Lead',         bg:'rgba(96,165,250,0.18)',  color:'#93c5fd' },
+    contacted:{ label:'Contacted',    bg:'rgba(201,169,110,0.18)', color:'var(--gold)' },
+    working:  { label:'Working On It',bg:'rgba(245,166,35,0.18)',  color:'#fbbf24' },
+    closed:   { label:'Closed Won',   bg:'rgba(74,222,128,0.18)',  color:'#4ade80' },
+    closedlost:{ label:'Closed Lost', bg:'rgba(248,113,113,0.18)', color:'#f87171' },
+    archive:  { label:'Archived',     bg:'rgba(136,136,160,0.18)', color:'#8888a0' },
+  };
+  function pbStatusInfo(s){
+    return PB_STATUS[s] || { label:s||'—', bg:'rgba(136,136,160,0.18)', color:'#8888a0' };
+  }
+
+  /* static A–Z bar — always show all 26 letters */
+  function buildAlphaBar(){
+    var bar = document.getElementById('pb-alpha-bar');
+    if(!bar || bar.dataset.built) return;
+    bar.dataset.built = '1';
+    var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    var out = '<button class="pb-alpha-btn active" data-letter="ALL" onclick="pbSetAlpha(this,\'ALL\')">ALL</button>';
+    letters.forEach(function(lt){
+      out += '<button class="pb-alpha-btn" data-letter="'+lt+'" onclick="pbSetAlpha(this,\''+lt+'\')">'+lt+'</button>';
+    });
+    bar.innerHTML = out;
+  }
+
+  window.pbSetAlpha = function(btn, letter){
+    document.querySelectorAll('#pb-alpha-bar .pb-alpha-btn').forEach(function(b){ b.classList.remove('active'); });
+    if(btn) btn.classList.add('active');
+    pbAlpha = letter;
+    renderPhonebook();
+  };
+
+  window.pbSetStatus = function(btn, status){
+    document.querySelectorAll('.pb-chip').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    pbStatus = status;
+    renderPhonebook();
+  };
+
+  window.renderPhonebook = function(){
+    buildAlphaBar(); /* builds once (no-op after first render) */
+    var grid  = document.getElementById('pb-grid');
+    var count = document.getElementById('pb-count');
+    if(!grid) return;
+    var q     = (document.getElementById('pb-search')||{}).value||'';
+    var leads = DB.leads || [];
+
+    /* filter */
+    var filtered = leads.filter(function(l){
+      var letter = (l.fname||'').charAt(0).toUpperCase();
+      var alphaOk = pbAlpha==='ALL' || letter===pbAlpha;
+      var statusOk = pbStatus==='all' || l.status===pbStatus;
+      var qOk = !q || (l.fname+' '+l.lname+' '+(l.email||'')+' '+(l.phone||'')+' '+(l.address||'')).toLowerCase().includes(q.toLowerCase());
+      return alphaOk && statusOk && qOk;
+    });
+
+    /* sort A–Z by last name */
+    filtered.sort(function(a,b){ return (a.lname+a.fname).localeCompare(b.lname+b.fname); });
+
+    if(count) count.textContent = filtered.length + ' contact' + (filtered.length===1?'':'s');
+
+    if(!filtered.length){
+      grid.innerHTML = '<div class="pb-empty"><div class="pb-empty-icon">📒</div>No contacts found.</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(function(l){
+      var si = pbStatusInfo(l.status);
+      var initials = pbInitials(l.fname, l.lname);
+      var color    = pbColor(l.fname+l.lname);
+      var company  = l.address || l.company || '—';
+      var phone    = l.phone || '—';
+      var email    = l.email || '—';
+      return [
+        '<div class="pb-card" onclick="openPbEdit(\''+l.id+'\',event)">',
+          '<div class="pb-card-top">',
+            '<div class="pb-avatar" style="background:'+color+'">'+initials+'</div>',
+            '<div class="pb-card-info">',
+              '<div class="pb-card-name">'+l.fname+' '+l.lname+'</div>',
+              '<div class="pb-card-company">'+company+'</div>',
+            '</div>',
+            '<span class="pb-status-badge" style="background:'+si.bg+';color:'+si.color+'">'+si.label+'</span>',
+          '</div>',
+          '<div class="pb-contact-row"><span class="pb-contact-icon">✉️</span><span class="pb-contact-val">'+email+'</span></div>',
+          '<div class="pb-contact-row"><span class="pb-contact-icon">📞</span><span class="pb-contact-val">'+phone+'</span></div>',
+          '<div class="pb-card-actions">',
+            '<button class="pb-btn" onclick="event.stopPropagation();pbEmail(this)" data-e="'+email+'"><span>\u2709\ufe0f</span>Email</button>',
+            '<button class="pb-btn" onclick="event.stopPropagation();pbCall(this)" data-p="'+phone+'"><span>\U0001f4de</span>Call</button>',
+            '<button class="pb-btn-arrow" onclick="event.stopPropagation();openLead(&quot;'+l.id+'&quot;)" title="Full detail">&#8594;</button>',
+          '</div>',
+        '</div>'
+      ].join('');
+    }).join('');
+  };
+
+  /* email / call helpers (called from card buttons) */
+  window.pbEmail = function(btn){
+    var e = btn.getAttribute('data-e');
+    if(e && e !== '—') window.location.href = 'mailto:' + e;
+  };
+  window.pbCall = function(btn){
+    var p = btn.getAttribute('data-p');
+    if(p && p !== '—') window.location.href = 'tel:' + p;
+  };
+
+  /* panel */
+  window.openPbPanel = function(){
+    // reset fields
+    ['pb-fname','pb-lname','pb-phone','pb-email','pb-company','pb-notes'].forEach(function(id){
+      var el=document.getElementById(id); if(el) el.value='';
+    });
+    var s=document.getElementById('pb-status'); if(s) s.value='lead';
+    var src=document.getElementById('pb-source'); if(src) src.value='Direct';
+    document.getElementById('pb-panel-overlay').classList.add('open');
+    document.getElementById('pb-panel').classList.add('open');
+    setTimeout(function(){ var el=document.getElementById('pb-fname'); if(el) el.focus(); }, 350);
+  };
+
+  window.closePbPanel = function(){
+    document.getElementById('pb-panel-overlay').classList.remove('open');
+    document.getElementById('pb-panel').classList.remove('open');
+  };
+
+  window.savePbContact = function(){
+    var fn = (document.getElementById('pb-fname').value||'').trim();
+    var ln = (document.getElementById('pb-lname').value||'').trim();
+    var ph = (document.getElementById('pb-phone').value||'').trim();
+    if(!fn||!ln||!ph){ alert('Please fill in First Name, Last Name, and Phone.'); return; }
+    var lead = {
+      id: uid(),
+      fname: fn, lname: ln,
+      phone: ph,
+      email: (document.getElementById('pb-email').value||'').trim(),
+      address: (document.getElementById('pb-company').value||'').trim(),
+      status: document.getElementById('pb-status').value,
+      source: document.getElementById('pb-source').value,
+      callstatus: 'notcalled',
+      kanbanDay: 'unscheduled',
+      notes: [], timeline: [],
+      created: Date.now(), lastContact: null,
+      value: 0, type: '', situation: '',
+    };
+    var noteText = (document.getElementById('pb-notes').value||'').trim();
+    if(noteText) lead.notes.push({ id: uid(), text: noteText, ts: Date.now() });
+    lead.timeline.push({ type:'created', msg:'Contact added via Phonebook', ts: Date.now(), color:'var(--purple)' });
+    var ls = DB.leads; ls.push(lead); DB.leads = ls;
+    document.getElementById('leadsCountBadge').textContent = DB.leads.length;
+    closePbPanel();
+    renderPhonebook();
+    if(typeof logActivity==='function') logActivity('New contact: '+fn+' '+ln, 'var(--purple)');
+  };
+
+  /* hook into showView */
+  var _pbPrev = window.showView;
+  window.showView = function(v){
+    _pbPrev(v);
+    if(v==='phonebook') renderPhonebook();
+  };
+})();
+</script>
+
+<!-- ══════ EDIT CONTACT PANEL ══════ -->
+<div id="pb-edit-overlay" onclick="closePbEdit()"></div>
+<div id="pb-edit-panel">
+  <div class="pb-edit-top-bar">
+    <div class="pb-edit-avatar-lg" id="pbe-avatar"></div>
+    <div class="pb-edit-name-block">
+      <div class="pb-edit-full-name" id="pbe-display-name">Contact</div>
+      <div class="pb-edit-sub" id="pbe-display-sub"></div>
+    </div>
+    <button class="pb-edit-close" onclick="closePbEdit()">✕</button>
+  </div>
+  <div class="pb-edit-body">
+    <div class="pb-edit-section">
+      <div class="pb-edit-section-title">Contact Info</div>
+      <div class="pb-edit-row">
+        <div class="pb-edit-field">
+          <label class="pb-edit-label">First Name</label>
+          <input class="pb-edit-input" id="pbe-fname" placeholder="First name"/>
+        </div>
+        <div class="pb-edit-field">
+          <label class="pb-edit-label">Last Name</label>
+          <input class="pb-edit-input" id="pbe-lname" placeholder="Last name"/>
+        </div>
+      </div>
+      <div class="pb-edit-field">
+        <label class="pb-edit-label">Phone</label>
+        <input class="pb-edit-input" id="pbe-phone" placeholder="+1 555-0000" type="tel"/>
+      </div>
+      <div class="pb-edit-field">
+        <label class="pb-edit-label">Email</label>
+        <input class="pb-edit-input" id="pbe-email" placeholder="email@example.com" type="email"/>
+      </div>
+      <div class="pb-edit-field">
+        <label class="pb-edit-label">Company / Address</label>
+        <input class="pb-edit-input" id="pbe-company" placeholder="Company or property address"/>
+      </div>
+    </div>
+    <div class="pb-edit-section">
+      <div class="pb-edit-section-title">Lead Details</div>
+      <div class="pb-edit-row">
+        <div class="pb-edit-field">
+          <label class="pb-edit-label">Status</label>
+          <select class="pb-edit-select" id="pbe-status">
+            <option value="lead">Lead</option>
+            <option value="hot">Active</option>
+            <option value="contacted">Contacted</option>
+            <option value="working">Working On It</option>
+            <option value="closed">Closed</option>
+            <option value="closedlost">Closed Lost</option>
+            <option value="archive">Archived</option>
+          </select>
+        </div>
+        <div class="pb-edit-field">
+          <label class="pb-edit-label">Source</label>
+          <select class="pb-edit-select" id="pbe-source">
+            <option value="Direct">Direct</option>
+            <option value="Referral">Referral</option>
+            <option value="Online">Online</option>
+            <option value="Cold Call">Cold Call</option>
+            <option value="Driving for Dollars">Driving for Dollars</option>
+            <option value="Mailer">Mailer</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="pb-edit-field">
+        <label class="pb-edit-label">Call Status</label>
+        <select class="pb-edit-select" id="pbe-callstatus">
+          <option value="notcalled">Not Called</option>
+          <option value="willcall">Will Call</option>
+          <option value="called">Called</option>
+        </select>
+      </div>
+      <div class="pb-edit-field">
+        <label class="pb-edit-label">Property Value ($)</label>
+        <input class="pb-edit-input" id="pbe-value" placeholder="0" type="number"/>
+      </div>
+    </div>
+  </div>
+  <div class="pb-edit-footer">
+    <button class="pb-edit-open-full" onclick="openLeadFromEdit()">Open Full Detail →</button>
+    <button class="pb-edit-save" onclick="savePbEdit()">💾 Save Changes</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   PHONEBOOK — EDIT PANEL
+══════════════════════════════════════════════════════ */
+(function(){
+  var _pbEditId = null;
+
+  var PB_COLORS_E = ['#7c3aed','#2563eb','#059669','#d97706','#dc2626','#7c3aed','#0891b2','#be185d'];
+  function pbColorE(name){
+    var n=0; for(var i=0;i<name.length;i++) n+=name.charCodeAt(i);
+    return PB_COLORS_E[n%PB_COLORS_E.length];
+  }
+  function pbInitialsE(f,l){ return ((f||'').charAt(0)+(l||'').charAt(0)).toUpperCase(); }
+
+  window.openPbEdit = function(id, e){
+    if(e){ e.stopPropagation(); }
+    var lead = (DB.leads||[]).find(function(l){ return l.id===id; });
+    if(!lead) return;
+    _pbEditId = id;
+
+    /* fill header */
+    var color = pbColorE(lead.fname+lead.lname);
+    var av = document.getElementById('pbe-avatar');
+    if(av){ av.textContent = pbInitialsE(lead.fname,lead.lname); av.style.background = color; }
+    var dn = document.getElementById('pbe-display-name');
+    if(dn) dn.textContent = lead.fname + ' ' + lead.lname;
+    var ds = document.getElementById('pbe-display-sub');
+    if(ds) ds.textContent = lead.address || lead.company || lead.source || '';
+
+    /* fill fields */
+    var set = function(id, val){ var el=document.getElementById(id); if(el) el.value = val||''; };
+    set('pbe-fname',      lead.fname);
+    set('pbe-lname',      lead.lname);
+    set('pbe-phone',      lead.phone);
+    set('pbe-email',      lead.email);
+    set('pbe-company',    lead.address || lead.company || '');
+    set('pbe-status',     lead.status);
+    set('pbe-source',     lead.source);
+    set('pbe-callstatus', lead.callstatus);
+    set('pbe-value',      lead.value||'');
+
+    /* open panel */
+    document.getElementById('pb-edit-overlay').classList.add('open');
+    document.getElementById('pb-edit-panel').classList.add('open');
+    setTimeout(function(){ var el=document.getElementById('pbe-fname'); if(el) el.focus(); }, 360);
+  };
+
+  window.closePbEdit = function(){
+    document.getElementById('pb-edit-overlay').classList.remove('open');
+    document.getElementById('pb-edit-panel').classList.remove('open');
+    _pbEditId = null;
+  };
+
+  window.savePbEdit = function(){
+    if(!_pbEditId) return;
+    var leads = DB.leads || [];
+    var idx   = leads.findIndex(function(l){ return l.id===_pbEditId; });
+    if(idx < 0) return;
+
+    var get = function(id){ var el=document.getElementById(id); return el ? el.value.trim() : ''; };
+    leads[idx].fname       = get('pbe-fname') || leads[idx].fname;
+    leads[idx].lname       = get('pbe-lname') || leads[idx].lname;
+    leads[idx].phone       = get('pbe-phone');
+    leads[idx].email       = get('pbe-email');
+    leads[idx].address     = get('pbe-company');
+    leads[idx].status      = get('pbe-status');
+    leads[idx].source      = get('pbe-source');
+    leads[idx].callstatus  = get('pbe-callstatus');
+    leads[idx].value       = parseFloat(get('pbe-value'))||0;
+
+    /* log the change */
+    if(!leads[idx].timeline) leads[idx].timeline = [];
+    leads[idx].timeline.push({
+      type:'edit', msg:'Contact updated via Phonebook',
+      ts: Date.now(), color:'var(--purple)'
+    });
+
+    DB.leads = leads;
+    closePbEdit();
+    renderPhonebook();
+    if(typeof logActivity==='function')
+      logActivity('Contact updated: '+leads[idx].fname+' '+leads[idx].lname,'var(--purple)');
+  };
+
+  window.openLeadFromEdit = function(){
+    if(!_pbEditId) return;
+    closePbEdit();
+    if(typeof openLead==='function') openLead(_pbEditId);
+  };
+
+})();
+</script>
 </body>
 </html>
