@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- v1779262508 -->
 <meta charset="UTF-8"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
@@ -146,7 +147,7 @@ input,select,textarea{font-family:var(--font)}
 .nav-label{overflow:hidden;transition:opacity var(--transition),width var(--transition)}
 #sidebar.collapsed .nav-label{opacity:0;width:0}
 .nav-badge{
-  margin-left:auto;background:var(--hot);color:#fff;
+  margin-left:auto;background:var(--gold);color:#fff;
   font-size:0.65rem;font-weight:700;padding:2px 6px;
   border-radius:10px;flex-shrink:0;
 }
@@ -195,8 +196,8 @@ input,select,textarea{font-family:var(--font)}
 .btn-primary:hover{box-shadow:0 0 20px rgba(201,169,110,0.35);transform:translateY(-1px)}
 .btn-ghost{background:transparent;color:var(--gray);border:1px solid var(--border)}
 .btn-ghost:hover{border-color:var(--border2);color:var(--white);background:var(--surface2)}
-.btn-danger{background:rgba(248,113,113,0.15);color:var(--red);border:1px solid rgba(248,113,113,0.25)}
-.btn-danger:hover{background:rgba(248,113,113,0.25)}
+.btn-danger{background:var(--gold-dim)!important;color:var(--gold)!important;border:1px solid rgba(201,169,110,0.3)!important}
+.btn-danger:hover{background:rgba(201,169,110,0.28)!important;color:var(--gold)!important}
 .btn-sm{padding:6px 12px;font-size:0.75rem}
 .btn-icon{width:34px;height:34px;padding:0;border-radius:8px;justify-content:center}
 
@@ -1863,12 +1864,12 @@ tr.prop-expiring:hover{
 .pb-add-btn{
   display:flex;align-items:center;gap:8px;
   padding:10px 20px;border-radius:8px;
-  background:var(--purple);color:#fff;
+  background:var(--gold);color:#0a0a0a;
   font-size:0.83rem;font-weight:600;letter-spacing:0.03em;
   transition:background var(--transition),box-shadow var(--transition);
   flex-shrink:0;
 }
-.pb-add-btn:hover{background:#9061f9;box-shadow:0 0 20px rgba(167,139,250,0.35)}
+.pb-add-btn:hover{filter:brightness(1.1);box-shadow:0 0 20px var(--gold-dim)}
 
 /* alphabet bar */
 .pb-alpha-bar{
@@ -1884,8 +1885,8 @@ tr.prop-expiring:hover{
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;transition:all var(--transition);white-space:nowrap;
 }
-.pb-alpha-btn:hover{border-color:var(--purple);color:var(--purple)}
-.pb-alpha-btn.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.pb-alpha-btn:hover{border-color:var(--gold);color:var(--gold)}
+.pb-alpha-btn.active{background:var(--gold);color:#0a0a0a;border-color:var(--gold)}
 
 /* status chips */
 .pb-chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
@@ -1896,8 +1897,8 @@ tr.prop-expiring:hover{
   color:var(--gray);font-size:0.78rem;font-weight:500;
   cursor:pointer;transition:all var(--transition);
 }
-.pb-chip:hover{border-color:var(--purple);color:var(--purple)}
-.pb-chip.active{background:rgba(167,139,250,0.15);border-color:var(--purple);color:var(--purple)}
+.pb-chip:hover{border-color:var(--gold);color:var(--gold)}
+.pb-chip.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold)}
 
 /* search */
 .pb-search-wrap{position:relative;margin-bottom:24px}
@@ -1911,7 +1912,7 @@ tr.prop-expiring:hover{
   border-radius:10px;color:var(--white);font-size:0.85rem;
   transition:border-color var(--transition);
 }
-.pb-search:focus{outline:none;border-color:var(--purple)}
+.pb-search:focus{outline:none;border-color:var(--gold)}
 .pb-search::placeholder{color:var(--gray2)}
 
 /* grid */
@@ -1956,12 +1957,12 @@ tr.prop-expiring:hover{
 .pb-btn:hover{background:#252535;color:var(--white);border-color:#363650}
 .pb-btn-arrow{
   width:34px;height:34px;border-radius:8px;
-  background:rgba(167,139,250,0.14);border:1px solid rgba(167,139,250,0.28);
-  color:var(--purple);font-size:1.05rem;flex-shrink:0;
+  background:var(--gold-dim);border:1px solid rgba(201,169,110,0.28);
+  color:var(--gold);font-size:1.05rem;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
   transition:all var(--transition);cursor:pointer;font-weight:700;
 }
-.pb-btn-arrow:hover{background:var(--purple);color:#fff;border-color:var(--purple)}
+.pb-btn-arrow:hover{background:var(--gold);color:#0a0a0a;border-color:var(--gold)}
 .pb-empty{
   grid-column:1/-1;text-align:center;padding:60px 20px;
   color:var(--gray);font-size:0.88rem;
@@ -1995,7 +1996,7 @@ tr.prop-expiring:hover{
   flex-shrink:0;
 }
 .pb-panel-title{font-size:1.05rem;font-weight:600;color:var(--white)}
-.pb-panel-title span{color:var(--purple)}
+.pb-panel-title span{color:var(--gold)}
 .pb-panel-close{
   width:32px;height:32px;border-radius:6px;
   background:var(--surface2);border:1px solid var(--border);
@@ -2016,7 +2017,7 @@ tr.prop-expiring:hover{
   border-radius:8px;color:var(--white);font-size:0.85rem;
   transition:border-color var(--transition);
 }
-.pb-panel-input:focus,.pb-panel-select:focus{outline:none;border-color:var(--purple)}
+.pb-panel-input:focus,.pb-panel-select:focus{outline:none;border-color:var(--gold)}
 .pb-panel-input::placeholder{color:var(--gray2)}
 .pb-panel-select option{background:var(--surface2)}
 .pb-panel-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -2026,11 +2027,11 @@ tr.prop-expiring:hover{
 }
 .pb-panel-save{
   flex:1;padding:12px;border-radius:8px;
-  background:var(--purple);color:#fff;
+  background:var(--gold);color:#0a0a0a;
   font-size:0.85rem;font-weight:600;
   transition:background var(--transition),box-shadow var(--transition);
 }
-.pb-panel-save:hover{background:#9061f9;box-shadow:0 0 20px rgba(167,139,250,0.3)}
+.pb-panel-save:hover{filter:brightness(1.1);box-shadow:0 0 20px var(--gold-dim)}
 .pb-panel-cancel{
   padding:12px 20px;border-radius:8px;
   background:var(--surface2);border:1px solid var(--border);
@@ -2096,7 +2097,7 @@ tr.prop-expiring:hover{
   border-radius:8px;color:var(--white);font-size:0.85rem;
   transition:border-color var(--transition);
 }
-.pb-edit-input:focus,.pb-edit-select:focus{outline:none;border-color:var(--purple)}
+.pb-edit-input:focus,.pb-edit-select:focus{outline:none;border-color:var(--gold)}
 .pb-edit-input::placeholder{color:var(--gray2)}
 .pb-edit-select option{background:var(--surface2)}
 .pb-edit-footer{
@@ -2105,11 +2106,11 @@ tr.prop-expiring:hover{
 }
 .pb-edit-save{
   flex:1;padding:12px;border-radius:8px;
-  background:var(--purple);color:#fff;
+  background:var(--gold);color:#0a0a0a;
   font-size:0.85rem;font-weight:600;
   transition:background var(--transition),box-shadow var(--transition);
 }
-.pb-edit-save:hover{background:#9061f9;box-shadow:0 0 20px rgba(167,139,250,0.3)}
+.pb-edit-save:hover{filter:brightness(1.1);box-shadow:0 0 20px var(--gold-dim)}
 .pb-edit-open-full{
   padding:12px 16px;border-radius:8px;
   background:var(--surface2);border:1px solid var(--border);
@@ -2119,6 +2120,21 @@ tr.prop-expiring:hover{
 .pb-edit-open-full:hover{color:var(--white);background:var(--surface3)}
 .pb-card{cursor:pointer;}
 
+
+/* ══ FORCE ALL TRASH / DELETE ACTIONS TO ACCENT COLOR ══ */
+.btn-danger,
+button.btn-danger,
+a.btn-danger {
+  background:var(--gold-dim)!important;
+  color:var(--gold)!important;
+  border-color:rgba(201,169,110,0.3)!important;
+}
+.btn-danger:hover,
+button.btn-danger:hover {
+  background:rgba(201,169,110,0.28)!important;
+  color:var(--gold)!important;
+  border-color:var(--gold)!important;
+}
 </style>
 </head>
 <body>
@@ -2170,16 +2186,16 @@ tr.prop-expiring:hover{
     <div class="nav-item" onclick="showView('kanban')" data-view="kanban"><span class="nav-icon">🗂</span><span class="nav-label">Process</span></div>
     <div class="nav-section-label">SCHEDULE</div>
     <div class="nav-item" onclick="showView('calendar')" data-view="calendar"><span class="nav-icon">📅</span><span class="nav-label">Calendar</span></div>
+    <div class="nav-item" onclick="showView('email')" data-view="email"><span class="nav-icon">✉️</span><span class="nav-label">Email</span></div>
+    <div class="nav-item" onclick="showView('notepad')" data-view="notepad"><span class="nav-icon">📝</span><span class="nav-label">Notepad</span></div>
 
     <div class="nav-section-label">TOOLS</div>
     <div class="nav-item" onclick="showView('properties')" data-view="properties"><span class="nav-icon">🏡</span><span class="nav-label">Properties</span><span class="nav-badge" id="propsCountBadge" style="display:none">0</span></div>
     <div class="nav-item" onclick="showView('streetview')" data-view="streetview"><span class="nav-icon">🗺</span><span class="nav-label">Street View</span></div>
-
     <div class="nav-item" onclick="showView('routemap')" data-view="routemap"><span class="nav-icon">🛣</span><span class="nav-label">Route Map</span></div>
-    <div class="nav-item" onclick="showView('email')" data-view="email"><span class="nav-icon">✉️</span><span class="nav-label">Email</span></div>
     <div class="nav-item" onclick="showView('phonebook')" data-view="phonebook"><span class="nav-icon">📒</span><span class="nav-label">Phonebook</span></div>
-    <div class="nav-item" onclick="showView('notepad')" data-view="notepad"><span class="nav-icon">📝</span><span class="nav-label">Notepad</span></div>
-    <div class="nav-item" onclick="showView('integrations')" data-view="integrations"><span class="nav-icon">🔗</span><span class="nav-label">Integrations & API</span></div>
+    <div class="nav-item" onclick="showView('vendors')" data-view="vendors"><span class="nav-icon">🏗</span><span class="nav-label">Vendors</span></div>
+    <div class="nav-item" onclick="showView('thebank')" data-view="thebank"><span class="nav-icon">🏦</span><span class="nav-label">The Bank</span></div>
     <div class="nav-item" onclick="showView('settings')" data-view="settings"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></div>
   </div>
   <div class="sidebar-footer">
@@ -2958,54 +2974,6 @@ tr.prop-expiring:hover{
 </div>
 
 <!-- ══ INTEGRATIONS ════════════════════════════════════ -->
-<div class="view" id="view-integrations">
-  <div class="topbar">
-    <div class="page-title">Integrations <span>& API</span></div>
-  </div>
-  <div style="max-width:860px;display:flex;flex-direction:column;gap:20px">
-    <div class="settings-section">
-      <h3>📥 Inbound Webhook — Receive Leads</h3>
-      <p>POST lead data to this endpoint from your website, Zillow, Facebook Ads, or any external tool. Leads appear instantly in the CRM.</p>
-      <div style="font-size:0.72rem;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">Endpoint URL</div>
-      <div class="api-key-row" style="margin-bottom:16px">
-        <div class="api-key-val">https://cashfrontandback.vercel.app/api/leads/incoming</div>
-        <button class="copy-btn" onclick="copyText('https://cashfrontandback.vercel.app/api/leads/incoming',this)">Copy</button>
-      </div>
-      <div style="font-size:0.72rem;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">JSON Payload Format</div>
-      <div class="webhook-box">{ "name": "Maria Garcia", "phone": "(661) 555-0000", "email": "m@gmail.com", "address": "123 Main St, Bakersfield CA 93301", "source": "zillow", "estimated_value": 285000 }</div>
-    </div>
-    <div class="settings-section">
-      <h3>🔑 API Key</h3>
-      <p>Use this key to authenticate outbound requests to other CRMs or Zapier.</p>
-      <div class="api-key-row">
-        <div class="api-key-val" id="apiKeyDisplay">bchb_live_••••••••••••••••••••••••••••••</div>
-        <button class="copy-btn" onclick="revealApiKey(this)">Reveal</button>
-      </div>
-    </div>
-    <div class="settings-section">
-      <h3>⚡ Connected Sources</h3>
-      <p>Toggle which sources can push leads into your CRM.</p>
-      <div class="toggle-row"><div class="toggle-info"><h4>Website Form (bakersfieldcashhomebuyers.com)</h4><p>Auto-imports leads from your main site calculator</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-      <div class="toggle-row"><div class="toggle-info"><h4>Zillow Premier Agent</h4><p>Webhook from Zillow lead notifications</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-      <div class="toggle-row"><div class="toggle-info"><h4>Facebook Lead Ads</h4><p>Via Zapier → Webhook bridge</p></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
-      <div class="toggle-row"><div class="toggle-info"><h4>Realtor.com</h4><p>Coming soon — connect your Realtor.com agent account</p></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
-    </div>
-    <div class="settings-section">
-      <h3>🧪 Test Incoming Lead</h3>
-      <p>Simulate a lead arriving from an external source to test your pipeline.</p>
-      <div class="form-grid" style="margin-bottom:16px">
-        <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="test-name" value="Test Lead"/></div>
-        <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="test-phone" value="(661) 555-9999"/></div>
-        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="test-email" value="test@zillow.com"/></div>
-        <div class="form-group"><label class="form-label">Address</label><input class="form-input" id="test-addr" value="456 Oak Ave, Bakersfield CA 93304"/></div>
-        <div class="form-group"><label class="form-label">Source</label><select class="form-select" id="test-source"><option value="zillow">Zillow</option><option value="website">Website</option><option value="facebook">Facebook</option></select></div>
-        <div class="form-group"><label class="form-label">Est. Value ($)</label><input class="form-input" id="test-value" type="number" value="320000"/></div>
-      </div>
-      <button class="btn btn-primary" onclick="injectTestLead()">⚡ Inject Test Lead</button>
-      <div id="inject-result" style="display:none;margin-top:12px;padding:12px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:8px;font-size:0.82rem;color:var(--green)"></div>
-    </div>
-  </div>
-</div>
 
 <!-- ══ SETTINGS ═══════════════════════════════════════ -->
 <div class="view" id="view-settings">
@@ -3019,6 +2987,7 @@ tr.prop-expiring:hover{
       <div class="settings-nav-item" onclick="showSettingsPanel('data',this)">💾 Data & Export</div>
       <div class="settings-nav-item" onclick="showSettingsPanel('gcal',this)" id="gcal-nav-item">📅 Google Calendar</div>
       <div class="settings-nav-item" onclick="showSettingsPanel('apikeys',this)">🔑 API Keys</div>
+      <div class="settings-nav-item" onclick="showSettingsPanel('integrations',this)">🔗 Integrations & API</div>
       <div class="settings-nav-item" onclick="showSettingsPanel('appearance',this)">🎨 Appearance</div>
     </div>
     <div>
@@ -3253,6 +3222,57 @@ tr.prop-expiring:hover{
         </div>
       </div><!-- /sp-apikeys -->
 
+      <div class="settings-panel" id="sp-integrations">
+        <div class="settings-section">
+          <h3>🔗 Integrations & API</h3>
+          <p>Manage webhooks, API keys, and connected lead sources.</p>
+        </div>
+  <div style="max-width:860px;display:flex;flex-direction:column;gap:20px">
+    <div class="settings-section">
+      <h3>📥 Inbound Webhook — Receive Leads</h3>
+      <p>POST lead data to this endpoint from your website, Zillow, Facebook Ads, or any external tool. Leads appear instantly in the CRM.</p>
+      <div style="font-size:0.72rem;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">Endpoint URL</div>
+      <div class="api-key-row" style="margin-bottom:16px">
+        <div class="api-key-val">https://cashfrontandback.vercel.app/api/leads/incoming</div>
+        <button class="copy-btn" onclick="copyText('https://cashfrontandback.vercel.app/api/leads/incoming',this)">Copy</button>
+      </div>
+      <div style="font-size:0.72rem;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">JSON Payload Format</div>
+      <div class="webhook-box">{ "name": "Maria Garcia", "phone": "(661) 555-0000", "email": "m@gmail.com", "address": "123 Main St, Bakersfield CA 93301", "source": "zillow", "estimated_value": 285000 }</div>
+    </div>
+    <div class="settings-section">
+      <h3>🔑 API Key</h3>
+      <p>Use this key to authenticate outbound requests to other CRMs or Zapier.</p>
+      <div class="api-key-row">
+        <div class="api-key-val" id="apiKeyDisplay">bchb_live_••••••••••••••••••••••••••••••</div>
+        <button class="copy-btn" onclick="revealApiKey(this)">Reveal</button>
+      </div>
+    </div>
+    <div class="settings-section">
+      <h3>⚡ Connected Sources</h3>
+      <p>Toggle which sources can push leads into your CRM.</p>
+      <div class="toggle-row"><div class="toggle-info"><h4>Website Form (bakersfieldcashhomebuyers.com)</h4><p>Auto-imports leads from your main site calculator</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div class="toggle-info"><h4>Zillow Premier Agent</h4><p>Webhook from Zillow lead notifications</p></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div class="toggle-info"><h4>Facebook Lead Ads</h4><p>Via Zapier → Webhook bridge</p></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+      <div class="toggle-row"><div class="toggle-info"><h4>Realtor.com</h4><p>Coming soon — connect your Realtor.com agent account</p></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+    </div>
+    <div class="settings-section">
+      <h3>🧪 Test Incoming Lead</h3>
+      <p>Simulate a lead arriving from an external source to test your pipeline.</p>
+      <div class="form-grid" style="margin-bottom:16px">
+        <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="test-name" value="Test Lead"/></div>
+        <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="test-phone" value="(661) 555-9999"/></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="test-email" value="test@zillow.com"/></div>
+        <div class="form-group"><label class="form-label">Address</label><input class="form-input" id="test-addr" value="456 Oak Ave, Bakersfield CA 93304"/></div>
+        <div class="form-group"><label class="form-label">Source</label><select class="form-select" id="test-source"><option value="zillow">Zillow</option><option value="website">Website</option><option value="facebook">Facebook</option></select></div>
+        <div class="form-group"><label class="form-label">Est. Value ($)</label><input class="form-input" id="test-value" type="number" value="320000"/></div>
+      </div>
+      <button class="btn btn-primary" onclick="injectTestLead()">⚡ Inject Test Lead</button>
+      <div id="inject-result" style="display:none;margin-top:12px;padding:12px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:8px;font-size:0.82rem;color:var(--green)"></div>
+    </div>
+  </div>
+</div>
+      </div><!-- /sp-integrations -->
+
       <div class="settings-panel" id="sp-appearance">
         <div class="settings-section">
           <h3>Appearance</h3>
@@ -3316,7 +3336,6 @@ tr.prop-expiring:hover{
 
     </div>
   </div>
-</div>
 
 
 <!-- ══ ROUTE MAP ═══════════════════════════════════════ -->
@@ -3860,6 +3879,179 @@ tr.prop-expiring:hover{
 </div>
 
 
+
+<!-- ══ THE BANK ══════════════════════════════════════ -->
+<div class="view" id="view-thebank">
+  <div class="topbar">
+    <div class="page-title">The Bank <span>Financial Overview</span></div>
+    <div class="topbar-actions">
+      <select id="tb-year-sel" class="btn btn-ghost btn-sm" style="background:var(--surface2);border:1px solid var(--border);color:var(--white);border-radius:8px;padding:6px 12px;font-size:0.8rem;cursor:pointer;outline:none;" onchange="renderTheBank()"></select>
+      <button class="btn btn-ghost btn-sm" onclick="renderTheBank()">⟳ Refresh</button>
+    </div>
+  </div>
+
+  <div class="tb-grid">
+
+    <!-- BOX 1: BOS FEES -->
+    <div class="tb-box">
+      <div class="tb-box-hdr"><span class="tb-box-icon">💸</span><div><div class="tb-box-title">BOS Fees</div><div class="tb-box-sub">TC · Office · Bonuses Paid</div></div></div>
+      <div class="tb-gauge-row" id="tb-gauges-fees"></div>
+      <div class="tb-stat-row" id="tb-fees-total-row"></div>
+    </div>
+
+    <!-- BOX 2: REVENUE -->
+    <div class="tb-box">
+      <div class="tb-box-hdr"><span class="tb-box-icon">📈</span><div><div class="tb-box-title">Revenue</div><div class="tb-box-sub">Units · Income · Volume</div></div></div>
+      <div class="tb-gauge-row" id="tb-gauges-rev"></div>
+      <div class="tb-stat-row" id="tb-rev-total-row"></div>
+    </div>
+
+    <!-- BOX 3: MADE vs SPENT -->
+    <div class="tb-box">
+      <div class="tb-box-hdr"><span class="tb-box-icon">📊</span><div><div class="tb-box-title">Made vs Spent</div><div class="tb-box-sub">Income vs Expenses</div></div></div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:160px;">
+        <canvas id="tb-bar-chart" style="max-height:200px;width:100%"></canvas>
+      </div>
+      <div class="tb-stat-row" id="tb-net-row"></div>
+    </div>
+
+    <!-- BOX 4: DOCUMENTS -->
+    <div class="tb-box">
+      <div class="tb-box-hdr"><span class="tb-box-icon">📎</span><div><div class="tb-box-title">Documents</div><div class="tb-box-sub">CDA · Contracts · Taxes</div></div></div>
+      <div class="tb-upload-cols">
+
+        <div class="tb-upload-col">
+          <div class="tb-upload-label">CDA</div>
+          <label class="tb-upload-zone" ondragover="event.preventDefault()" ondrop="tbDrop(event,'cda')">
+            <input type="file" id="tb-cda-input" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple onchange="tbFileChange(this,'cda')" style="display:none">
+            <span style="font-size:1.2rem">📄</span>
+            <span class="tb-upload-hint">Drop or <u onclick="document.getElementById('tb-cda-input').click()">browse</u></span>
+          </label>
+          <div class="tb-thumb-grid" id="tb-cda-thumbs"></div>
+        </div>
+
+        <div class="tb-upload-col">
+          <div class="tb-upload-label">Contracts</div>
+          <label class="tb-upload-zone" ondragover="event.preventDefault()" ondrop="tbDrop(event,'contracts')">
+            <input type="file" id="tb-contracts-input" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple onchange="tbFileChange(this,'contracts')" style="display:none">
+            <span style="font-size:1.2rem">📝</span>
+            <span class="tb-upload-hint">Drop or <u onclick="document.getElementById('tb-contracts-input').click()">browse</u></span>
+          </label>
+          <div class="tb-thumb-grid" id="tb-contracts-thumbs"></div>
+        </div>
+
+        <div class="tb-upload-col">
+          <div class="tb-upload-label">Taxes</div>
+          <label class="tb-upload-zone" ondragover="event.preventDefault()" ondrop="tbDrop(event,'taxes')">
+            <input type="file" id="tb-taxes-input" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple onchange="tbFileChange(this,'taxes')" style="display:none">
+            <span style="font-size:1.2rem">🧾</span>
+            <span class="tb-upload-hint">Drop or <u onclick="document.getElementById('tb-taxes-input').click()">browse</u></span>
+          </label>
+          <div class="tb-thumb-grid" id="tb-taxes-thumbs"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BOX 5: VENDORS -->
+    <div class="tb-box">
+      <div class="tb-box-hdr"><span class="tb-box-icon">🏗</span><div><div class="tb-box-title">Vendors</div><div class="tb-box-sub">Name · Amount Paid</div></div></div>
+      <div class="tb-vendor-list" id="tb-vendor-rows"></div>
+      <div class="tb-vendor-add-row">
+        <input class="tb-vinput" id="tb-vname" placeholder="Vendor name" />
+        <input class="tb-vinput tb-vmoney" id="tb-vpaid" type="number" placeholder="$0.00" />
+        <button class="tb-vadd-btn" onclick="tbAddVendor()">+ Add</button>
+      </div>
+      <div class="tb-vendor-footer" id="tb-vendor-footer"></div>
+    </div>
+
+    <!-- BOX 6: PIE CHART -->
+    <div class="tb-box">
+      <div class="tb-box-hdr"><span class="tb-box-icon">🥧</span><div><div class="tb-box-title">Breakdown</div><div class="tb-box-sub">Full Financial Pie</div></div></div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:160px;position:relative;">
+        <canvas id="tb-pie-chart" style="max-height:200px;max-width:200px;"></canvas>
+      </div>
+      <div id="tb-pie-legend" class="tb-pie-legend"></div>
+    </div>
+
+  </div><!-- /tb-grid -->
+</div><!-- /view-thebank -->
+
+<!-- ══ VENDORS ══════════════════════════════════════ -->
+<div class="view" id="view-vendors">
+  <div style="padding:28px 32px 120px;max-width:1400px;margin:0 auto;">
+
+    <!-- Header -->
+    <div class="pb-header">
+      <div class="pb-title-group">
+        <div class="pb-title">Vendors <span>Directory</span></div>
+        <div class="pb-sub">All your vendors in one place</div>
+      </div>
+      <button class="pb-add-btn" onclick="openVendorDrawer()">＋ Add Vendor</button>
+    </div>
+
+    <!-- A–Z Bar -->
+    <div class="pb-alpha-bar" id="vd-alpha-bar">
+      <button class="pb-alpha-btn active" data-letter="ALL" onclick="vdSetAlpha(this,'ALL')">ALL</button>
+      <button class="pb-alpha-btn" data-letter="A" onclick="vdSetAlpha(this,'A')">A</button>
+      <button class="pb-alpha-btn" data-letter="B" onclick="vdSetAlpha(this,'B')">B</button>
+      <button class="pb-alpha-btn" data-letter="C" onclick="vdSetAlpha(this,'C')">C</button>
+      <button class="pb-alpha-btn" data-letter="D" onclick="vdSetAlpha(this,'D')">D</button>
+      <button class="pb-alpha-btn" data-letter="E" onclick="vdSetAlpha(this,'E')">E</button>
+      <button class="pb-alpha-btn" data-letter="F" onclick="vdSetAlpha(this,'F')">F</button>
+      <button class="pb-alpha-btn" data-letter="G" onclick="vdSetAlpha(this,'G')">G</button>
+      <button class="pb-alpha-btn" data-letter="H" onclick="vdSetAlpha(this,'H')">H</button>
+      <button class="pb-alpha-btn" data-letter="I" onclick="vdSetAlpha(this,'I')">I</button>
+      <button class="pb-alpha-btn" data-letter="J" onclick="vdSetAlpha(this,'J')">J</button>
+      <button class="pb-alpha-btn" data-letter="K" onclick="vdSetAlpha(this,'K')">K</button>
+      <button class="pb-alpha-btn" data-letter="L" onclick="vdSetAlpha(this,'L')">L</button>
+      <button class="pb-alpha-btn" data-letter="M" onclick="vdSetAlpha(this,'M')">M</button>
+      <button class="pb-alpha-btn" data-letter="N" onclick="vdSetAlpha(this,'N')">N</button>
+      <button class="pb-alpha-btn" data-letter="O" onclick="vdSetAlpha(this,'O')">O</button>
+      <button class="pb-alpha-btn" data-letter="P" onclick="vdSetAlpha(this,'P')">P</button>
+      <button class="pb-alpha-btn" data-letter="Q" onclick="vdSetAlpha(this,'Q')">Q</button>
+      <button class="pb-alpha-btn" data-letter="R" onclick="vdSetAlpha(this,'R')">R</button>
+      <button class="pb-alpha-btn" data-letter="S" onclick="vdSetAlpha(this,'S')">S</button>
+      <button class="pb-alpha-btn" data-letter="T" onclick="vdSetAlpha(this,'T')">T</button>
+      <button class="pb-alpha-btn" data-letter="U" onclick="vdSetAlpha(this,'U')">U</button>
+      <button class="pb-alpha-btn" data-letter="V" onclick="vdSetAlpha(this,'V')">V</button>
+      <button class="pb-alpha-btn" data-letter="W" onclick="vdSetAlpha(this,'W')">W</button>
+      <button class="pb-alpha-btn" data-letter="X" onclick="vdSetAlpha(this,'X')">X</button>
+      <button class="pb-alpha-btn" data-letter="Y" onclick="vdSetAlpha(this,'Y')">Y</button>
+      <button class="pb-alpha-btn" data-letter="Z" onclick="vdSetAlpha(this,'Z')">Z</button>
+    </div>
+
+    <!-- Category Chips -->
+    <div class="pb-chip-row" id="vd-chip-row">
+      <button class="pb-chip active" data-cat="all"                   onclick="vdSetCat(this,'all')">All</button>
+      <button class="pb-chip" data-cat="Appraisal"                    onclick="vdSetCat(this,'Appraisal')">Appraisal</button>
+      <button class="pb-chip" data-cat="Buyer"                        onclick="vdSetCat(this,'Buyer')">Buyer</button>
+      <button class="pb-chip" data-cat="Cooperating Agent"            onclick="vdSetCat(this,'Cooperating Agent')">Cooperating Agent</button>
+      <button class="pb-chip" data-cat="Handyman"                     onclick="vdSetCat(this,'Handyman')">Handyman</button>
+      <button class="pb-chip" data-cat="Home Inspection"              onclick="vdSetCat(this,'Home Inspection')">Home Inspection</button>
+      <button class="pb-chip" data-cat="Home Warranty"                onclick="vdSetCat(this,'Home Warranty')">Home Warranty</button>
+      <button class="pb-chip" data-cat="Homeowners Insurance"         onclick="vdSetCat(this,'Homeowners Insurance')">Homeowners Insurance</button>
+      <button class="pb-chip" data-cat="Mortgage"                     onclick="vdSetCat(this,'Mortgage')">Mortgage</button>
+      <button class="pb-chip" data-cat="Pest Inspection"              onclick="vdSetCat(this,'Pest Inspection')">Pest Inspection</button>
+      <button class="pb-chip" data-cat="Seller"                       onclick="vdSetCat(this,'Seller')">Seller</button>
+      <button class="pb-chip" data-cat="Title"                        onclick="vdSetCat(this,'Title')">Title</button>
+      <button class="pb-chip" data-cat="Other"                        onclick="vdSetCat(this,'Other')">Other</button>
+    </div>
+
+    <!-- Search -->
+    <div class="pb-search-wrap">
+      <span class="pb-search-icon">🔍</span>
+      <input class="pb-search" id="vd-search" placeholder="Search vendors by company, name, phone…" oninput="renderVendors()"/>
+    </div>
+
+    <!-- Count -->
+    <div class="pb-count" id="vd-count"></div>
+
+    <!-- Grid -->
+    <div class="pb-grid" id="vd-grid"></div>
+  </div>
+</div>
+
 </main>
 </div>
 </div>
@@ -4095,10 +4287,21 @@ let currentView='dashboard';
 let currentLeadId=null;
 
 function showView(v){
-  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(function(el){
+    el.classList.remove('active');
+    el.style.display='none';
+    el.style.opacity='';
+    el.style.visibility='';
+  });
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
   const el=document.getElementById('view-'+v);
-  if(el){ el.classList.add('active'); try{ gsap.from(el,{opacity:0,y:12,duration:0.35,ease:'power3.out'}); }catch(e){} }
+  if(el){
+    el.classList.add('active');
+    el.style.display='block';
+    el.style.opacity='1';
+    el.style.visibility='visible';
+  }
+  try{ const m=document.getElementById('main'); if(m) m.scrollTop=0; }catch(e){}
   document.querySelector(`[data-view="${v}"]`)?.classList.add('active');
   currentView=v;
   // render
@@ -11114,5 +11317,964 @@ function syncGaugesFromProperties(){
 
 })();
 </script>
+
+
+
+<!-- ══ THE BANK v2 — Styles ══ -->
+<style>
+/* ── GRID: 3-col × 2-row, all equal ─────────────── */
+.tb-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  grid-template-rows:minmax(360px,1fr) minmax(300px,1fr) minmax(300px,1fr);
+  gap:24px;
+  padding:24px;
+  box-sizing:border-box;
+  overflow-y:auto;
+  height:calc(100vh - 64px);
+}
+.tb-box{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px 26px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  overflow:hidden;
+  transition:box-shadow .2s;
+}
+.tb-box:hover{box-shadow:0 0 0 1px rgba(201,169,110,.25),0 8px 32px rgba(0,0,0,.35)}
+/* header */
+.tb-box-hdr{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.tb-box-icon{font-size:1.8rem;line-height:1;flex-shrink:0}
+.tb-box-title{font-size:1rem;font-weight:700;color:var(--white);letter-spacing:.02em}
+.tb-box-sub{font-size:.68rem;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+/* gauge row — 3 equal donuts */
+.tb-gauge-row{display:flex;gap:8px;align-items:flex-start;flex:1}
+.tb-gauge-card{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.tb-gauge-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);text-align:center;margin-top:8px}
+.tb-donut-wrap{width:100%;max-width:160px}
+/* stat footer row */
+.tb-stat-row{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:.75rem;color:var(--gray);flex-shrink:0}
+.tb-stat-val{font-weight:700;font-size:.88rem}
+/* upload box layout */
+.tb-upload-cols{display:flex;gap:10px;flex:1;overflow:hidden}
+.tb-upload-col{flex:1;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.tb-upload-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gray);flex-shrink:0}
+.tb-upload-zone{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  background:var(--surface2);border:1px dashed var(--border2);
+  border-radius:8px;padding:8px 6px;cursor:pointer;flex-shrink:0;
+  transition:border-color .2s,background .2s;
+}
+.tb-upload-zone:hover{border-color:var(--gold);background:var(--gold-glow)}
+.tb-upload-hint{font-size:.7rem;color:var(--gray)}
+.tb-upload-hint u{color:var(--gold);cursor:pointer}
+/* thumbnails */
+.tb-thumb-grid{display:flex;flex-wrap:wrap;gap:4px;overflow-y:auto;flex:1;align-content:flex-start}
+.tb-thumb{
+  position:relative;width:48px;height:48px;border-radius:6px;
+  border:1px solid var(--border);overflow:hidden;cursor:zoom-in;flex-shrink:0;
+  background:var(--surface3);display:flex;align-items:center;justify-content:center;
+  transition:transform .15s,box-shadow .15s;
+}
+.tb-thumb:hover{transform:scale(1.1);box-shadow:0 4px 16px rgba(0,0,0,.5);border-color:var(--gold)}
+@keyframes tbLbIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.tb-thumb img{width:100%;height:100%;object-fit:cover}
+.tb-thumb-icon{font-size:1.4rem}
+.tb-thumb-del{
+  position:absolute;top:1px;right:2px;background:rgba(0,0,0,.7);
+  border:none;color:#fff;font-size:.6rem;cursor:pointer;border-radius:3px;
+  padding:0 3px;line-height:1.4;display:none;
+}
+.tb-thumb:hover .tb-thumb-del{display:block}
+.tb-thumb-name{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.65);font-size:.45rem;color:#fff;padding:1px 2px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* vendor rows */
+.tb-vendor-list{display:flex;flex-direction:column;gap:5px;flex:1;overflow-y:auto}
+.tb-vendor-row{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  padding:8px 12px;font-size:.82rem;
+}
+.tb-vendor-name{flex:1;color:var(--white);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-vendor-amt{color:var(--red);font-weight:700;white-space:nowrap}
+.tb-vendor-del{background:none;border:none;color:var(--gray2);cursor:pointer;font-size:.8rem;padding:0;transition:color .15s;flex-shrink:0}
+.tb-vendor-del:hover{color:var(--gold)}
+.tb-vendor-add-row{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.tb-vinput{
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  color:var(--white);padding:7px 10px;font-size:.8rem;font-family:var(--font);outline:none;
+  transition:border-color .2s;
+}
+.tb-vinput:focus{border-color:var(--gold)}
+.tb-vinput{flex:2}
+.tb-vmoney{flex:1}
+.tb-vadd-btn{
+  background:var(--gold);color:#0a0a0a;border:none;border-radius:8px;
+  padding:7px 12px;font-size:.78rem;font-weight:700;cursor:pointer;flex-shrink:0;
+  transition:opacity .15s,transform .15s;
+}
+.tb-vadd-btn:hover{opacity:.85;transform:translateY(-1px)}
+.tb-vendor-footer{font-size:.75rem;color:var(--gray);display:flex;justify-content:space-between;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:7px 12px;flex-shrink:0}
+/* pie legend */
+.tb-pie-legend{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;flex-shrink:0}
+.tb-pie-legend-item{display:flex;align-items:center;gap:4px;font-size:.66rem;color:var(--gray)}
+.tb-pie-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+</style>
+
+<!-- ══ THE BANK v2 — Chart.js ══ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<!-- ══ THE BANK v2 — JS ══ -->
+<script>
+(function(){
+  /* ── charts ── */
+  let _tbBar  = null;
+  let _tbPie  = null;
+
+  /* ── vendor state ── */
+  let _tbVendors = JSON.parse(localStorage.getItem('tb_vendors2')||'[]');
+
+  /* ── upload state: {cda:[{name,dataUrl}], contracts:[…], taxes:[…]} ── */
+  let _tbUploads = JSON.parse(localStorage.getItem('tb_uploads2')||'{"cda":[],"contracts":[],"taxes":[]}');
+
+  /* ── helpers ── */
+  const fmtM = n => {
+    n = Number(n)||0;
+    if(n>=1000000) return '$'+(n/1000000).toFixed(1)+'M';
+    if(n>=1000) return '$'+Math.round(n/1000)+'K';
+    return '$'+n.toLocaleString();
+  };
+  const fmtFull = n => '$'+(Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const sum = (arr,f) => arr.reduce((s,x)=>s+(Number(x[f])||0),0);
+
+  /* ── build a donut SVG identical to the sales board ── */
+  function tbDonutSVG(pct, line1, line2, ringId){
+    const r=38,cx=50,cy=50,circ=2*Math.PI*r;
+    const tgt = circ*(1-Math.max(pct,0.001));
+    const fs1 = line1.length>8?'8':line1.length>5?'10':'14';
+    return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--surface3)" stroke-width="12"/>
+      <circle id="${ringId}" cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--gold)" stroke-width="12"
+        stroke-linecap="round" stroke-dasharray="${circ} ${circ}" stroke-dashoffset="${circ}"
+        style="transform:rotate(-90deg);transform-origin:50px 50px;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)"
+        data-target="${tgt}"/>
+      <circle cx="${cx}" cy="${cy-r}" r="4.5" fill="var(--gold)"/>
+      <text x="50" y="48" text-anchor="middle" dominant-baseline="middle"
+        font-family="Playfair Display,serif" font-size="${fs1}" font-weight="700" fill="#fff">${line1}</text>
+      ${line2?`<text x="50" y="62" text-anchor="middle" font-family="Inter,sans-serif" font-size="6" fill="rgba(255,255,255,0.4)">${line2}</text>`:''}
+    </svg>`;
+  }
+
+  function tbGaugeCard(title, pct, line1, line2, ringId){
+    return `<div class="tb-gauge-card">
+      <div class="tb-gauge-title">${title}</div>
+      <div class="tb-donut-wrap">${tbDonutSVG(pct,line1,line2,ringId)}</div>
+    </div>`;
+  }
+
+  /* ── animate rings ── */
+  function tbAnimateRings(){
+    document.querySelectorAll('#view-thebank [data-target]').forEach(r=>{
+      r.style.strokeDashoffset = r.dataset.target;
+    });
+  }
+
+  /* ── main render ── */
+  window.renderTheBank = function(){
+    const yrSel = document.getElementById('tb-year-sel');
+    if(!yrSel) return;
+
+    // populate year selector
+    const curYr = new Date().getFullYear();
+    if(!yrSel.options.length){
+      for(let y=curYr;y>=curYr-5;y--){
+        const o=document.createElement('option');
+        o.value=y; o.textContent=y;
+        yrSel.appendChild(o);
+      }
+    }
+    const yr = parseInt(yrSel.value)||curYr;
+
+    const props  = (window.PropDB?.properties)||[];
+    const closed = props.filter(p=>{
+      if(p.propertyStatus!=='Closed') return false;
+      const d=new Date(p.closingDate||p.created);
+      return d.getFullYear()===yr;
+    });
+    const allLeads = (window.DB?.leads)||[];
+
+    /* ── BOX 1: Fees ── */
+    const totalTC     = sum(closed,'tcFee');
+    const totalOffice = sum(closed,'officeFees');
+    const totalBonus  = sum(closed,'bonus');
+    const totalFees   = totalTC+totalOffice+totalBonus;
+    const maxFee      = Math.max(totalFees,1);
+
+    const feesEl = document.getElementById('tb-gauges-fees');
+    if(feesEl) feesEl.innerHTML = [
+      tbGaugeCard('TC Fees',    totalTC/maxFee,    fmtM(totalTC),    'TC',     'tb-g-tc'),
+      tbGaugeCard('Office',     totalOffice/maxFee,fmtM(totalOffice),'Office', 'tb-g-off'),
+      tbGaugeCard('Bonuses',    totalBonus/maxFee, fmtM(totalBonus), 'Bonuses','tb-g-bon'),
+    ].join('');
+
+    const fTotEl = document.getElementById('tb-fees-total-row');
+    if(fTotEl) fTotEl.innerHTML = `<span>Total Spent</span><span class="tb-stat-val" style="color:var(--red)">${fmtFull(totalFees)}</span>`;
+
+    /* ── BOX 2: Revenue ── */
+    const totalVol    = sum(closed,'salesPrice');
+    const totalComm   = sum(closed,'commission');
+    const totalUnits  = closed.length;
+    const maxVol      = Math.max(totalVol,1);
+
+    const revEl = document.getElementById('tb-gauges-rev');
+    if(revEl) revEl.innerHTML = [
+      tbGaugeCard('Units Closed', Math.min(totalUnits/50,1), totalUnits.toString(),'Closed','tb-g-u'),
+      tbGaugeCard('Commission',   Math.min(totalComm/500000,1), fmtM(totalComm),  'Income','tb-g-c'),
+      tbGaugeCard('Volume',       Math.min(totalVol/5000000,1), fmtM(totalVol),   'Volume','tb-g-v'),
+    ].join('');
+
+    const rTotEl = document.getElementById('tb-rev-total-row');
+    if(rTotEl) rTotEl.innerHTML = `<span>YTD Volume</span><span class="tb-stat-val" style="color:var(--green)">${fmtFull(totalVol)}</span>`;
+
+    /* ── BOX 3: Made vs Spent bar chart ── */
+    const vendorTotal = _tbVendors.reduce((s,v)=>s+(Number(v.paid)||0),0);
+    const totalSpent  = totalFees + vendorTotal;
+    const barCtx = document.getElementById('tb-bar-chart')?.getContext('2d');
+    if(barCtx){
+      if(_tbBar){ _tbBar.destroy(); _tbBar=null; }
+      _tbBar = new Chart(barCtx,{
+        type:'bar',
+        data:{
+          labels:['TC Fees','Office','Bonuses','Vendors','Commission','Volume'],
+          datasets:[
+            {
+              label:'Spent',
+              data:[totalTC,totalOffice,totalBonus,vendorTotal,0,0],
+              backgroundColor:'rgba(248,113,113,0.75)',
+              borderRadius:6,
+              borderSkipped:false,
+            },
+            {
+              label:'Made',
+              data:[0,0,0,0,totalComm,totalVol],
+              backgroundColor:'rgba(74,222,128,0.75)',
+              borderRadius:6,
+              borderSkipped:false,
+            }
+          ]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{labels:{color:'rgba(255,255,255,0.5)',font:{size:10}}}},
+          scales:{
+            x:{ticks:{color:'rgba(255,255,255,0.4)',font:{size:9}},grid:{color:'rgba(255,255,255,0.04)'}},
+            y:{ticks:{color:'rgba(255,255,255,0.4)',font:{size:9},callback:v=>fmtM(v)},grid:{color:'rgba(255,255,255,0.06)'}}
+          }
+        }
+      });
+    }
+    const net = totalComm - totalSpent;
+    const netEl = document.getElementById('tb-net-row');
+    if(netEl) netEl.innerHTML = `<span>Net Income</span><span class="tb-stat-val" style="color:${net>=0?'var(--green)':'var(--red)'}">${fmtFull(net)}</span>`;
+
+    /* ── BOX 5: Vendors ── */
+    tbRenderVendors(closed);
+
+    /* ── BOX 6: Pie ── */
+    renderPie(totalTC,totalOffice,totalBonus,vendorTotal,totalComm,totalVol);
+
+    /* ── animate all donuts ── */
+    setTimeout(tbAnimateRings,80);
+  };
+
+  /* ── vendors ── */
+  function tbRenderVendors(closedProps){
+    const el = document.getElementById('tb-vendor-rows');
+    if(!el) return;
+
+    // ── auto rows from closed deals ──────────────────────────────
+    // Aggregate by company name: escrowCompany→tcFee, mortgageCompany→commission/splitPaid
+    const autoMap = {};
+    (closedProps||[]).forEach(p=>{
+      const addEntry = (co, amt, label) => {
+        if(!co || !co.trim()) return;
+        const key = co.trim();
+        if(!autoMap[key]) autoMap[key] = {name:key, total:0, label};
+        autoMap[key].total += Number(amt)||0;
+      };
+      addEntry(p.escrowCompany,  p.tcFee,      'Escrow / TC');
+      addEntry(p.mortgageCompany, p.splitPaid || p.commission, 'Lender');
+    });
+    const autoRows = Object.values(autoMap);
+
+    let html = '';
+
+    if(autoRows.length){
+      html += '<div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin-bottom:4px;padding:0 2px">From Closed Deals</div>';
+      html += autoRows.map(v=>`
+        <div class="tb-vendor-row">
+          <span class="tb-vendor-name" style="display:flex;flex-direction:column;gap:1px">
+            <span>🏢 ${v.name}</span>
+            <span style="font-size:.62rem;color:var(--gray)">${v.label}</span>
+          </span>
+          <span class="tb-vendor-amt">${fmtFull(v.total)}</span>
+        </div>`).join('');
+    }
+
+    if(_tbVendors.length){
+      html += `<div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);margin:8px 0 4px;padding:0 2px">Manual Vendors</div>`;
+      html += _tbVendors.map((v,i)=>`
+        <div class="tb-vendor-row">
+          <span class="tb-vendor-name">🏗 ${v.name}</span>
+          <span class="tb-vendor-amt">${fmtFull(v.paid)}</span>
+          <button class="tb-vendor-del" onclick="tbDelVendor(${i})">✕</button>
+        </div>`).join('');
+    }
+
+    if(!autoRows.length && !_tbVendors.length){
+      html = '<div style="font-size:.75rem;color:var(--gray2);padding:4px 2px">No closed deals yet. Companies will appear here automatically when deals close.</div>';
+    }
+
+    el.innerHTML = html;
+
+    const autoTotal  = autoRows.reduce((s,v)=>s+v.total, 0);
+    const manualTotal = _tbVendors.reduce((s,v)=>s+(Number(v.paid)||0),0);
+    const grandTotal  = autoTotal + manualTotal;
+    const fEl = document.getElementById('tb-vendor-footer');
+    if(fEl) fEl.innerHTML = `<span>Yearly Total Paid to Companies</span><span style="color:var(--red);font-weight:700">${fmtFull(grandTotal)}</span>`;
+  }
+
+  window.tbAddVendor = function(){
+    const name = (document.getElementById('tb-vname')?.value||'').trim();
+    const paid = parseFloat(document.getElementById('tb-vpaid')?.value)||0;
+    if(!name) return;
+    _tbVendors.push({name,paid});
+    localStorage.setItem('tb_vendors2',JSON.stringify(_tbVendors));
+    document.getElementById('tb-vname').value='';
+    document.getElementById('tb-vpaid').value='';
+    renderTheBank();
+  };
+
+  window.tbDelVendor = function(i){
+    _tbVendors.splice(i,1);
+    localStorage.setItem('tb_vendors2',JSON.stringify(_tbVendors));
+    renderTheBank();
+  };
+
+  /* ── pie chart ── */
+  function renderPie(tc,office,bonus,vendors,comm,vol){
+    const canvas = document.getElementById('tb-pie-chart');
+    if(!canvas) return;
+    if(_tbPie){ _tbPie.destroy(); _tbPie=null; }
+    const labels = ['TC Fees','Office','Bonuses','Vendors','Commission','Volume'];
+    const data   = [tc,office,bonus,vendors,comm,vol];
+    const colors = ['#f87171','#fb923c','#fbbf24','#a78bfa','#4ade80','#34d399'];
+    const nonZero = data.some(v=>v>0);
+    if(!nonZero){
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const leg = document.getElementById('tb-pie-legend');
+      if(leg) leg.innerHTML='<span style="color:var(--gray2);font-size:.72rem">Close deals to see the breakdown.</span>';
+      return;
+    }
+    _tbPie = new Chart(canvas,{
+      type:'doughnut',
+      data:{labels,datasets:[{data,backgroundColor:colors,borderColor:'#141418',borderWidth:3,hoverOffset:6}]},
+      options:{
+        responsive:true,maintainAspectRatio:true,
+        plugins:{
+          legend:{display:false},
+          tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${fmtFull(ctx.parsed)}`}}
+        },
+        cutout:'52%'
+      }
+    });
+    const leg = document.getElementById('tb-pie-legend');
+    if(leg){
+      leg.innerHTML = labels.map((l,i)=>data[i]>0?`
+        <div class="tb-pie-legend-item">
+          <span class="tb-pie-dot" style="background:${colors[i]}"></span>
+          ${l}: <strong style="color:${colors[i]};margin-left:2px">${fmtM(data[i])}</strong>
+        </div>`:''
+      ).join('');
+    }
+  }
+
+  /* ── uploads ── */
+  window.tbFileChange = function(input, cat){
+    Array.from(input.files).forEach(f=>tbStoreFile(f,cat));
+    input.value='';
+  };
+  window.tbDrop = function(e,cat){
+    e.preventDefault();
+    Array.from(e.dataTransfer.files).forEach(f=>tbStoreFile(f,cat));
+  };
+  function tbStoreFile(file,cat){
+    const isImg = file.type.startsWith('image/');
+    const reader = new FileReader();
+    reader.onload = ev=>{
+      if(!_tbUploads[cat]) _tbUploads[cat]=[];
+      _tbUploads[cat].push({name:file.name,dataUrl:ev.target.result,isImg});
+      try{ localStorage.setItem('tb_uploads2',JSON.stringify(_tbUploads)); }catch(e){}
+      tbRenderThumbs(cat);
+    };
+    reader.readAsDataURL(file);
+  }
+  function tbRenderThumbs(cat){
+    const el = document.getElementById('tb-'+cat+'-thumbs');
+    if(!el) return;
+    const files = _tbUploads[cat]||[];
+    el.innerHTML = files.map((f,i)=>`
+      <div class="tb-thumb" title="${f.name}" onclick="tbPreview('${cat}',${i})">
+        ${f.isImg
+          ? `<img src="${f.dataUrl}" alt="${f.name}">`
+          : `<span class="tb-thumb-icon">${f.name.endsWith('.pdf')?'📄':f.name.endsWith('.docx')||f.name.endsWith('.doc')?'📝':'📎'}</span>`}
+        <span class="tb-thumb-name">${f.name}</span>
+        <button class="tb-thumb-del" onclick="event.stopPropagation();tbDelFile('${cat}',${i})">✕</button>
+      </div>`).join('');
+  }
+
+  /* ── lightbox preview ── */
+  window.tbPreview = function(cat, i){
+    const f = _tbUploads[cat]?.[i];
+    if(!f) return;
+    // if lightbox already open for this item, close it
+    const existing = document.getElementById('tb-lightbox');
+    if(existing){ existing.remove(); return; }
+
+    const lb = document.createElement('div');
+    lb.id = 'tb-lightbox';
+    lb.style.cssText = 'position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;cursor:zoom-out;backdrop-filter:blur(6px);animation:tbLbIn .18s ease';
+    lb.onclick = ()=>lb.remove();
+
+    const inner = document.createElement('div');
+    inner.style.cssText = 'position:relative;max-width:88vw;max-height:82vh;border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.12);';
+    inner.onclick = e=>e.stopPropagation();
+
+    if(f.isImg){
+      const img = document.createElement('img');
+      img.src = f.dataUrl;
+      img.style.cssText = 'display:block;max-width:88vw;max-height:78vh;object-fit:contain;border-radius:12px;';
+      inner.appendChild(img);
+    } else {
+      // non-image: show big icon + filename
+      inner.style.cssText += 'background:var(--surface);padding:48px 64px;display:flex;flex-direction:column;align-items:center;gap:16px;';
+      inner.innerHTML = `
+        <span style="font-size:5rem">${f.name.endsWith('.pdf')?'📄':f.name.endsWith('.docx')||f.name.endsWith('.doc')?'📝':'📎'}</span>
+        <span style="color:#fff;font-size:1rem;font-weight:600;max-width:320px;text-align:center;word-break:break-all">${f.name}</span>
+        <span style="color:rgba(255,255,255,.4);font-size:.8rem">Preview not available for this file type</span>`;
+    }
+
+    const label = document.createElement('div');
+    label.style.cssText = 'color:rgba(255,255,255,.55);font-size:.78rem;letter-spacing:.04em';
+    label.textContent = f.name + ' · click anywhere to close';
+
+    lb.appendChild(inner);
+    lb.appendChild(label);
+    document.body.appendChild(lb);
+  };
+  window.tbDelFile = function(cat,i){
+    _tbUploads[cat].splice(i,1);
+    try{ localStorage.setItem('tb_uploads2',JSON.stringify(_tbUploads)); }catch(e){}
+    tbRenderThumbs(cat);
+  };
+  function tbRenderAllThumbs(){
+    ['cda','contracts','taxes'].forEach(tbRenderThumbs);
+  }
+
+  /* ── hook into showView ── */
+  const _tbPrev = window.showView;
+  window.showView = function(v){
+    _tbPrev && _tbPrev(v);
+    if(v==='thebank'){
+      tbRenderAllThumbs();
+      setTimeout(renderTheBank, 80);
+    }
+  };
+
+})();
+</script>
+
+
+<!-- ══ VENDOR DRAWER ══════════════════════════════════ -->
+<div class="al-backdrop" id="vdBackdrop" onclick="closeVendorDrawer()"></div>
+<div class="al-drawer" id="vdDrawer">
+
+  <!-- Sticky Header -->
+  <div class="al-drawer-header">
+    <!-- Avatar / Logo — click to upload -->
+    <div class="vd-logo-wrap" id="vd-logo-wrap"
+         onclick="document.getElementById('vd-logo-input').click()"
+         ondragover="event.preventDefault();this.classList.add('vd-logo-drag')"
+         ondragleave="this.classList.remove('vd-logo-drag')"
+         ondrop="vdHandleLogoDrop(event)"
+         title="Drag logo here or click to upload">
+      <div class="al-avatar" id="vd-avatar" style="background:var(--gold);color:#0a0a0a;font-size:1.1rem">🏗</div>
+      <div class="vd-logo-overlay">📷</div>
+      <input type="file" id="vd-logo-input" accept="image/*" style="display:none" onchange="vdHandleLogoFile(this.files[0])"/>
+    </div>
+    <div class="al-header-fields">
+      <div class="al-name-row">
+        <input class="al-name-input" id="vd-company" placeholder="Company Name" oninput="vdUpdateAvatar()"/>
+      </div>
+      <div style="font-size:0.75rem;color:var(--gray);margin-top:4px" id="vd-cat-preview">Select a category below</div>
+    </div>
+    <button class="al-close-btn" onclick="closeVendorDrawer()">✕</button>
+  </div>
+
+  <!-- Category -->
+  <div class="al-section">
+    <div class="al-section-title">🏷 Vendor Category</div>
+    <div class="al-field">
+      <div class="al-field-label">Category</div>
+      <select class="al-field-select" id="vd-cat" onchange="vdCatChange()">
+        <option value="">— Select Category —</option>
+        <option>Appraisal</option>
+        <option>Buyer</option>
+        <option>Cooperating Agent</option>
+        <option>Handyman</option>
+        <option>Home Inspection</option>
+        <option>Home Warranty</option>
+        <option>Homeowners Insurance</option>
+        <option>Mortgage</option>
+        <option>Pest Inspection</option>
+        <option>Seller</option>
+        <option>Title</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="al-field" id="vd-other-wrap" style="display:none">
+      <div class="al-field-label">Specify Category</div>
+      <input class="al-field-input" id="vd-cat-other" placeholder="e.g. Landscaping, Cleaning…"/>
+    </div>
+  </div>
+
+  <!-- Company & Contact -->
+  <div class="al-section">
+    <div class="al-section-title">🏢 Company & Contact</div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">Contact Name</div>
+        <input class="al-field-input" id="vd-contact" placeholder="John Smith"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">Alt. Contact</div>
+        <input class="al-field-input" id="vd-alt-contact" placeholder="Alt contact name"/>
+      </div>
+    </div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">📱 Business Phone</div>
+        <input class="al-field-input" id="vd-bizphone" type="tel" placeholder="(661) 555-0000"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">📲 Cell Phone</div>
+        <input class="al-field-input" id="vd-cell" type="tel" placeholder="(661) 555-0001"/>
+      </div>
+    </div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">📧 Email</div>
+        <input class="al-field-input" id="vd-email" type="email" placeholder="vendor@company.com"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">🌐 Website</div>
+        <input class="al-field-input" id="vd-website" placeholder="www.company.com"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Address -->
+  <div class="al-section">
+    <div class="al-section-title">📍 Address</div>
+    <div class="al-field">
+      <div class="al-field-label">Street Address</div>
+      <input class="al-field-input" id="vd-address" placeholder="123 Main St"/>
+    </div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">City</div>
+        <input class="al-field-input" id="vd-city" placeholder="Bakersfield"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">State</div>
+        <select class="al-field-select" id="vd-state">
+          <option>CA</option><option>TX</option><option>FL</option><option>NY</option>
+          <option>AZ</option><option>NV</option><option>WA</option><option>OR</option>
+          <option>CO</option><option>GA</option><option>IL</option><option>OH</option>
+          <option>NC</option><option>VA</option><option>PA</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="al-two-col">
+      <div class="al-field">
+        <div class="al-field-label">Zip</div>
+        <input class="al-field-input" id="vd-zip" placeholder="93301"/>
+      </div>
+      <div class="al-field">
+        <div class="al-field-label">Tax ID</div>
+        <input class="al-field-input" id="vd-taxid" placeholder="XX-XXXXXXX"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="al-section">
+    <div class="al-section-title">📝 Notes</div>
+    <div class="al-field">
+      <textarea class="al-field-input" id="vd-notes" rows="4" placeholder="Extra notes about this vendor…" style="resize:vertical;min-height:90px"></textarea>
+    </div>
+  </div>
+
+  <!-- Save / Delete -->
+  <div class="al-section" style="display:flex;gap:10px;padding-bottom:32px">
+    <button class="btn btn-primary" style="flex:1;padding:13px" onclick="saveVendor()">💾 Save Vendor</button>
+    <button class="btn btn-ghost" id="vd-del-btn" style="display:none;color:var(--gold);border-color:var(--gold)" onclick="deleteVendor()">🗑 Delete</button>
+  </div>
+
+</div><!-- /vdDrawer -->
+
+<!-- ══ VENDOR CSS + JS ══════════════════════════════ -->
+<style>
+/* Vendor category badge colours */
+.vd-cat-badge{
+  display:inline-block;padding:2px 9px;border-radius:20px;
+  font-size:.65rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;
+}
+/* Logo upload wrap in drawer header */
+.vd-logo-wrap{
+  position:relative;width:52px;height:52px;flex-shrink:0;cursor:pointer;border-radius:50%;
+}
+.vd-logo-wrap .al-avatar{
+  width:52px;height:52px;font-size:1.1rem;border-radius:50%;transition:filter .2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.vd-logo-wrap:hover .al-avatar{ filter:brightness(.55); }
+.vd-logo-overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;opacity:0;transition:opacity .2s;pointer-events:none;
+}
+.vd-logo-wrap:hover .vd-logo-overlay{ opacity:1; }
+.vd-logo-drag .al-avatar{ outline:2px dashed var(--gold);outline-offset:3px; }
+/* Logo image in avatar */
+.al-avatar.has-logo{
+  background:var(--surface2)!important;padding:0;overflow:hidden;
+}
+.al-avatar.has-logo img{
+  width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;
+}
+/* Logo on cards */
+.pb-avatar.vd-has-logo{
+  background:var(--surface2)!important;padding:2px;overflow:hidden;
+}
+.pb-avatar.vd-has-logo img{
+  width:100%;height:100%;object-fit:contain;border-radius:50%;display:block;
+}
+</style>
+
+<script>
+(function(){
+/* ══════════════════════════════════════════════════
+   VENDOR DB  (localStorage bchb_vendors)
+══════════════════════════════════════════════════ */
+const VendorDB = {
+  get vendors(){ try{ return JSON.parse(localStorage.getItem('bchb_vendors')||'[]'); }catch(e){ return []; } },
+  set vendors(v){ localStorage.setItem('bchb_vendors', JSON.stringify(v)); }
+};
+
+/* ── logo storage (separate keys to keep vendors JSON small) ── */
+function _loadVendorLogo(id){ return localStorage.getItem('bchb_vlogo_'+id)||null; }
+function _saveVendorLogo(id,dataUrl){ try{ localStorage.setItem('bchb_vlogo_'+id,dataUrl); }catch(e){ if(typeof showToast==='function') showToast('⚠️ Storage full'); } }
+function _deleteVendorLogo(id){ localStorage.removeItem('bchb_vlogo_'+id); }
+
+let _vdAlpha  = 'ALL';
+let _vdCat    = 'all';
+let _editVdId = null;
+let _vdLogoData = null;  /* current logo in drawer session */
+
+/* ── logo upload handlers ── */
+window.vdHandleLogoDrop = function(e){
+  e.preventDefault();
+  document.getElementById('vd-logo-wrap').classList.remove('vd-logo-drag');
+  const file = e.dataTransfer.files[0];
+  if(file) vdHandleLogoFile(file);
+};
+window.vdHandleLogoFile = function(file){
+  if(!file||!file.type.startsWith('image/')) return;
+  if(file.size>5*1024*1024){ if(typeof showToast==='function') showToast('⚠️ Image exceeds 5MB'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX=300; let w=img.width,h=img.height;
+      if(w>h&&w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      else if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+      const c=document.createElement('canvas'); c.width=w; c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      _vdLogoData = c.toDataURL('image/png');
+      vdSetAvatarLogo(_vdLogoData);
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('vd-logo-input').value='';
+};
+function vdSetAvatarLogo(dataUrl){
+  const av = document.getElementById('vd-avatar');
+  if(!av) return;
+  if(dataUrl){
+    av.classList.add('has-logo');
+    av.innerHTML = `<img src="${dataUrl}" alt="logo">`;
+  } else {
+    av.classList.remove('has-logo');
+    av.innerHTML = '';
+    vdUpdateAvatar(); /* restore initials */
+  }
+}
+
+/* ── category colour map ── */
+const CAT_COLORS = {
+  'Appraisal':             { bg:'rgba(96,165,250,0.18)',   color:'#93c5fd' },
+  'Buyer':                 { bg:'rgba(74,222,128,0.18)',   color:'#4ade80' },
+  'Cooperating Agent':     { bg:'rgba(167,139,250,0.18)', color:'#c4b5fd' },
+  'Handyman':              { bg:'rgba(245,158,11,0.18)',   color:'#fbbf24' },
+  'Home Inspection':       { bg:'rgba(20,184,166,0.18)',   color:'#2dd4bf' },
+  'Home Warranty':         { bg:'rgba(59,130,246,0.18)',   color:'#60a5fa' },
+  'Homeowners Insurance':  { bg:'rgba(139,92,246,0.18)',   color:'#a78bfa' },
+  'Mortgage':              { bg:'rgba(201,169,110,0.18)',  color:'#C9A96E' },
+  'Pest Inspection':       { bg:'rgba(234,179,8,0.18)',    color:'#eab308' },
+  'Seller':                { bg:'rgba(249,115,22,0.18)',   color:'#fb923c' },
+  'Title':                 { bg:'rgba(16,185,129,0.18)',   color:'#34d399' },
+  'Other':                 { bg:'rgba(136,136,160,0.18)',  color:'#8888a0' },
+};
+function catStyle(cat){
+  return CAT_COLORS[cat] || { bg:'rgba(136,136,160,0.18)', color:'#8888a0' };
+}
+
+/* avatar colours */
+const VD_COLORS = [getComputedStyle(document.documentElement).getPropertyValue('--gold').trim()||'#C9A96E','#2563eb','#059669','#d97706','#0891b2','#be185d','#dc2626','#065f46'];
+function vdColor(name){
+  let n=0; for(let i=0;i<name.length;i++) n+=name.charCodeAt(i);
+  return VD_COLORS[n%VD_COLORS.length];
+}
+function vdInitials(name){
+  const parts = (name||'').trim().split(/\s+/);
+  if(parts.length>=2) return (parts[0][0]+(parts[parts.length-1][0])).toUpperCase();
+  return (name||'?').substring(0,2).toUpperCase();
+}
+
+/* ── filter controls ── */
+window.vdSetAlpha = function(btn, letter){
+  document.querySelectorAll('#vd-alpha-bar .pb-alpha-btn').forEach(b=>b.classList.remove('active'));
+  btn?.classList.add('active');
+  _vdAlpha = letter;
+  renderVendors();
+};
+window.vdSetCat = function(btn, cat){
+  document.querySelectorAll('#vd-chip-row .pb-chip').forEach(b=>b.classList.remove('active'));
+  btn?.classList.add('active');
+  _vdCat = cat;
+  renderVendors();
+};
+
+/* ── render grid ── */
+window.renderVendors = function(){
+  const grid  = document.getElementById('vd-grid');
+  const count = document.getElementById('vd-count');
+  if(!grid) return;
+  const q = (document.getElementById('vd-search')?.value||'').toLowerCase();
+  const vendors = VendorDB.vendors;
+
+  const filtered = vendors.filter(v=>{
+    const letter = (v.company||'').charAt(0).toUpperCase();
+    const alphaOk  = _vdAlpha==='ALL' || letter===_vdAlpha;
+    const catOk    = _vdCat==='all'   || v.category===_vdCat;
+    const srch     = (v.company+' '+(v.contact||'')+' '+(v.bizphone||'')+' '+(v.email||'')).toLowerCase();
+    const qOk      = !q || srch.includes(q);
+    return alphaOk && catOk && qOk;
+  }).sort((a,b)=>(a.company||'').localeCompare(b.company||''));
+
+  if(count) count.textContent = filtered.length+' vendor'+(filtered.length===1?'':'s');
+
+  if(!filtered.length){
+    grid.innerHTML = '<div class="pb-empty"><div class="pb-empty-icon">🏗</div>No vendors found. Click "+ Add Vendor" to get started.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(v=>{
+    const cs   = catStyle(v.category);
+    const ini  = vdInitials(v.company);
+    const col  = vdColor(v.company);
+    const logo = _loadVendorLogo(v.id);
+    const ph   = v.bizphone || v.cell || '—';
+    const em   = v.email || '—';
+    const avatarHtml = logo
+      ? `<div class="pb-avatar vd-has-logo"><img src="${logo}" alt="logo"></div>`
+      : `<div class="pb-avatar" style="background:${col}">${ini}</div>`;
+    return `<div class="pb-card" onclick="openVendorDrawer('${v.id}')">
+      <div class="pb-card-top">
+        ${avatarHtml}
+        <div class="pb-card-info">
+          <div class="pb-card-name">${v.company||'—'}</div>
+          <div class="pb-card-company">${v.contact||v.category||'—'}</div>
+        </div>
+        <span class="vd-cat-badge" style="background:${cs.bg};color:${cs.color}">${v.category||'Other'}</span>
+      </div>
+      <div class="pb-contact-row"><span class="pb-contact-icon">✉️</span><span class="pb-contact-val">${em}</span></div>
+      <div class="pb-contact-row"><span class="pb-contact-icon">📞</span><span class="pb-contact-val">${ph}</span></div>
+      <div class="pb-card-actions">
+        <button class="pb-btn" onclick="event.stopPropagation();if('${em}'!=='—')window.location.href='mailto:${em}'"><span>✉️</span>Email</button>
+        <button class="pb-btn" onclick="event.stopPropagation();if('${ph}'!=='—')window.location.href='tel:${ph}'"><span>📞</span>Call</button>
+        <button class="pb-btn-arrow" onclick="event.stopPropagation();openVendorDrawer('${v.id}')" title="Edit">→</button>
+      </div>
+    </div>`;
+  }).join('');
+};
+
+/* ── drawer open / close ── */
+const VD_FIELDS = ['vd-company','vd-contact','vd-alt-contact','vd-bizphone','vd-cell',
+                   'vd-email','vd-website','vd-address','vd-city','vd-zip','vd-taxid','vd-notes'];
+
+window.openVendorDrawer = function(id){
+  _editVdId = id||null;
+  _vdLogoData = null;
+  // reset
+  VD_FIELDS.forEach(f=>{ const el=document.getElementById(f); if(el) el.value=''; });
+  document.getElementById('vd-cat').value='';
+  document.getElementById('vd-state').value='CA';
+  document.getElementById('vd-cat-other').value='';
+  document.getElementById('vd-other-wrap').style.display='none';
+  document.getElementById('vd-cat-preview').textContent='Select a category below';
+  vdSetAvatarLogo(null);
+  document.getElementById('vd-del-btn').style.display='none';
+
+  if(id){
+    const v = VendorDB.vendors.find(x=>x.id===id);
+    if(v){
+      document.getElementById('vd-company').value       = v.company||'';
+      document.getElementById('vd-contact').value       = v.contact||'';
+      document.getElementById('vd-alt-contact').value   = v.altContact||'';
+      document.getElementById('vd-bizphone').value      = v.bizphone||'';
+      document.getElementById('vd-cell').value          = v.cell||'';
+      document.getElementById('vd-email').value         = v.email||'';
+      document.getElementById('vd-website').value       = v.website||'';
+      document.getElementById('vd-address').value       = v.address||'';
+      document.getElementById('vd-city').value          = v.city||'';
+      document.getElementById('vd-state').value         = v.state||'CA';
+      document.getElementById('vd-zip').value           = v.zip||'';
+      document.getElementById('vd-taxid').value         = v.taxId||'';
+      document.getElementById('vd-notes').value         = v.notes||'';
+      // category
+      const isCustom = v.category && !document.getElementById('vd-cat').querySelector(`option[value="${v.category}"]`);
+      if(isCustom || v.category==='Other'){
+        document.getElementById('vd-cat').value = 'Other';
+        document.getElementById('vd-other-wrap').style.display='';
+        document.getElementById('vd-cat-other').value = (v.category==='Other')?'':v.category;
+      } else {
+        document.getElementById('vd-cat').value = v.category||'';
+      }
+      vdUpdateAvatar();
+      // load existing logo
+      const existingLogo = _loadVendorLogo(v.id);
+      if(existingLogo){ _vdLogoData = existingLogo; vdSetAvatarLogo(existingLogo); }
+      document.getElementById('vd-cat-preview').textContent = v.category||'';
+      document.getElementById('vd-del-btn').style.display='';
+    }
+  }
+
+  document.getElementById('vdBackdrop').classList.add('open');
+  document.getElementById('vdDrawer').classList.add('open');
+  setTimeout(()=>document.getElementById('vd-company')?.focus(), 350);
+};
+
+window.closeVendorDrawer = function(){
+  document.getElementById('vdBackdrop').classList.remove('open');
+  document.getElementById('vdDrawer').classList.remove('open');
+};
+
+/* ── live avatar update ── */
+window.vdUpdateAvatar = function(){
+  const co = document.getElementById('vd-company')?.value||'';
+  const av = document.getElementById('vd-avatar');
+  if(av){
+    if(co.trim()){
+      av.textContent = vdInitials(co);
+      av.style.background = vdColor(co);
+      av.style.fontSize = '1rem';
+    } else {
+      av.textContent = '🏗';
+      av.style.fontSize = '1.1rem';
+    }
+  }
+};
+
+/* ── category dropdown toggle ── */
+window.vdCatChange = function(){
+  const val = document.getElementById('vd-cat')?.value||'';
+  document.getElementById('vd-other-wrap').style.display = val==='Other' ? '' : 'none';
+  document.getElementById('vd-cat-preview').textContent  = val||'Select a category below';
+};
+
+/* ── save ── */
+window.saveVendor = function(){
+  const company = (document.getElementById('vd-company')?.value||'').trim();
+  if(!company){ alert('Please enter a Company Name.'); return; }
+  let cat = document.getElementById('vd-cat')?.value||'Other';
+  if(cat==='Other'){
+    const custom = (document.getElementById('vd-cat-other')?.value||'').trim();
+    if(custom) cat = custom;
+  }
+  const vendor = {
+    id:         _editVdId || ('vd-'+Date.now()+'-'+Math.random().toString(36).slice(2,7)),
+    company,
+    category:   cat,
+    contact:    (document.getElementById('vd-contact')?.value||'').trim(),
+    altContact: (document.getElementById('vd-alt-contact')?.value||'').trim(),
+    bizphone:   (document.getElementById('vd-bizphone')?.value||'').trim(),
+    cell:       (document.getElementById('vd-cell')?.value||'').trim(),
+    email:      (document.getElementById('vd-email')?.value||'').trim(),
+    website:    (document.getElementById('vd-website')?.value||'').trim(),
+    address:    (document.getElementById('vd-address')?.value||'').trim(),
+    city:       (document.getElementById('vd-city')?.value||'').trim(),
+    state:      (document.getElementById('vd-state')?.value||'CA'),
+    zip:        (document.getElementById('vd-zip')?.value||'').trim(),
+    taxId:      (document.getElementById('vd-taxid')?.value||'').trim(),
+    notes:      (document.getElementById('vd-notes')?.value||'').trim(),
+    created:    _editVdId ? (VendorDB.vendors.find(v=>v.id===_editVdId)?.created||Date.now()) : Date.now(),
+  };
+  let vendors = VendorDB.vendors;
+  if(_editVdId){ vendors = vendors.map(v=>v.id===_editVdId?vendor:v); }
+  else          { vendors.push(vendor); }
+  VendorDB.vendors = vendors;
+  // save logo
+  if(_vdLogoData){ _saveVendorLogo(vendor.id, _vdLogoData); }
+  closeVendorDrawer();
+  renderVendors();
+  if(typeof showToast==='function') showToast((_editVdId?'Vendor updated':'Vendor saved')+' ✓');
+};
+
+/* ── delete ── */
+window.deleteVendor = function(){
+  if(!_editVdId) return;
+  if(!confirm('Delete this vendor?')) return;
+  _deleteVendorLogo(_editVdId);
+  VendorDB.vendors = VendorDB.vendors.filter(v=>v.id!==_editVdId);
+  closeVendorDrawer();
+  renderVendors();
+  if(typeof showToast==='function') showToast('Vendor deleted');
+};
+
+/* ── hook showView ── */
+const _vdPrev = window.showView;
+window.showView = function(v){
+  _vdPrev && _vdPrev(v);
+  if(v==='vendors') renderVendors();
+};
+
+})();
+</script>
+
 </body>
 </html>
