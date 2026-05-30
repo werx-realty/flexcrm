@@ -3420,7 +3420,7 @@ button.btn-danger:hover {
         </div>
         <div class="card" style="padding:18px">
           <div class="detail-section-title" style="margin-bottom:12px">Stops</div>
-          <div id="rt-stops-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+          <div id="rt-stops-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;max-height:176px;overflow-y:auto;padding-right:4px">
             <div class="rt-stop-row" style="display:flex;gap:8px;align-items:center">
               <span style="font-size:0.75rem;color:var(--gold);width:20px;text-align:center;flex-shrink:0">1</span>
               <input class="form-input" placeholder="Address stop 1..." style="flex:1"/>
@@ -3448,6 +3448,7 @@ button.btn-danger:hover {
           <p id="rm-key-msg" style="font-size:0.76rem;color:var(--gold);text-align:center;max-width:280px;margin-top:8px;display:none">💡 Add a Maps API Key in Street View settings to enable Google Maps.</p>
         </div>
         <iframe id="rm-gmap-frame" style="display:none;flex:1;width:100%;border:none" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div id="rm-gmap-div" style="display:none;flex:1;width:100%;height:100%;min-height:500px"></div>
       </div>
     </div>
   </div>
@@ -6596,6 +6597,7 @@ function showRouteTab(tab){
 
 function addStop(){
   const list=document.getElementById('rt-stops-list');
+  if(list.children.length>=10){ showToast('Maximum 10 stops allowed'); return; }
   const num=list.children.length+1;
   const div=document.createElement('div');
   div.className='rt-stop-row';
@@ -6628,21 +6630,75 @@ function generateRoute(){
   if(!start){ alert('Please enter a start address.'); return; }
   if(!stops.length){ alert('Please add at least one stop.'); return; }
 
-  // Build daddr: first stop is destination, rest are "to:" waypoints
-  // Format: saddr=START&daddr=STOP1+to:STOP2+to:STOP3
-  const saddr=encodeURIComponent(start);
-  const daddr=stops.map((s,i)=>i===0?encodeURIComponent(s):'to:'+encodeURIComponent(s)).join('+');
+  const apiKey=localStorage.getItem('bchb_maps_key')||'';
 
-  const src='https://maps.google.com/maps?saddr='+saddr
-    +'&daddr='+daddr
-    +'&dirflg=d'
-    +'&output=embed';
-
-  const frame=document.getElementById('rm-gmap-frame');
-  frame.src=src;
-  frame.style.display='block';
   document.getElementById('rm-placeholder').style.display='none';
   document.getElementById('rm-key-msg').style.display='none';
+
+  if(!apiKey){
+    // No API key — fallback to embed (no optimization)
+    const saddr=encodeURIComponent(start);
+    const daddr=stops.map((s,i)=>i===0?encodeURIComponent(s):'to:'+encodeURIComponent(s)).join('+');
+    const src='https://maps.google.com/maps?saddr='+saddr+'&daddr='+daddr+'&dirflg=d&output=embed';
+    const frame=document.getElementById('rm-gmap-frame');
+    frame.src=src; frame.style.display='block';
+    document.getElementById('rm-gmap-div').style.display='none';
+    return;
+  }
+
+  // Use Directions API with optimizeWaypoints
+  document.getElementById('rm-gmap-frame').style.display='none';
+  const mapDiv=document.getElementById('rm-gmap-div');
+  mapDiv.style.display='flex';
+
+  function runOptimizedRoute(){
+    const map=new google.maps.Map(mapDiv,{zoom:10,mapTypeId:'roadmap'});
+    const ds=new google.maps.DirectionsService();
+    const dr=new google.maps.DirectionsRenderer({map});
+
+    const waypoints=stops.slice(0,-1).map(s=>({location:s,stopover:true}));
+    const destination=stops[stops.length-1];
+
+    ds.route({
+      origin:start,
+      destination:destination,
+      waypoints:waypoints,
+      optimizeWaypoints:true,
+      travelMode:google.maps.TravelMode.DRIVING
+    },function(result,status){
+      if(status==='OK'){
+        dr.setDirections(result);
+        const order=result.routes[0].waypoint_order;
+        const midStops=stops.slice(0,-1);
+        const ordered=[start,...order.map(i=>midStops[i]),destination];
+        const stopsEl=document.getElementById('rt-stops-list');
+        stopsEl.innerHTML='';
+        ordered.slice(1).forEach((addr,i)=>{
+          const div=document.createElement('div');
+          div.className='rt-stop-row';
+          div.style.cssText='display:flex;gap:8px;align-items:center';
+          div.innerHTML=`<span style="font-size:0.75rem;color:var(--gold);width:20px;text-align:center;flex-shrink:0">${i+1}</span><input class="form-input" placeholder="Address stop ${i+1}..." style="flex:1" value="${addr.replace(/"/g,'&quot;')}"/><button onclick="removeStop(this)" style="background:none;border:none;color:var(--gray);font-size:1rem;cursor:pointer;flex-shrink:0">✕</button>`;
+          stopsEl.appendChild(div);
+        });
+        showToast('✅ Optimized route ready!');
+      } else {
+        showToast('⚠️ Route error: '+status);
+      }
+    });
+  }
+
+  if(window.google&&window.google.maps&&window.google.maps.DirectionsService){
+    runOptimizedRoute();
+  } else {
+    window._rmRouteReady=runOptimizedRoute;
+    if(!document.getElementById('rm-maps-api')){
+      const s=document.createElement('script');
+      s.id='rm-maps-api';
+      s.src='https://maps.googleapis.com/maps/api/js?key='+apiKey+'&callback=_rmRouteReady';
+      s.async=true; s.defer=true;
+      document.head.appendChild(s);
+    }
+  }
 }
 
 function clearRoute(){
@@ -6650,6 +6706,7 @@ function clearRoute(){
   document.querySelectorAll('.rt-stop-row input').forEach(i=>i.value='');
   document.getElementById('rm-gmap-frame').src='about:blank';
   document.getElementById('rm-gmap-frame').style.display='none';
+  document.getElementById('rm-gmap-div').style.display='none';
   document.getElementById('rm-placeholder').style.display='flex';
 }
 
