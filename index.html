@@ -10,7 +10,8 @@
 <title>BCHB CRM — Bakersfield Cash Home Buyers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <style>
 /* ── RESET & ROOT ─────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -2246,6 +2247,7 @@ button.btn-danger:hover {
     <div class="nav-item" onclick="showView('phonebook')" data-view="phonebook"><span class="nav-icon">📒</span><span class="nav-label">Phonebook</span></div>
     <div class="nav-item" onclick="showView('vendors')" data-view="vendors"><span class="nav-icon">🏗</span><span class="nav-label">Vendors</span></div>
     <div class="nav-item" onclick="showView('thebank')" data-view="thebank"><span class="nav-icon">🏦</span><span class="nav-label">The Bank</span></div>
+    <div class="nav-item" onclick="showView('agents')" data-view="agents"><span class="nav-icon">&#128100;</span><span class="nav-label">Agents</span><span class="nav-badge" id="agentsCountBadge">0</span></div>
     <div class="nav-item" onclick="showView('settings')" data-view="settings"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></div>
   </div>
   <div class="sidebar-footer">
@@ -3155,6 +3157,7 @@ button.btn-danger:hover {
                 <option value="Agent">Agent</option>
                 <option value="Manager">Manager</option>
                 <option value="Super Admin">Super Admin</option>
+                <option value="VA">VA</option>
               </select>
             </div>
           </div>
@@ -3420,7 +3423,7 @@ button.btn-danger:hover {
         </div>
         <div class="card" style="padding:18px">
           <div class="detail-section-title" style="margin-bottom:12px">Stops</div>
-          <div id="rt-stops-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;max-height:176px;overflow-y:auto;padding-right:4px">
+          <div id="rt-stops-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
             <div class="rt-stop-row" style="display:flex;gap:8px;align-items:center">
               <span style="font-size:0.75rem;color:var(--gold);width:20px;text-align:center;flex-shrink:0">1</span>
               <input class="form-input" placeholder="Address stop 1..." style="flex:1"/>
@@ -3448,7 +3451,6 @@ button.btn-danger:hover {
           <p id="rm-key-msg" style="font-size:0.76rem;color:var(--gold);text-align:center;max-width:280px;margin-top:8px;display:none">💡 Add a Maps API Key in Street View settings to enable Google Maps.</p>
         </div>
         <iframe id="rm-gmap-frame" style="display:none;flex:1;width:100%;border:none" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <div id="rm-gmap-div" style="display:none;flex:1;width:100%;height:100%;min-height:500px"></div>
       </div>
     </div>
   </div>
@@ -4183,6 +4185,218 @@ button.btn-danger:hover {
   </div>
 </div>
 
+
+<!-- ===== AGENTS VIEW ===== -->
+<div class="view" id="view-agents">
+<div class="topbar">
+  <div class="page-title">Agents <span>Management</span></div>
+  <div class="topbar-actions">
+    <button class="btn btn-primary btn-sm" onclick="openAddAgentModal()">+ Add Agent</button>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div style="display:flex;gap:6px;margin-bottom:24px">
+  <button id="agtab-roster"  onclick="agentsTab('roster')"  style="background:var(--gold);color:#0a0a0a;border:none;border-radius:6px;padding:7px 18px;font-family:'Oswald',sans-serif;font-size:.8rem;letter-spacing:1px;cursor:pointer">ROSTER</button>
+  <button id="agtab-leads"   onclick="agentsTab('leads')"   style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:7px 18px;font-family:'Oswald',sans-serif;font-size:.8rem;letter-spacing:1px;cursor:pointer">ALL LEADS</button>
+  <button id="agtab-deals"   onclick="agentsTab('deals')"   style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:7px 18px;font-family:'Oswald',sans-serif;font-size:.8rem;letter-spacing:1px;cursor:pointer">ALL DEALS</button>
+  <button id="agtab-tasks"   onclick="agentsTab('tasks')"   style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:7px 18px;font-family:'Oswald',sans-serif;font-size:.8rem;letter-spacing:1px;cursor:pointer">ALL TASKS</button>
+  <button id="agtab-reports" onclick="agentsTab('reports')" style="background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:7px 18px;font-family:'Oswald',sans-serif;font-size:.8rem;letter-spacing:1px;cursor:pointer">REPORTS</button>
+</div>
+
+<!-- ROSTER -->
+<div id="agtab-panel-roster">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:24px">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px">
+      <div style="color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px">TOTAL AGENTS</div>
+      <div id="ag-stat-total" style="font-size:2rem;font-weight:700;margin-top:6px;color:var(--text)">0</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px">
+      <div style="color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px">ACTIVE</div>
+      <div id="ag-stat-active" style="font-size:2rem;font-weight:700;margin-top:6px;color:var(--accent2)">0</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px">
+      <div style="color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px">SUSPENDED</div>
+      <div id="ag-stat-susp" style="font-size:2rem;font-weight:700;margin-top:6px;color:var(--accent3)">0</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px">
+      <div style="color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px">TOTAL LEADS</div>
+      <div id="ag-stat-leads" style="font-size:2rem;font-weight:700;margin-top:6px;color:var(--gold)">0</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <input id="ag-search" type="text" placeholder="Search agents..." oninput="agRenderTable()"
+      style="flex:1;min-width:160px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:9px 14px;color:var(--text);font-size:.88rem;outline:none;font-family:'DM Sans',sans-serif">
+    <select id="ag-filter" onchange="agRenderTable()"
+      style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:9px 14px;color:var(--text);font-size:.88rem;outline:none;font-family:'DM Sans',sans-serif">
+      <option value="all">All Status</option><option value="active">Active</option><option value="suspended">Suspended</option>
+    </select>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:auto">
+    <table style="width:100%;border-collapse:collapse;min-width:640px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">AGENT</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">EMAIL</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">PHONE</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">ROLE</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">LEADS</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">STATUS</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">JOINED</th>
+        <th style="padding:11px 16px;text-align:center;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">ACTIONS</th>
+      </tr></thead>
+      <tbody id="ag-table-body">
+        <tr><td colspan="8" style="padding:40px;text-align:center;color:var(--muted)">No agents yet. Click <strong style="color:var(--gold)">+ Add Agent</strong> to get started.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ALL LEADS -->
+<div id="agtab-panel-leads" style="display:none">
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <input id="ag-lead-search" type="text" placeholder="Search leads..." oninput="agRenderAllLeads()"
+      style="flex:1;min-width:160px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:9px 14px;color:var(--text);font-size:.88rem;outline:none;font-family:'DM Sans',sans-serif">
+    <select id="ag-lead-filter" onchange="agRenderAllLeads()"
+      style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:9px 14px;color:var(--text);font-size:.88rem;outline:none;font-family:'DM Sans',sans-serif">
+      <option value="all">All Agents</option>
+    </select>
+  </div>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:auto">
+    <table style="width:100%;border-collapse:collapse;min-width:520px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">LEAD</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">PHONE</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">STATUS</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">VALUE</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">AGENT</th>
+        <th style="padding:11px 16px;text-align:center;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">REASSIGN</th>
+      </tr></thead>
+      <tbody id="ag-leads-body"><tr><td colspan="6" style="padding:30px;text-align:center;color:var(--muted)">No agent leads yet.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ALL DEALS -->
+<div id="agtab-panel-deals" style="display:none">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:auto">
+    <table style="width:100%;border-collapse:collapse;min-width:480px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">DEAL</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">VALUE</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">STAGE</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">AGENT</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">DATE</th>
+      </tr></thead>
+      <tbody id="ag-deals-body"><tr><td colspan="5" style="padding:30px;text-align:center;color:var(--muted)">No agent deals yet.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ALL TASKS -->
+<div id="agtab-panel-tasks" style="display:none">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:auto">
+    <table style="width:100%;border-collapse:collapse;min-width:440px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">TASK</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">STATUS</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">AGENT</th>
+        <th style="padding:11px 16px;text-align:left;color:var(--muted);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:1px;font-weight:400">CREATED</th>
+      </tr></thead>
+      <tbody id="ag-tasks-body"><tr><td colspan="4" style="padding:30px;text-align:center;color:var(--muted)">No agent tasks yet.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- REPORTS -->
+<div id="agtab-panel-reports" style="display:none">
+  <div id="ag-reports-content"></div>
+</div>
+</div>
+
+<!-- AGENT MODALS -->
+<div id="ag-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99999;align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--surface);border-radius:var(--radius);padding:26px;width:100%;max-width:460px;border:1px solid var(--border);position:relative;max-height:90vh;overflow-y:auto">
+    <button onclick="agCloseModal()" style="position:absolute;top:12px;right:12px;background:none;border:none;color:#94a3b8;font-size:1.3rem;cursor:pointer">&#x2715;</button>
+    <h2 id="ag-modal-title" style="margin:0 0 18px;font-size:1.1rem;font-weight:700">Add Agent</h2>
+    <input type="hidden" id="ag-edit-id">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px">
+      <div><label style="display:block;color:#94a3b8;font-size:.77rem;margin-bottom:4px">First Name *</label><input id="ag-fname" type="text" placeholder="Jane" style="width:100%;box-sizing:border-box;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:.87rem;outline:none"></div>
+      <div><label style="display:block;color:#94a3b8;font-size:.77rem;margin-bottom:4px">Last Name *</label><input id="ag-lname" type="text" placeholder="Smith" style="width:100%;box-sizing:border-box;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:.87rem;outline:none"></div>
+    </div>
+    <div style="display:grid;gap:11px">
+      <div><label style="display:block;color:#94a3b8;font-size:.77rem;margin-bottom:4px">Email *</label><input id="ag-email" type="email" placeholder="agent@brokerage.com" style="width:100%;box-sizing:border-box;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:.87rem;outline:none"></div>
+      <div><label style="display:block;color:#94a3b8;font-size:.77rem;margin-bottom:4px">Phone</label><input id="ag-phone" type="tel" placeholder="(555) 000-0000" style="width:100%;box-sizing:border-box;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:.87rem;outline:none"></div>
+      <div><label style="display:block;color:#94a3b8;font-size:.77rem;margin-bottom:4px">Role</label><select id="ag-role" style="width:100%;box-sizing:border-box;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:.87rem;outline:none"><option>Agent</option><option>Senior Agent</option><option>Team Lead</option><option>Manager</option><option>Admin</option><option>VA</option></select></div>
+      <div><label style="display:block;color:#94a3b8;font-size:.77rem;margin-bottom:4px">License #</label><input id="ag-license" type="text" placeholder="License number" style="width:100%;box-sizing:border-box;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:.87rem;outline:none"></div>
+      <div><label style="display:block;color:#94a3b8;font-size:.77rem;margin-bottom:4px">Notes</label><textarea id="ag-notes" rows="2" style="width:100%;box-sizing:border-box;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:.87rem;outline:none;resize:vertical"></textarea></div>
+    </div>
+    <div style="margin-top:14px">
+      <label style="display:block;color:#94a3b8;font-size:.77rem;margin-bottom:8px">Dashboard Mode</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <label id="ag-dash-personal-label" onclick="agSetDashMode('personal')" style="cursor:pointer;border:2px solid #6d28d9;border-radius:8px;padding:10px;background:rgba(109,40,217,0.15)">
+          <input type="radio" name="ag-dashboard-mode" id="ag-dash-personal" value="personal" checked style="display:none">
+          <div style="font-size:.85rem;font-weight:600;color:#e2e8f0">👤 Personal</div>
+          <div style="font-size:.75rem;color:#94a3b8;margin-top:3px">Own fresh dashboard. Their work shows on your admin view.</div>
+        </label>
+        <label id="ag-dash-shared-label" onclick="agSetDashMode('shared')" style="cursor:pointer;border:2px solid #334155;border-radius:8px;padding:10px;background:transparent">
+          <input type="radio" name="ag-dashboard-mode" id="ag-dash-shared" value="shared" style="display:none">
+          <div style="font-size:.85rem;font-weight:600;color:#e2e8f0">🔗 Shared</div>
+          <div style="font-size:.75rem;color:#94a3b8;margin-top:3px">Same CRM data as admin. Full access to everything.</div>
+        </label>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:18px">
+      <button onclick="agCloseModal()" style="flex:1;background:#334155;color:#fff;border:none;border-radius:7px;padding:10px;cursor:pointer">Cancel</button>
+      <button onclick="agSave()" style="flex:2;background:#2563eb;color:#fff;border:none;border-radius:7px;padding:10px;font-weight:600;cursor:pointer">Save Agent</button>
+    </div>
+  </div>
+</div>
+
+<div id="ag-invite-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99999;align-items:center;justify-content:center;padding:16px">
+  <div style="background:var(--surface);border-radius:var(--radius);padding:26px;width:100%;max-width:440px;border:1px solid var(--border);position:relative">
+    <button onclick="agCloseInvite()" style="position:absolute;top:12px;right:12px;background:none;border:none;color:#94a3b8;font-size:1.3rem;cursor:pointer">&#x2715;</button>
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:2rem;margin-bottom:5px">&#9993;</div>
+      <h2 style="margin:0;font-size:1.05rem;font-weight:700">Agent Invitation</h2>
+      <p style="color:#94a3b8;margin:4px 0 0;font-size:.8rem">Copy and send to the new agent</p>
+    </div>
+    <div id="ag-invite-body" style="background:#0f172a;border-radius:8px;padding:14px;border:1px solid #334155;font-size:.83rem;line-height:1.7;color:#e2e8f0"></div>
+    <div style="margin-top:11px;background:#0f172a;border-radius:7px;padding:10px;border:1px solid #334155">
+      <div style="color:#94a3b8;font-size:.7rem;margin-bottom:3px">LOGIN CREDENTIALS</div>
+      <div id="ag-invite-creds" style="font-family:monospace;font-size:.86rem;color:#60a5fa"></div>
+    </div>
+    <button onclick="agCopyInvite()" style="width:100%;margin-top:13px;background:#2563eb;color:#fff;border:none;border-radius:7px;padding:10px;font-size:.87rem;font-weight:600;cursor:pointer">📋 Copy & Close</button>
+  </div>
+</div>
+
+<div id="ag-portal-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:99999;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#0f172a;border-radius:14px;width:100%;max-width:820px;border:1px solid #334155;max-height:90vh;overflow-y:auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #334155;position:sticky;top:0;background:#0f172a">
+      <div><div id="ag-portal-name" style="font-weight:700;font-size:.95rem"></div><div style="color:#94a3b8;font-size:.76rem">Agent Portal Preview</div></div>
+      <button onclick="agClosePortal()" style="background:#334155;color:#fff;border:none;border-radius:7px;padding:6px 13px;cursor:pointer;font-size:.83rem">Close</button>
+    </div>
+    <div style="padding:18px">
+      <div id="ag-portal-tabs" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px"></div>
+      <div id="ag-portal-content"></div>
+    </div>
+  </div>
+</div>
+
+<div id="ag-reassign-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99999;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#1e293b;border-radius:14px;padding:22px;width:100%;max-width:360px;border:1px solid #334155;position:relative">
+    <button onclick="agCloseReassign()" style="position:absolute;top:11px;right:11px;background:none;border:none;color:#94a3b8;font-size:1.2rem;cursor:pointer">&#x2715;</button>
+    <h3 style="margin:0 0 5px;font-size:.95rem;font-weight:700">Reassign Lead</h3>
+    <p id="ag-reassign-label" style="color:#94a3b8;font-size:.8rem;margin:0 0 14px"></p>
+    <input type="hidden" id="ag-reassign-data">
+    <label style="display:block;color:#94a3b8;font-size:.76rem;margin-bottom:5px">Assign to</label>
+    <select id="ag-reassign-select" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-size:.87rem;outline:none;margin-bottom:16px"></select>
+    <div style="display:flex;gap:8px">
+      <button onclick="agCloseReassign()" style="flex:1;background:#334155;color:#fff;border:none;border-radius:7px;padding:9px;cursor:pointer">Cancel</button>
+      <button onclick="agDoReassign()" style="flex:2;background:#2563eb;color:#fff;border:none;border-radius:7px;padding:9px;font-weight:600;cursor:pointer">Reassign</button>
+    </div>
+  </div>
+</div>
+
 </main>
 </div>
 </div>
@@ -4295,15 +4509,15 @@ button.btn-danger:hover {
    DATA LAYER — localStorage
 ══════════════════════════════════════════════════════ */
 const DB = {
-  get leads(){ return JSON.parse(localStorage.getItem('bchb_leads')||'[]') },
-  set leads(v){ localStorage.setItem('bchb_leads', JSON.stringify(v)) },
-  get events(){ return JSON.parse(localStorage.getItem('bchb_events')||'[]') },
-  set events(v){ localStorage.setItem('bchb_events', JSON.stringify(v)) },
-  get activity(){ return JSON.parse(localStorage.getItem('bchb_activity')||'[]') },
-  set activity(v){ localStorage.setItem('bchb_activity', JSON.stringify(v)) },
-  get routes(){ return JSON.parse(localStorage.getItem('bchb_routes')||'[]') },
-  set routes(v){ localStorage.setItem('bchb_routes', JSON.stringify(v)) },
-    get users(){ return JSON.parse(localStorage.getItem('bchb_users')||JSON.stringify([{name:'Admin User',email:'admin@bchb.com',role:'Super Admin',initials:'AU'}])) },
+  get leads(){ return JSON.parse(localStorage.getItem('bchb_leads'+_agentPrefix)||'[]') },
+  set leads(v){ localStorage.setItem('bchb_leads'+_agentPrefix, JSON.stringify(v)) },
+  get events(){ return JSON.parse(localStorage.getItem('bchb_events'+_agentPrefix)||'[]') },
+  set events(v){ localStorage.setItem('bchb_events'+_agentPrefix, JSON.stringify(v)) },
+  get activity(){ return JSON.parse(localStorage.getItem('bchb_activity'+_agentPrefix)||'[]') },
+  set activity(v){ localStorage.setItem('bchb_activity'+_agentPrefix, JSON.stringify(v)) },
+  get routes(){ return JSON.parse(localStorage.getItem('bchb_routes'+_agentPrefix)||'[]') },
+  set routes(v){ localStorage.setItem('bchb_routes'+_agentPrefix, JSON.stringify(v)) },
+  get users(){ return JSON.parse(localStorage.getItem('bchb_users')||JSON.stringify([{name:'Admin User',email:'admin@bchb.com',role:'Super Admin',initials:'AU'}])) },
   set users(v){ localStorage.setItem('bchb_users', JSON.stringify(v)) },
 };
 
@@ -4326,30 +4540,68 @@ function logActivity(msg, color='var(--gold)'){
 /* ══════════════════════════════════════════════════════
    AUTH
 ══════════════════════════════════════════════════════ */
-const CREDS = { admin:'admin123', 'info.thebuild@gmail.com':'admin123' };
+const SUPABASE_URL = 'https://avtowhcvbjdpbjlddbpp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2dG93aGN2YmpkcGJqbGRkYnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NTAyMjQsImV4cCI6MjA5NjAyNjIyNH0.AftpvIgHJx3Gj8BUWBE9MaiM50fraUIkjRMKwwUQFg4';
+const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentUser = null;
+let currentProfile = null;
+let _agentPrefix = ''; // empty = admin sees all, userId = agent sees own data
 
-function doLogin(){
+// Check existing session on load
+_sb.auth.getSession().then(({data:{session}}) => {
+  if(session){
+    currentUser = session.user;
+    _sbLoadProfile(session.user);
+  }
+});
+
+async function doLogin(){
   const u = (document.getElementById('loginUser').value||'').trim();
   const p = document.getElementById('loginPass').value||'';
-  // Merge static creds with any invited user creds stored in localStorage
-  const storedCreds = JSON.parse(localStorage.getItem('bchb_creds')||'{}');
-  const allCreds = Object.assign({}, CREDS, storedCreds);
-  if(allCreds[u] && allCreds[u]===p){
-    currentUser = u;
-    // Hide login, show app
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('app').style.display='block';
-    try{ document.getElementById('userAvatar').textContent = u[0].toUpperCase(); }catch(e){}
-    try{ document.getElementById('userName').textContent = u==='admin'?'Admin':u.split('@')[0]; }catch(e){}
-    try{ seedDemoData(); }catch(e){ console.warn('seedDemoData:',e); }
-    try{ _migratePropPhotos(); }catch(e){ console.warn('migratePropPhotos:',e); }
-    try{ loadCompanySettings(); }catch(e){ console.warn('loadCompanySettings:',e); }
-    try{ showView('dashboard'); }catch(e){ console.warn('showView:',e); }
-  } else {
-    try{ document.getElementById('loginErr').style.display='block'; }catch(e){}
-    try{ gsap.from('#loginErr',{x:-8,duration:0.3,ease:'power2.out'}); }catch(e){}
+  const btn = document.querySelector('.login-btn');
+  if(btn) btn.textContent = 'Signing in...';
+  const {data, error} = await _sb.auth.signInWithPassword({email:u, password:p});
+  if(btn) btn.textContent = 'Sign In';
+  if(error){
+    alert(error.message);
+    return;
   }
+  currentUser = data.user;
+  _sbLoadProfile(data.user);
+}
+
+async function _sbLoadProfile(user){
+  const {data:profile} = await _sb.from('profiles').select('*').eq('id', user.id).single();
+  currentProfile = profile;
+  const isAgent = profile && profile.role === 'agent';
+  const name = profile ? (profile.first_name||'') + ' ' + (profile.last_name||'') : user.email.split('@')[0];
+
+  // Set agent prefix so DB reads/writes are scoped to this agent
+  const dashMode = (user.user_metadata && user.user_metadata.dashboard_mode) || 'personal';
+  // personal = own scoped data (fresh empty dashboard)
+  // shared   = same data as admin (full CRM access, no admin-only tabs)
+  _agentPrefix = (isAgent && dashMode === 'personal') ? '_' + user.id : '';
+
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  try{ document.getElementById('userAvatar').textContent = name[0].toUpperCase(); }catch(e){}
+  try{ document.getElementById('userName').textContent = name.trim()||user.email.split('@')[0]; }catch(e){}
+
+  // Show/hide admin-only nav items
+  const agentsNavItem = document.querySelector('.nav-item[data-view="agents"]');
+  if(agentsNavItem) agentsNavItem.style.display = isAgent ? 'none' : '';
+
+  // Update role label in sidebar
+  try{
+    const roleEl = document.querySelector('.user-role');
+    if(roleEl) roleEl.textContent = isAgent ? 'Agent' : 'Super Admin';
+  }catch(e){}
+
+  // Store current plan for seat enforcement
+  var planFromProfile = (profile && profile.plan) || (isAgent ? null : 'brokerage');
+  if(planFromProfile) localStorage.setItem('flexcrm_plan', planFromProfile);
+  if(typeof agUpdateBadge === 'function') agUpdateBadge();
+  if(typeof seedDemoData === 'function'){ try{ seedDemoData(); }catch(e){} }
 }
 document.addEventListener('keydown', e=>{
   try{
@@ -4357,8 +4609,9 @@ document.addEventListener('keydown', e=>{
     if(e.key==='Enter' && ls && ls.style.display!=='none') doLogin();
   }catch(err){}
 });
-function doLogout(){
-  currentUser=null;
+async function doLogout(){
+  await _sb.auth.signOut();
+  currentUser=null; currentProfile=null;
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
 }
@@ -6597,7 +6850,6 @@ function showRouteTab(tab){
 
 function addStop(){
   const list=document.getElementById('rt-stops-list');
-  if(list.children.length>=10){ showToast('Maximum 10 stops allowed'); return; }
   const num=list.children.length+1;
   const div=document.createElement('div');
   div.className='rt-stop-row';
@@ -6630,75 +6882,21 @@ function generateRoute(){
   if(!start){ alert('Please enter a start address.'); return; }
   if(!stops.length){ alert('Please add at least one stop.'); return; }
 
-  const apiKey=localStorage.getItem('bchb_maps_key')||'';
+  // Build daddr: first stop is destination, rest are "to:" waypoints
+  // Format: saddr=START&daddr=STOP1+to:STOP2+to:STOP3
+  const saddr=encodeURIComponent(start);
+  const daddr=stops.map((s,i)=>i===0?encodeURIComponent(s):'to:'+encodeURIComponent(s)).join('+');
 
+  const src='https://maps.google.com/maps?saddr='+saddr
+    +'&daddr='+daddr
+    +'&dirflg=d'
+    +'&output=embed';
+
+  const frame=document.getElementById('rm-gmap-frame');
+  frame.src=src;
+  frame.style.display='block';
   document.getElementById('rm-placeholder').style.display='none';
   document.getElementById('rm-key-msg').style.display='none';
-
-  if(!apiKey){
-    // No API key — fallback to embed (no optimization)
-    const saddr=encodeURIComponent(start);
-    const daddr=stops.map((s,i)=>i===0?encodeURIComponent(s):'to:'+encodeURIComponent(s)).join('+');
-    const src='https://maps.google.com/maps?saddr='+saddr+'&daddr='+daddr+'&dirflg=d&output=embed';
-    const frame=document.getElementById('rm-gmap-frame');
-    frame.src=src; frame.style.display='block';
-    document.getElementById('rm-gmap-div').style.display='none';
-    return;
-  }
-
-  // Use Directions API with optimizeWaypoints
-  document.getElementById('rm-gmap-frame').style.display='none';
-  const mapDiv=document.getElementById('rm-gmap-div');
-  mapDiv.style.display='flex';
-
-  function runOptimizedRoute(){
-    const map=new google.maps.Map(mapDiv,{zoom:10,mapTypeId:'roadmap'});
-    const ds=new google.maps.DirectionsService();
-    const dr=new google.maps.DirectionsRenderer({map});
-
-    const waypoints=stops.slice(0,-1).map(s=>({location:s,stopover:true}));
-    const destination=stops[stops.length-1];
-
-    ds.route({
-      origin:start,
-      destination:destination,
-      waypoints:waypoints,
-      optimizeWaypoints:true,
-      travelMode:google.maps.TravelMode.DRIVING
-    },function(result,status){
-      if(status==='OK'){
-        dr.setDirections(result);
-        const order=result.routes[0].waypoint_order;
-        const midStops=stops.slice(0,-1);
-        const ordered=[start,...order.map(i=>midStops[i]),destination];
-        const stopsEl=document.getElementById('rt-stops-list');
-        stopsEl.innerHTML='';
-        ordered.slice(1).forEach((addr,i)=>{
-          const div=document.createElement('div');
-          div.className='rt-stop-row';
-          div.style.cssText='display:flex;gap:8px;align-items:center';
-          div.innerHTML=`<span style="font-size:0.75rem;color:var(--gold);width:20px;text-align:center;flex-shrink:0">${i+1}</span><input class="form-input" placeholder="Address stop ${i+1}..." style="flex:1" value="${addr.replace(/"/g,'&quot;')}"/><button onclick="removeStop(this)" style="background:none;border:none;color:var(--gray);font-size:1rem;cursor:pointer;flex-shrink:0">✕</button>`;
-          stopsEl.appendChild(div);
-        });
-        showToast('✅ Optimized route ready!');
-      } else {
-        showToast('⚠️ Route error: '+status);
-      }
-    });
-  }
-
-  if(window.google&&window.google.maps&&window.google.maps.DirectionsService){
-    runOptimizedRoute();
-  } else {
-    window._rmRouteReady=runOptimizedRoute;
-    if(!document.getElementById('rm-maps-api')){
-      const s=document.createElement('script');
-      s.id='rm-maps-api';
-      s.src='https://maps.googleapis.com/maps/api/js?key='+apiKey+'&callback=_rmRouteReady';
-      s.async=true; s.defer=true;
-      document.head.appendChild(s);
-    }
-  }
 }
 
 function clearRoute(){
@@ -6706,7 +6904,6 @@ function clearRoute(){
   document.querySelectorAll('.rt-stop-row input').forEach(i=>i.value='');
   document.getElementById('rm-gmap-frame').src='about:blank';
   document.getElementById('rm-gmap-frame').style.display='none';
-  document.getElementById('rm-gmap-div').style.display='none';
   document.getElementById('rm-placeholder').style.display='flex';
 }
 
@@ -12657,10 +12854,518 @@ function wcDoAtt(){
   window.showView=function(v){
     if(typeof _sv==='function')_sv(v);
     if(v==='wholesale'){setTimeout(function(){wcRenderSaved();wcOpen(wcIdx||0);},100);}
+    if(v==='agents'){setTimeout(function(){if(typeof agRenderTable==='function')agRenderTable();},100);}
   };
 })();
 
 </script>
 
+<script>
+// ===== AGENTS MODULE (Supabase-powered) =====
+var _AG_URL = 'https://avtowhcvbjdpbjlddbpp.supabase.co';
+var _AG_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2dG93aGN2YmpkcGJqbGRkYnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NTAyMjQsImV4cCI6MjA5NjAyNjIyNH0.AftpvIgHJx3Gj8BUWBE9MaiM50fraUIkjRMKwwUQFg4';
+var _agSb = (typeof _sb !== 'undefined') ? _sb : supabase.createClient(_AG_URL, _AG_KEY);
+
+// localStorage fallback for agent data (until fully on Supabase)
+var AG = {
+  load: function(){ return JSON.parse(localStorage.getItem('crm_agents')||'[]'); },
+  save: function(d){ localStorage.setItem('crm_agents',JSON.stringify(d)); },
+  leads: function(id){ return JSON.parse(localStorage.getItem('ag_leads_'+id)||'[]'); },
+  saveLeads: function(id,d){ localStorage.setItem('ag_leads_'+id,JSON.stringify(d)); },
+  deals: function(id){ return JSON.parse(localStorage.getItem('ag_deals_'+id)||'[]'); },
+  tasks: function(id){ return JSON.parse(localStorage.getItem('ag_tasks_'+id)||'[]'); },
+  notes: function(id){ return JSON.parse(localStorage.getItem('ag_notes_'+id)||'[]'); }
+};
+
+function agX(s){ return s==null?'':String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function agUpdateBadge(){
+  var b=document.getElementById('agentsCountBadge');
+  if(b) b.textContent=AG.load().length;
+}
+
+function agUpdateStats(){
+  var d=AG.load();
+  var active=d.filter(function(a){return a.status==='active';}).length;
+  var susp=d.filter(function(a){return a.status==='suspended';}).length;
+  var leads=d.reduce(function(s,a){return s+AG.leads(a.id).length;},0);
+  var t=document.getElementById('ag-stat-total'); if(t)t.textContent=d.length;
+  var ac=document.getElementById('ag-stat-active'); if(ac)ac.textContent=active;
+  var sc=document.getElementById('ag-stat-susp'); if(sc)sc.textContent=susp;
+  var lc=document.getElementById('ag-stat-leads'); if(lc)lc.textContent=leads;
+}
+
+function agentsTab(tab){
+  ['roster','leads','deals','tasks','reports'].forEach(function(t){
+    var p=document.getElementById('agtab-panel-'+t);
+    var b=document.getElementById('agtab-'+t);
+    if(p) p.style.display=(t===tab?'block':'none');
+    if(b){
+      b.style.background=t===tab?'var(--gold)':'var(--surface2)';
+      b.style.color=t===tab?'#0a0a0a':'var(--muted)';
+      b.style.border=t===tab?'none':'1px solid var(--border)';
+    }
+  });
+  if(tab==='leads') agRenderAllLeads();
+  if(tab==='deals') agRenderAllDeals();
+  if(tab==='tasks') agRenderAllTasks();
+  if(tab==='reports') agRenderReports();
+}
+
+function agRenderTable(){
+  var q=(document.getElementById('ag-search')||{value:''}).value.toLowerCase();
+  var f=(document.getElementById('ag-filter')||{value:'all'}).value;
+  var d=AG.load().filter(function(a){
+    return (!q||((a.fname+' '+a.lname).toLowerCase().includes(q)||(a.email||'').toLowerCase().includes(q)))
+        && (f==='all'||a.status===f);
+  });
+  var tb=document.getElementById('ag-table-body'); if(!tb) return;
+  if(!d.length){
+    tb.innerHTML='<tr><td colspan="8" style="padding:36px;text-align:center;color:#64748b">No agents yet. Click <strong>+ Add Agent</strong>.</td></tr>';
+    agUpdateStats(); return;
+  }
+  var html='';
+  for(var i=0;i<d.length;i++){
+    var a=d[i];
+    var ini=((a.fname||'')[0]+(a.lname||'')[0]).toUpperCase();
+    var sc=a.status==='active'?'#22c55e':'#f59e0b';
+    var sl=a.status==='active'?'Active':'Suspended';
+    var ll=AG.leads(a.id).length;
+    html+='<tr data-agid="'+a.id+'" style="border-top:1px solid #334155">'
+      +'<td style="padding:11px 14px"><div style="display:flex;align-items:center;gap:9px">'
+      +'<div style="width:34px;height:34px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;flex-shrink:0">'+ini+'</div>'
+      +'<div><div style="font-weight:600">'+agX(a.fname)+' '+agX(a.lname)+'</div>'
+      +(a.license?'<div style="color:#64748b;font-size:.7rem">Lic#'+agX(a.license)+'</div>':'')
+      +'</div></div></td>'
+      +'<td style="padding:11px 14px;color:#94a3b8;font-size:.85rem">'+agX(a.email||'--')+'</td>'
+      +'<td style="padding:11px 14px;color:#94a3b8;font-size:.85rem">'+agX(a.phone||'--')+'</td>'
+      +'<td style="padding:11px 14px"><span style="background:#1e3a5f;color:#60a5fa;border-radius:5px;padding:2px 8px;font-size:.73rem">'+agX(a.role||'Agent')+'</span></td>'
+      +'<td style="padding:11px 14px;font-weight:600">'+ll+'</td>'
+      +'<td style="padding:11px 14px"><span style="background:'+sc+'22;color:'+sc+';border-radius:5px;padding:2px 8px;font-size:.73rem;font-weight:600">'+sl+'</span></td>'
+      +'<td style="padding:11px 14px;color:#64748b;font-size:.78rem">'+agX(a.joined||'--')+'</td>'
+      +'<td style="padding:11px 14px;text-align:center;white-space:nowrap">'
+      +'<button class="ag-btn-portal" data-id="'+a.id+'" style="background:#1e3a5f;border:none;color:#60a5fa;cursor:pointer;font-size:.72rem;padding:3px 7px;border-radius:4px;margin:1px">Portal</button> '
+      +'<button class="ag-btn-edit"   data-id="'+a.id+'" style="background:none;border:none;color:#a78bfa;cursor:pointer;font-size:.95rem;margin:1px" title="Edit">&#9998;</button>'
+      +'<button class="ag-btn-invite" data-id="'+a.id+'" style="background:none;border:none;color:#22c55e;cursor:pointer;font-size:.95rem;margin:1px" title="Invite">&#9993;</button>'
+      +'<button class="ag-btn-pwd"    data-id="'+a.id+'" style="background:none;border:none;color:#f59e0b;cursor:pointer;font-size:.95rem;margin:1px" title="Reset Password">&#128273;</button>'
+      +'<button class="ag-btn-susp"   data-id="'+a.id+'" style="background:none;border:none;color:#f59e0b;cursor:pointer;font-size:.95rem;margin:1px" title="'+(a.status==='active'?'Suspend':'Activate')+'">'+(a.status==='active'?'&#128683;':'&#9989;')+'</button>'
+      +'<button class="ag-btn-del"    data-id="'+a.id+'" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:.95rem;margin:1px" title="Delete">&#128465;</button>'
+      +'</td></tr>';
+  }
+  tb.innerHTML=html;
+  tb.onclick=function(e){
+    var btn=e.target.closest('button'); if(!btn) return;
+    var id=btn.dataset.id;
+    if(btn.classList.contains('ag-btn-portal'))  agPortal(id);
+    if(btn.classList.contains('ag-btn-edit'))    agEdit(id);
+    if(btn.classList.contains('ag-btn-invite'))  agShowInvite(id);
+    if(btn.classList.contains('ag-btn-pwd'))     agResetPwd(id);
+    if(btn.classList.contains('ag-btn-susp'))    agToggleSuspend(id);
+    if(btn.classList.contains('ag-btn-del'))     agDelete(id);
+  };
+  agUpdateStats();
+}
+
+
+var PLAN_SEAT_LIMITS = {agent:1, team:10, brokerage:15};
+
+function getMaxSeats(){
+  var plan = localStorage.getItem('flexcrm_plan') || 'brokerage';
+  return PLAN_SEAT_LIMITS[plan] || 15;
+}
+
+function getActiveAgentCount(){
+  return AG.load().filter(function(a){ return a.status !== 'suspended'; }).length;
+}
+
+function openAddAgentModal(){
+  agSetDashMode('personal');
+  var maxSeats = getMaxSeats();
+  var currentCount = getActiveAgentCount();
+  if(currentCount >= maxSeats){
+    var extraSeats = currentCount - maxSeats + 1;
+    var confirm = window.confirm(
+      'You\'ve used all ' + maxSeats + ' agent seats on your plan.\n\n' +
+      'Add an extra seat for $10/month?\n\n' +
+      'Click OK to continue adding this agent — you will be billed $10/mo for each seat over your plan limit.'
+    );
+    if(!confirm) return;
+    var extra = parseInt(localStorage.getItem('flexcrm_extra_seats')||'0') + 1;
+    localStorage.setItem('flexcrm_extra_seats', extra);
+  }
+  document.getElementById('ag-modal-title').textContent='Add Agent';
+  document.getElementById('ag-edit-id').value='';
+  ['ag-fname','ag-lname','ag-email','ag-phone','ag-license','ag-notes'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  var r=document.getElementById('ag-role'); if(r) r.value='Agent';
+  document.getElementById('ag-modal').style.display='flex';
+}
+function agCloseModal(){ document.getElementById('ag-modal').style.display='none'; }
+
+function agEdit(id){
+  var d=AG.load(); var a=d.find(function(x){return x.id===id;}); if(!a) return;
+  document.getElementById('ag-modal-title').textContent='Edit Agent';
+  document.getElementById('ag-edit-id').value=id;
+  document.getElementById('ag-fname').value=a.fname||'';
+  document.getElementById('ag-lname').value=a.lname||'';
+  document.getElementById('ag-email').value=a.email||'';
+  document.getElementById('ag-phone').value=a.phone||'';
+  document.getElementById('ag-role').value=a.role||'Agent';
+  document.getElementById('ag-license').value=a.license||'';
+  document.getElementById('ag-notes').value=a.notes||'';
+  document.getElementById('ag-modal').style.display='flex';
+}
+
+function agSetDashMode(mode){
+  var personal = document.getElementById('ag-dash-personal-label');
+  var shared = document.getElementById('ag-dash-shared-label');
+  if(mode==='personal'){
+    personal.style.border='2px solid #6d28d9';
+    personal.style.background='rgba(109,40,217,0.15)';
+    shared.style.border='2px solid #334155';
+    shared.style.background='transparent';
+    document.getElementById('ag-dash-personal').checked=true;
+  } else {
+    shared.style.border='2px solid #6d28d9';
+    shared.style.background='rgba(109,40,217,0.15)';
+    personal.style.border='2px solid #334155';
+    personal.style.background='transparent';
+    document.getElementById('ag-dash-shared').checked=true;
+  }
+}
+async function agSave(){
+  var fn=document.getElementById('ag-fname').value.trim();
+  var ln=document.getElementById('ag-lname').value.trim();
+  var em=document.getElementById('ag-email').value.trim();
+  if(!fn||!ln){alert('First and last name required.');return;}
+  if(!em){alert('Email required.');return;}
+  var editId=document.getElementById('ag-edit-id').value;
+  if(!editId){
+    var maxSeats=getMaxSeats(); var currentCount=getActiveAgentCount();
+    if(currentCount>=maxSeats){
+      var extraOk=window.confirm('Seat limit reached ('+maxSeats+'). Add this agent for $10/mo extra?');
+      if(!extraOk){agCloseModal();return;}
+      var extra=parseInt(localStorage.getItem('flexcrm_extra_seats')||'0')+1;
+      localStorage.setItem('flexcrm_extra_seats',extra);
+    }
+  }
+  var editId=document.getElementById('ag-edit-id').value;
+  var d=AG.load();
+  var now=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  if(editId){
+    var idx=d.findIndex(function(x){return x.id===editId;});
+    if(idx>-1){
+      d[idx].fname=fn; d[idx].lname=ln; d[idx].email=em;
+      d[idx].phone=document.getElementById('ag-phone').value.trim();
+      d[idx].role=document.getElementById('ag-role').value;
+      d[idx].license=document.getElementById('ag-license').value.trim();
+      d[idx].notes=document.getElementById('ag-notes').value.trim();
+    }
+    AG.save(d); agCloseModal(); agRenderTable();
+  } else {
+    var agId='ag_'+Date.now();
+    var phone=document.getElementById('ag-phone').value.trim();
+    var role=document.getElementById('ag-role').value;
+    var license=document.getElementById('ag-license').value.trim();
+    var notes=document.getElementById('ag-notes').value.trim();
+
+    // Save locally first
+    var dashMode=document.querySelector('input[name="ag-dashboard-mode"]:checked');var dashboardMode=dashMode?dashMode.value:'personal';
+    d.push({id:agId,fname:fn,lname:ln,email:em,phone:phone,role:role,license:license,notes:notes,dashboardMode:dashboardMode,status:'active',joined:now});
+    AG.save(d);
+
+    // Send Supabase invite (real email with password setup link)
+    var saveBtn = document.querySelector('#ag-modal button[onclick="agSave()"]');
+    if(saveBtn) saveBtn.textContent = 'Sending invite...';
+    try {
+      await _agSb.auth.signInWithOtp({
+        email: em,
+        options: {
+          emailRedirectTo: window.location.origin + '/bchb-crm/portal.html',
+          data: {first_name: fn, last_name: ln, role: 'agent', phone: phone, dashboard_mode: dashboardMode}
+        }
+      });
+      d[d.length-1].inviteSent = true;
+      AG.save(d);
+    } catch(err) {
+      console.log('Invite note:', err);
+    }
+    if(saveBtn) saveBtn.textContent = 'Save Agent';
+
+    agCloseModal(); agRenderTable(); agShowInvite(agId);
+  }
+}
+
+function agToggleSuspend(id){
+  var d=AG.load(); var a=d.find(function(x){return x.id===id;}); if(!a) return;
+  if(!confirm((a.status==='active'?'Suspend':'Re-activate')+' '+a.fname+' '+a.lname+'?')) return;
+  a.status=a.status==='active'?'suspended':'active';
+  AG.save(d); agRenderTable();
+}
+
+function agDelete(id){
+  var d=AG.load(); var a=d.find(function(x){return x.id===id;}); if(!a) return;
+  if(!confirm('Delete '+a.fname+' '+a.lname+' permanently?')) return;
+  ['ag_leads_','ag_deals_','ag_tasks_','ag_notes_'].forEach(function(k){localStorage.removeItem(k+id);});
+  AG.save(d.filter(function(x){return x.id!==id;})); agRenderTable();
+}
+
+function agResetPwd(id){
+  var d=AG.load(); var a=d.find(function(x){return x.id===id;}); if(!a) return;
+  if(!confirm('Send password reset email to '+a.fname+'?')) return;
+  _agSb.auth.resetPasswordForEmail(a.email, {
+    redirectTo: window.location.origin + '/portal.html'
+  }).then(function(){
+    alert('Password reset email sent to '+a.email);
+  }).catch(function(e){
+    alert('Could not send reset: '+e.message);
+  });
+}
+
+function agShowInvite(id){
+  var d=AG.load(); var a=d.find(function(x){return x.id===id;}); if(!a) return;
+  document.getElementById('ag-invite-body').innerHTML=
+    '<strong>Welcome to BCHB CRM</strong><br><br>Hi '+agX(a.fname)+',<br><br>'
+    +'Your agent account has been created. You will receive a separate email from Supabase with a link to set your password.<br><br>'
+    +'Once your password is set, log in at:<br><strong>'+window.location.origin+'</strong><br><br>'
+    +'You will have your own private workspace with your leads, tasks, pipeline, and deals.';
+  document.getElementById('ag-invite-creds').innerHTML='Email: <strong>'+agX(a.email)+'</strong><br>Password: <em>Set via email invite link</em>';
+  window._agInviteText='BCHB CRM Invitation\n\nHi '+a.fname+',\nYour account is ready.\n\nCheck your email for a link to set your password.\n\nLogin at: '+window.location.origin+'\nEmail: '+a.email;
+  document.getElementById('ag-invite-modal').style.display='flex';
+}
+function agCloseInvite(){ document.getElementById('ag-invite-modal').style.display='none'; }
+function agCopyInvite(){
+  if(window._agInviteText){
+    navigator.clipboard.writeText(window._agInviteText)
+      .then(function(){
+        agCloseInvite();
+      })
+      .catch(function(){alert('Copy failed.');});
+  }
+}
+
+function agPortal(id){
+  var d=AG.load(); var a=d.find(function(x){return x.id===id;}); if(!a) return;
+  document.getElementById('ag-portal-name').textContent=a.fname+' '+a.lname+' — '+a.role;
+  var tabs=['Leads','Pipeline','Deals','Tasks','Notes'];
+  var tabHtml='';
+  for(var i=0;i<tabs.length;i++){
+    tabHtml+='<button data-tab="'+tabs[i]+'" data-agid="'+id+'" class="ag-ptab" style="background:'+(i===0?'#2563eb':'#1e293b')+';color:'+(i===0?'#fff':'#94a3b8')+';border:1px solid #334155;border-radius:6px;padding:6px 13px;font-size:.8rem;cursor:pointer">'+tabs[i]+'</button>';
+  }
+  document.getElementById('ag-portal-tabs').innerHTML=tabHtml;
+  document.getElementById('ag-portal-tabs').onclick=function(e){
+    var btn=e.target.closest('.ag-ptab'); if(!btn) return;
+    document.querySelectorAll('.ag-ptab').forEach(function(b){b.style.background='#1e293b';b.style.color='#94a3b8';});
+    btn.style.background='#2563eb'; btn.style.color='#fff';
+    agPortalTab(btn.dataset.tab, btn.dataset.agid);
+  };
+  agPortalTab('Leads',id);
+  document.getElementById('ag-portal-modal').style.display='flex';
+}
+function agClosePortal(){ document.getElementById('ag-portal-modal').style.display='none'; }
+
+function agPortalTab(tab,agId){
+  var pc=document.getElementById('ag-portal-content');
+  var leads=AG.leads(agId); var deals=AG.deals(agId);
+  var tasks=AG.tasks(agId); var notes=AG.notes(agId);
+
+  function tbl(hdrs,rows,empty){
+    return '<div style="background:#1e293b;border-radius:8px;border:1px solid #334155;overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:360px">'
+      +'<thead><tr style="background:#0f172a;color:#94a3b8;font-size:.71rem;text-transform:uppercase">'
+      +hdrs.map(function(h){return '<th style="padding:9px 12px;text-align:left">'+h+'</th>';}).join('')
+      +'</tr></thead><tbody>'
+      +(rows.length?rows.join(''):'<tr><td colspan="'+hdrs.length+'" style="padding:24px;text-align:center;color:#64748b">'+empty+'</td></tr>')
+      +'</tbody></table></div>';
+  }
+
+  if(tab==='Leads'){
+    var rows=leads.map(function(l){
+      return '<tr style="border-top:1px solid #334155">'
+        +'<td style="padding:9px 12px;font-weight:600">'+agX((l.fname||'')+' '+(l.lname||''))+'</td>'
+        +'<td style="padding:9px 12px;color:#94a3b8">'+agX(l.phone||'--')+'</td>'
+        +'<td style="padding:9px 12px;color:#22c55e;font-size:.78rem">'+agX(l.status||'new')+'</td>'
+        +'<td style="padding:9px 12px;color:#818cf8">$'+(l.value||0).toLocaleString()+'</td>'
+        +'</tr>';
+    });
+    pc.innerHTML=tbl(['Name','Phone','Status','Value'],rows,'No leads yet')
+      +'<button onclick="agAddLeadPortal(\''+agId+'\')" style="margin-top:10px;background:#2563eb;color:#fff;border:none;border-radius:7px;padding:8px 16px;cursor:pointer;font-size:.82rem;font-weight:600">+ Add Lead</button>';
+  } else if(tab==='Pipeline'){
+    var stages=['New','Contacted','Negotiating','Under Contract','Closed'];
+    var html='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px">';
+    for(var i=0;i<stages.length;i++){
+      var cnt=leads.filter(function(l){return (l.stage||l.status||'New')===stages[i];}).length;
+      html+='<div style="background:#1e293b;border-radius:8px;padding:14px;border:1px solid #334155;text-align:center">'
+        +'<div style="font-size:1.5rem;font-weight:700;color:#818cf8">'+cnt+'</div>'
+        +'<div style="color:#94a3b8;font-size:.75rem;margin-top:3px">'+stages[i]+'</div></div>';
+    }
+    pc.innerHTML=html+'</div>';
+  } else if(tab==='Deals'){
+    var rows2=deals.map(function(d){
+      return '<tr style="border-top:1px solid #334155">'
+        +'<td style="padding:9px 12px;font-weight:600">'+agX(d.title||'')+'</td>'
+        +'<td style="padding:9px 12px;color:#22c55e;font-weight:600">$'+(d.value||0).toLocaleString()+'</td>'
+        +'<td style="padding:9px 12px;color:#818cf8">'+agX(d.stage||'')+'</td>'
+        +'</tr>';
+    });
+    pc.innerHTML=tbl(['Deal','Value','Stage'],rows2,'No deals yet');
+  } else if(tab==='Tasks'){
+    var rows3=tasks.map(function(t){
+      return '<tr style="border-top:1px solid #334155">'
+        +'<td style="padding:9px 12px">'+agX(t.text||t.title||'')+'</td>'
+        +'<td style="padding:9px 12px;color:#f59e0b;font-size:.78rem">'+agX(t.status||'todo')+'</td>'
+        +'<td style="padding:9px 12px;color:#64748b;font-size:.78rem">'+agX(t.due||'--')+'</td>'
+        +'</tr>';
+    });
+    pc.innerHTML=tbl(['Task','Status','Due'],rows3,'No tasks yet');
+  } else if(tab==='Notes'){
+    var nh='<div style="display:grid;gap:8px">';
+    if(notes.length){
+      for(var j=0;j<notes.length;j++){
+        nh+='<div style="background:#1e293b;border-radius:7px;padding:12px;border:1px solid #334155;font-size:.85rem">'+agX(notes[j].text||notes[j].body||'')+'</div>';
+      }
+    } else { nh+='<div style="padding:24px;text-align:center;color:#64748b">No notes yet</div>'; }
+    pc.innerHTML=nh+'</div>';
+  }
+}
+
+function agAddLeadPortal(agId){
+  var fn=prompt('Lead First Name:'); if(!fn) return;
+  var ln=prompt('Lead Last Name:'); if(!ln) return;
+  var ph=prompt('Phone (optional):')||'';
+  var val=parseInt(prompt('Est. Value:')||'0')||0;
+  var leads=AG.leads(agId);
+  leads.push({id:'al_'+Date.now(),fname:fn,lname:ln,phone:ph,email:'',status:'new',stage:'New',value:val,
+    added:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})});
+  AG.saveLeads(agId,leads); agPortalTab('Leads',agId); agUpdateStats();
+}
+
+function agRenderAllLeads(){
+  var q=(document.getElementById('ag-lead-search')||{value:''}).value.toLowerCase();
+  var af=(document.getElementById('ag-lead-filter')||{value:'all'}).value;
+  var sel=document.getElementById('ag-lead-filter');
+  if(sel && sel.options.length<=1){
+    AG.load().forEach(function(a){
+      var o=document.createElement('option'); o.value=a.id; o.textContent=a.fname+' '+a.lname; sel.appendChild(o);
+    });
+  }
+  var rows=[]; 
+  AG.load().forEach(function(a){
+    if(af!=='all'&&af!==a.id) return;
+    AG.leads(a.id).forEach(function(l){
+      if(q&&!(((l.fname||'')+' '+(l.lname||'')).toLowerCase().includes(q))) return;
+      rows.push({l:l,a:a});
+    });
+  });
+  var tb=document.getElementById('ag-leads-body'); if(!tb) return;
+  if(!rows.length){tb.innerHTML='<tr><td colspan="6" style="padding:28px;text-align:center;color:#64748b">No agent leads yet.</td></tr>';return;}
+  var html='';
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i];
+    html+='<tr style="border-top:1px solid #334155">'
+      +'<td style="padding:9px 12px;font-weight:600">'+agX((r.l.fname||'')+' '+(r.l.lname||''))+'</td>'
+      +'<td style="padding:9px 12px;color:#94a3b8">'+agX(r.l.phone||'--')+'</td>'
+      +'<td style="padding:9px 12px;color:#22c55e;font-size:.78rem">'+agX(r.l.status||'new')+'</td>'
+      +'<td style="padding:9px 12px;color:#818cf8">$'+(r.l.value||0).toLocaleString()+'</td>'
+      +'<td style="padding:9px 12px;color:#60a5fa;font-size:.83rem">'+agX(r.a.fname+' '+r.a.lname)+'</td>'
+      +'<td style="padding:9px 12px;text-align:center">'
+      +'<button class="ag-reassign-btn" data-lid="'+r.l.id+'" data-from="'+r.a.id+'" data-name="'+agX(r.l.fname+' '+r.l.lname)+'" style="background:#1e3a5f;color:#60a5fa;border:none;border-radius:5px;padding:3px 9px;cursor:pointer;font-size:.76rem">Reassign</button>'
+      +'</td></tr>';
+  }
+  tb.innerHTML=html;
+  tb.onclick=function(e){
+    var btn=e.target.closest('.ag-reassign-btn'); if(!btn) return;
+    agOpenReassign(btn.dataset.lid, btn.dataset.from, btn.dataset.name);
+  };
+}
+
+function agRenderAllDeals(){
+  var tb=document.getElementById('ag-deals-body'); if(!tb) return;
+  var html=''; var any=false;
+  AG.load().forEach(function(a){
+    AG.deals(a.id).forEach(function(d){
+      any=true;
+      html+='<tr style="border-top:1px solid #334155">'
+        +'<td style="padding:9px 12px;font-weight:600">'+agX(d.title||'--')+'</td>'
+        +'<td style="padding:9px 12px;color:#22c55e;font-weight:600">$'+(d.value||0).toLocaleString()+'</td>'
+        +'<td style="padding:9px 12px;color:#818cf8">'+agX(d.stage||'--')+'</td>'
+        +'<td style="padding:9px 12px;color:#60a5fa;font-size:.83rem">'+agX(a.fname+' '+a.lname)+'</td>'
+        +'<td style="padding:9px 12px;color:#64748b;font-size:.78rem">'+agX(d.date||'--')+'</td>'
+        +'</tr>';
+    });
+  });
+  tb.innerHTML=any?html:'<tr><td colspan="5" style="padding:28px;text-align:center;color:#64748b">No agent deals yet.</td></tr>';
+}
+
+function agRenderAllTasks(){
+  var tb=document.getElementById('ag-tasks-body'); if(!tb) return;
+  var html=''; var any=false;
+  AG.load().forEach(function(a){
+    AG.tasks(a.id).forEach(function(t){
+      any=true;
+      html+='<tr style="border-top:1px solid #334155">'
+        +'<td style="padding:9px 12px">'+agX(t.text||t.title||'--')+'</td>'
+        +'<td style="padding:9px 12px;color:#f59e0b;font-size:.78rem">'+agX(t.status||'todo')+'</td>'
+        +'<td style="padding:9px 12px;color:#60a5fa;font-size:.83rem">'+agX(a.fname+' '+a.lname)+'</td>'
+        +'<td style="padding:9px 12px;color:#64748b;font-size:.78rem">'+agX(t.created||'--')+'</td>'
+        +'</tr>';
+    });
+  });
+  tb.innerHTML=any?html:'<tr><td colspan="4" style="padding:28px;text-align:center;color:#64748b">No agent tasks yet.</td></tr>';
+}
+
+function agRenderReports(){
+  var el=document.getElementById('ag-reports-content'); if(!el) return;
+  var rows=AG.load().map(function(a){
+    return {a:a,leads:AG.leads(a.id).length,deals:AG.deals(a.id).length,
+      val:AG.deals(a.id).reduce(function(s,d){return s+(d.value||0);},0)};
+  }).sort(function(a,b){return b.leads-a.leads;});
+  var medals=['#f59e0b','#94a3b8','#cd7f32'];
+  var lb='<div style="background:#1e293b;border:1px solid #334155;border-radius:10px;overflow:hidden;margin-bottom:16px">'
+    +'<div style="padding:14px 18px;border-bottom:1px solid #334155;font-weight:700;font-size:.95rem">&#127942; Agent Leaderboard</div>';
+  if(rows.length){
+    for(var i=0;i<rows.length;i++){
+      var r=rows[i];
+      var ini=((r.a.fname||'')[0]+(r.a.lname||'')[0]).toUpperCase();
+      var mc=i<3?medals[i]:'#64748b';
+      lb+='<div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid #334155">'
+        +'<div style="width:22px;text-align:center;font-weight:700;color:'+mc+'">'+(i+1)+'</div>'
+        +'<div style="width:32px;height:32px;border-radius:50%;background:#2563eb;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0">'+ini+'</div>'
+        +'<div style="flex:1"><div style="font-weight:600;font-size:.9rem">'+agX(r.a.fname+' '+r.a.lname)+'</div>'
+        +'<div style="color:#94a3b8;font-size:.75rem">'+agX(r.a.role)+'</div></div>'
+        +'<div style="text-align:right;font-size:.82rem">'
+        +'<span style="color:#818cf8">'+r.leads+' leads</span>  '
+        +'<span style="color:#22c55e">'+r.deals+' deals</span>  '
+        +'<span style="color:#60a5fa">$'+r.val.toLocaleString()+'</span>'
+        +'</div></div>';
+    }
+  } else { lb+='<div style="padding:24px;text-align:center;color:#64748b">No agents yet</div>'; }
+  el.innerHTML=lb+'</div>';
+}
+
+function agOpenReassign(leadId,fromId,leadName){
+  document.getElementById('ag-reassign-data').value=leadId+'|'+fromId;
+  document.getElementById('ag-reassign-label').textContent='Lead: '+leadName;
+  var sel=document.getElementById('ag-reassign-select');
+  sel.innerHTML=AG.load().filter(function(a){return a.id!==fromId&&a.status==='active';})
+    .map(function(a){return '<option value="'+a.id+'">'+agX(a.fname+' '+a.lname)+'</option>';}).join('');
+  if(!sel.options.length){alert('No other active agents available.');return;}
+  document.getElementById('ag-reassign-modal').style.display='flex';
+}
+function agCloseReassign(){ document.getElementById('ag-reassign-modal').style.display='none'; }
+function agDoReassign(){
+  var parts=document.getElementById('ag-reassign-data').value.split('|');
+  var lid=parts[0],fid=parts[1],tid=document.getElementById('ag-reassign-select').value;
+  var fl=AG.leads(fid); var lead=fl.find(function(l){return l.id===lid;});
+  if(!lead){alert('Lead not found.');return;}
+  AG.saveLeads(fid,fl.filter(function(l){return l.id!==lid;}));
+  var tl=AG.leads(tid); tl.push(lead); AG.saveLeads(tid,tl);
+  agCloseReassign(); agRenderAllLeads(); agUpdateStats(); alert('Lead reassigned.');
+}
+
+document.addEventListener('DOMContentLoaded', function(){ agUpdateBadge(); });
+
+</script>
 </body>
 </html>
